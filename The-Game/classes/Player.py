@@ -4,11 +4,11 @@ from pyglet import window
 from pyglet.gl import *
 #Import personal packages
 from constants import constants
-from classes import Event
+from classes import Event, Ball
 
 class Player_sprite(pyglet.sprite.Sprite):
 
-    def __init__(self, anim_state, x, y, z, my_batch, my_group, spr_type, collidable, my_scene, my_event_list, my_event):
+    def __init__(self, x, y, z, my_batch, my_group, spr_type, collidable, my_scene, my_event_list, my_event):
 
         #game - - - - - - - - - - - - - - - - - - - -
         self.dt = 0
@@ -23,8 +23,8 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.scene_start_step_2 = 140
         self.scene_start_step_3 = 220
         #animation - - - - - - - - - - - - - - - - - -
-        self.anim_state = anim_state
-        self.old_anim_state = anim_state
+        self.anim_state = "IDLE_RIGHT"
+        self.old_anim_state = self.anim_state
         self.create_all_anim_sequences()
         super(Player_sprite, self).__init__(img=self.all_anim_sequences[self.anim_state], x=x, y=y, batch=my_batch, group=my_group)
         #player sprite movement param - - - - - - - -
@@ -35,13 +35,16 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.moving_x_pattern = [0,0,0,1,1,2,3,4,5,6]
         self.duration_moving = 0
         self.duration_moving_max = len(self.moving_x_pattern) - 1
-        self.new_direction = ""
-        self.old_direction = ""
+        self.new_direction = "RIGHT"
+        self.old_direction = "RIGHT"
         #collisions - - - - - - - - - - - - - - - - -
         self.sprite_list = []
         self.sprite_list_collidable = []
         self.collidable = collidable
         self.rect = [0,0,18,24]
+        #ball - - - - - - - - - - - - - - - - - - - -
+        self.want_to_ball = False
+        self.ball = Ball.Ball_sprite(x, y, z-1, my_batch, self)
         #jump - - - - - - - - - - - - - - - - - - - -
         self.jump_y_pattern = [int((1000 - x)/100) for x in range(0,1000,50)]
         self.duration_jump = 0
@@ -69,19 +72,21 @@ class Player_sprite(pyglet.sprite.Sprite):
     def create_all_anim_sequences(self):
         
         self.all_anim_sequences = {}
+
+        self.all_anim_sequences["WALK_RIGHT"] = self.get_new_sequence("WALK_RIGHT")
+        self.all_anim_sequences["WALK_LEFT"] = self.get_new_sequence("WALK_LEFT")
+        self.all_anim_sequences["IDLE_RIGHT"] = self.get_new_sequence("IDLE_RIGHT")
         self.all_anim_sequences["IDLE_LEFT"] = self.get_new_sequence("IDLE_LEFT")
         self.all_anim_sequences["IDLE_RIGHT"] = self.get_new_sequence("IDLE_RIGHT")
-        self.all_anim_sequences["JUMP_LEFT"] = self.get_new_sequence("JUMP_LEFT")
-        self.all_anim_sequences["JUMP_RIGHT"] = self.get_new_sequence("JUMP_RIGHT")
-        self.all_anim_sequences["FALL_LEFT"] = self.get_new_sequence("FALL_LEFT")
-        self.all_anim_sequences["FALL_RIGHT"] = self.get_new_sequence("FALL_RIGHT")
-        self.all_anim_sequences["WALK_LEFT"] = self.get_new_sequence("WALK_LEFT")
-        self.all_anim_sequences["WALK_RIGHT"] = self.get_new_sequence("WALK_RIGHT")
-        self.all_anim_sequences["SLEEP"] = self.get_new_sequence("SLEEP")
-        self.all_anim_sequences["FORM"] = self.get_new_sequence("FORM")
-        self.all_anim_sequences["WAKE_UP"] = self.get_new_sequence("WAKE_UP")
-        self.all_anim_sequences["DEATH"] = self.get_new_sequence("DEATH")
 
+        self.all_anim_sequences["BREAK_RIGHT_01"] = self.get_new_sequence("BREAK_RIGHT_01")
+        self.all_anim_sequences["BREAK_LEFT_01"] = self.get_new_sequence("BREAK_LEFT_01")
+        self.all_anim_sequences["BREAK_RIGHT_02"] = self.get_new_sequence("BREAK_RIGHT_02")
+        self.all_anim_sequences["BREAK_LEFT_02"] = self.get_new_sequence("BREAK_LEFT_02")
+
+        self.all_anim_sequences["TO_THE_RIGHT"] = self.get_new_sequence("TO_THE_RIGHT")
+        self.all_anim_sequences["TO_THE_LEFT"] = self.get_new_sequence("TO_THE_LEFT")
+        
     def get_new_sequence(self, sequence):
         
         filename, x, y, w, h, loop, nb_frame, speed = self.get_anim_sequence(sequence)
@@ -96,36 +101,35 @@ class Player_sprite(pyglet.sprite.Sprite):
     
     def get_anim_sequence(self, state):
         
-        if state == "IDLE_LEFT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 13*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.12
-        if state == "IDLE_RIGHT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 11*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.12
-        if state == "WALK_LEFT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 10*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.06
-        if state == "WALK_RIGHT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 9*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.06
-        if state == "JUMP_LEFT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 5*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.06
-        if state == "JUMP_RIGHT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 5*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.06
-        if state == "FALL_LEFT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 1*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.06
-        if state == "FALL_RIGHT":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 0*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.06
-        if state == "SLEEP":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 12*constants.SPRITE_Y, constants.SPRITE_X, constants.SPRITE_Y, False, 1, 5
-        if state == "WAKE_UP":
-            return constants.PLAYER_STYLE[self.my_scene], 0, 12*constants.SPRITE_Y, 2*constants.SPRITE_X, constants.SPRITE_Y, True, 2, 0.2
-        if state == "FORM":
-            return constants.WAKE_UP_STYLE[self.my_scene], 0, 0*constants.SPRITE_Y, 40*constants.SPRITE_X, constants.SPRITE_Y * 2, False, 40, 0.03
-        if state == "DEATH":
-            return constants.PLAYER_STYLE[self.my_scene], 2*constants.SPRITE_X, 12*constants.SPRITE_Y, 1*constants.SPRITE_X, constants.SPRITE_Y, False, 1, 1
+        if state == "WALK_RIGHT": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 0*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.05
+        if state == "WALK_LEFT": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 1*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.05
+        if state == "IDLE_RIGHT": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 2*constants.SPRITE_Y, 1*constants.SPRITE_X, constants.SPRITE_Y, False, 1, 1
+        if state == "IDLE_LEFT": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 3*constants.SPRITE_Y, 1*constants.SPRITE_X, constants.SPRITE_Y, False, 1, 1
+        
+        if state == "BREAK_RIGHT_01": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 4*constants.SPRITE_Y, 4*constants.SPRITE_X, constants.SPRITE_Y, False, 4, 0.04
+        if state == "BREAK_LEFT_01": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 5*constants.SPRITE_Y, 4*constants.SPRITE_X, constants.SPRITE_Y, False, 4, 0.04
+        if state == "BREAK_RIGHT_02": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 4*constants.SPRITE_X, 4*constants.SPRITE_Y, 3*constants.SPRITE_X, constants.SPRITE_Y, False, 3, 0.04
+        if state == "BREAK_LEFT_02": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 4*constants.SPRITE_X, 5*constants.SPRITE_Y, 3*constants.SPRITE_X, constants.SPRITE_Y, False, 3, 0.04
 
+        if state == "TO_THE_RIGHT": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 6*constants.SPRITE_Y, 3*constants.SPRITE_X, constants.SPRITE_Y, False, 3, 0.04
+        if state == "TO_THE_LEFT": #OK
+            return constants.PLAYER_STYLE[self.my_scene], 0, 7*constants.SPRITE_Y, 3*constants.SPRITE_X, constants.SPRITE_Y, False, 3, 0.04    
 
+        
     def update(self, sprite_list, dt):
 
         self.dt = dt
         self.update_player()
+        #print(self._frame_index)
 
 
     def update_player(self):
@@ -134,13 +138,25 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.update_player_movement()
         self.update_event()
         self.update_death()
+        self.update_ball()
         self.update_anim_sequence()
 
 
+    def update_ball(self):
+        
+        if self.want_to_ball:
+            
+            if not self.ball.activated:
+                self.ball.activation(self, self.sprite_list_collidable)
+
+        self.ball.update()
+
+            
     def update_death(self):
 
         if self.y < 0 - constants.SPRITE_Y:
-            self.my_event.action(-1)
+            self.reset_position()
+            #self.my_event.action(-1)
             
          
     def update_event(self):
@@ -161,6 +177,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         if self.anim_state != self.old_anim_state:
             self.image = self.all_anim_sequences[self.anim_state]
             self.old_anim_state = self.anim_state
+            print(self.anim_state)
 
             
     def update_player_gravity(self):
@@ -212,33 +229,43 @@ class Player_sprite(pyglet.sprite.Sprite):
             
 
     def update_player_animation(self):
+ 
+        if self.anim_state[:7] == "TO_THE_":
+            if self._frame_index == 2:
+                self.anim_state = "WALK_" + self.new_direction
+            return
+  
+        if "RIGHT" in self.anim_state and self.moving_left and not self.moving_right:
+            self.anim_state = "TO_THE_LEFT"
+            return
+        elif "LEFT" in self.anim_state and self.moving_right and not self.moving_left:
+            self.anim_state = "TO_THE_RIGHT"
+            return
 
-        if self.new_fall:
-            self.anim_state = "FALL_RIGHT"
-            if self.moving_left:
-                self.anim_state = "FALL_LEFT"
-            return
-            
-        if self.new_jump:
-            self.anim_state = "JUMP_RIGHT"
-            if self.moving_left:
-                self.anim_state = "JUMP_LEFT"
-            return
-        
+
         if self.moving_left and not self.moving_right:
             self.anim_state = "WALK_LEFT"
             return
-            
-        if self.moving_right and not self.moving_left:
+        elif self.moving_right and not self.moving_left:
             self.anim_state = "WALK_RIGHT"
             return
-        
-        if (self.moving_left_old and not self.moving_left) or self.new_direction == "left":
-            self.anim_state = "IDLE_LEFT"
+
+  
+        if self.anim_state[:5] == "BREAK":
+            if self.duration_moving == 0:
+                if self.anim_state[len(self.anim_state)-1] == "1":
+                    self.anim_state = "BREAK_" + self.new_direction + "_02"
+                    self._frame_index = 0
+                elif self._frame_index == 2:
+                    self.anim_state = "IDLE_" + self.new_direction
             return
-        
-        if (self.moving_right_old and not self.moving_right) or self.new_direction == "" or self.new_direction == "right":
-            self.anim_state = "IDLE_RIGHT"
+
+                
+        if self.anim_state[:4] != "IDLE" and self.anim_state[:5] != "BREAK":
+            if self.anim_state == "WALK_LEFT":
+                self.anim_state = "BREAK_LEFT_01"          
+            elif self.anim_state == "WALK_RIGHT":
+                self.anim_state = "BREAK_RIGHT_01"
             return
         
         return
@@ -246,27 +273,9 @@ class Player_sprite(pyglet.sprite.Sprite):
     def update_player_movement(self):
 
         if self.anim_state == "DEATH":
-            return
-
-        if self.scene_start < self.scene_start_step_1:
-            self.anim_state = "SLEEP"
-            self.scene_start +=1
-            return
-        elif self.scene_start < self.scene_start_step_2:
-            self.anim_state = "WAKE_UP"
-            self.scene_start +=1
-            return
-        elif self.scene_start < self.scene_start_step_3:
-            self.anim_state = "FORM"
-            self.scene_start +=1
-            return
-        elif self.scene_start < self.scene_start_step_3+1:
-            self.anim_state = "IDLE_RIGHT"
-            self.scene_start +=1
-            
+            return            
 
         self.update_player_animation()
-
 
         self.moving_left_old = self.moving_left
         self.moving_right_old = self.moving_right
@@ -274,34 +283,34 @@ class Player_sprite(pyglet.sprite.Sprite):
         
         self.update_player_jump()
 
-        if (not self.moving_left and not self.moving_right) or (self.moving_left and self.moving_right):
+        if ((not self.moving_left and not self.moving_right) or (self.moving_left and self.moving_right)) and(
+            self.anim_state[:5] != "BREAK"):
             self.duration_moving = 0
-            self.new_direction = ""
             
         if self.new_direction != self.old_direction:
             self.duration_moving = 0
             self.old_direction = self.new_direction
 
-        if self.duration_moving < self.duration_moving_max:
+        if self.duration_moving < self.duration_moving_max and self.anim_state[:5] != "BREAK":
             self.duration_moving += 1
-        else:
-            self.duration_moving -= 1
+        elif self.duration_moving > 0:
+            self.duration_moving -= 0.5
         
-        if self.moving_left and not self.moving_right:
+        if (self.moving_left and not self.moving_right) or self.anim_state[:10] == "BREAK_LEFT":
             step = -1
-            for i in range(self.moving_x_pattern[self.duration_moving]):
+            for i in range(self.moving_x_pattern[int(self.duration_moving)]):
                 if self.can_move(step):
                     self.x += step
                     self.rect[0] += step
-                    self.new_direction = "left"
+                    self.new_direction = "LEFT"
             
-        if self.moving_right and not self.moving_left:
+        if (self.moving_right and not self.moving_left) or self.anim_state[:11] == "BREAK_RIGHT":
             step = 1
-            for i in range(self.moving_x_pattern[self.duration_moving]):
+            for i in range(self.moving_x_pattern[int(self.duration_moving)]):
                 if self.can_move(step):
                     self.x += step
                     self.rect[0] += step
-                    self.new_direction = "right"
+                    self.new_direction = "RIGHT"
 
 
     def can_move(self, step):
@@ -334,25 +343,30 @@ class Player_sprite(pyglet.sprite.Sprite):
 
     def key_pressed(self, key, modifiers):
         
-        if key == window.key.LEFT:
+        if key == window.key.Q:
             self.moving_left = True
-        if key == window.key.RIGHT:
+        if key == window.key.D:
             self.moving_right = True
         if key == window.key.F5:
             self.reset_position()
         if key == window.key.SPACE:
             self.want_to_jump = True
+        if key == window.key.NUM_0:
+            self.want_to_ball = True
         if key == window.key.ENTER or key == window.key.RETURN:
             self.want_to_action = True
+
             
     def key_released(self, key, modifiers):
         
-        if key == window.key.LEFT:
+        if key == window.key.Q:
             self.moving_left = False
-        if key == window.key.RIGHT:
+        if key == window.key.D:
             self.moving_right = False
         if key == window.key.SPACE:
             self.want_to_jump = False
+        if key == window.key.NUM_0:
+            self.want_to_ball = False
         if key == window.key.ENTER or key == window.key.RETURN:
             self.want_to_action = False
 

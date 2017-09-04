@@ -9,7 +9,7 @@ class Piece_de_theatre(object):
     def __init__(self, my_theatre):
 
         self.theatre = my_theatre
-        my_scene = "DESERT"
+        my_scene = "SLEEPING FOREST"
         self.Scene_de_theatre = Scene.Scene_de_theatre(my_theatre, self, my_scene)
         self.key_list = {}
 

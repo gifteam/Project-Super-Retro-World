@@ -270,7 +270,7 @@ class Scene_de_theatre(object):
         my_scene = self.my_scene
 
         player_z = pyglet.graphics.OrderedGroup(400)
-        self.player_sprite = Player.Player_sprite("SLEEP", self.player_pos[0], self.player_pos[1], 400, my_batch = self.batch, my_group = player_z, spr_type = "player", collidable = False, my_scene = my_scene, my_event_list = self.event_list, my_event = self.my_event)
+        self.player_sprite = Player.Player_sprite(self.player_pos[0], self.player_pos[1], 400, my_batch = self.batch, my_group = player_z, spr_type = "player", collidable = False, my_scene = my_scene, my_event_list = self.event_list, my_event = self.my_event)
 
         self.sprite_list.insert(0, self.player_sprite)
 
