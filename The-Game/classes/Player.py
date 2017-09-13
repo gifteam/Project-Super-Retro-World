@@ -4,7 +4,7 @@ from pyglet import window
 from pyglet.gl import *
 #Import personal packages
 from constants import constants
-from classes import Event, Ball
+from classes import Event, Ball, Effect
 
 class Player_sprite(pyglet.sprite.Sprite):
 
@@ -32,7 +32,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.origin_y = y
         self.moving_left = False
         self.moving_right = False
-        self.moving_x_pattern = [0,0,0,1,1,2,3,4,5,6]
+        self.moving_x_pattern = [0,0,0,1,1,2,3,4,5]
         self.duration_moving = 0
         self.duration_moving_max = len(self.moving_x_pattern) - 1
         self.new_direction = "RIGHT"
@@ -45,6 +45,8 @@ class Player_sprite(pyglet.sprite.Sprite):
         #ball - - - - - - - - - - - - - - - - - - - -
         self.want_to_ball = False
         self.ball = Ball.Ball_sprite(x, y, z-1, my_batch, self)
+        #run + jump effect - - - - - - - - - - - - - -
+        self.fog_sprite = Effect.Effect_sprite(z-1, "WALK_FOG", my_batch, self)
         #jump - - - - - - - - - - - - - - - - - - - -
         self.jump_y_pattern = [int((1000 - x)/100) for x in range(0,1000,50)]
         self.duration_jump = 0
@@ -102,9 +104,9 @@ class Player_sprite(pyglet.sprite.Sprite):
     def get_anim_sequence(self, state):
         
         if state == "WALK_RIGHT": #OK
-            return constants.PLAYER_STYLE[self.my_scene], 0, 0*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.05
+            return constants.PLAYER_STYLE[self.my_scene], 0, 0*constants.SPRITE_Y, 12*constants.SPRITE_X, constants.SPRITE_Y, True, 12, 0.05
         if state == "WALK_LEFT": #OK
-            return constants.PLAYER_STYLE[self.my_scene], 0, 1*constants.SPRITE_Y, 8*constants.SPRITE_X, constants.SPRITE_Y, True, 8, 0.05
+            return constants.PLAYER_STYLE[self.my_scene], 0, 1*constants.SPRITE_Y, 12*constants.SPRITE_X, constants.SPRITE_Y, True, 12, 0.05
         if state == "IDLE_RIGHT": #OK
             return constants.PLAYER_STYLE[self.my_scene], 0, 2*constants.SPRITE_Y, 1*constants.SPRITE_X, constants.SPRITE_Y, False, 1, 1
         if state == "IDLE_LEFT": #OK
@@ -140,8 +142,14 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.update_death()
         self.update_ball()
         self.update_anim_sequence()
+        self.update_effects()
 
 
+    def update_effects(self):
+
+        self.fog_sprite.update(self.anim_state)
+
+        
     def update_ball(self):
         
         if self.want_to_ball:
