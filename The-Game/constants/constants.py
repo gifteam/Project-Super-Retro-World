@@ -28,21 +28,20 @@ LOADING_STYLE = {}
 WAKE_UP_STYLE = {}
 
     #Level select style
-style = "LEVEL_SELECT"
+style = "simple"
 MAP_STYLE[style] = "002"
 BASE_BACK_STYLE[style] = "001"
-BACK_STYLE[style] = ["select_001"]
+BACK_STYLE[style] = []
 FRONT_STYLE[style] = "001"
 TILE_STYLE[style] = "003"
-LIGHT_SOURCE[style] = [0, 8, 13, (20, 30, 50, 10)]
 ELEMENT_STYLE[style] = "001"
-PLAYER_STYLE[style] = "003"
+PLAYER_STYLE[style] = "005"
 ENEMYSET_STYLE[style] = "002"
 LOADING_STYLE[style] = "002"
 WAKE_UP_STYLE[style] = "004"
     #Level 01 style
-style = "SLEEPING FOREST"
-MAP_STYLE[style] = "003"
+style = "hard"
+MAP_STYLE[style] = "005"
 BASE_BACK_STYLE[style] = "forest_017"
 BACK_STYLE[style] = ["forest_016","forest_015","forest_014"]
 FRONT_STYLE[style] = "001"

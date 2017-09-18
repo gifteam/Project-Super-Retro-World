@@ -333,7 +333,7 @@ class Scene_de_theatre(object):
         if self.run:
             
             for sprite in self.sprite_list:
-                    sprite.update(self.sprite_list, dt)
+                    sprite.update(self.sprite_list, dt, self.player_sprite)
                 
             self.update_camera()
         

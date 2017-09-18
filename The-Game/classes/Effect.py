@@ -31,31 +31,63 @@ class Effect_sprite(pyglet.sprite.Sprite):
 
         self.run = False
         self.launched = False
+
+
+    def change_effect(self, new_effect_name):
+
+        self.image = self.my_image_empty
+        self.run = False
+        self.effect_name = new_effect_name
+        self.my_animation = []
         
+        if self.effect_name == "WALK_FOG":
+            self.my_animation.append(self.get_animation("RIGHT"))
+            self.my_animation.append(self.get_animation("LEFT"))
+        else:
+            self.x = self.target.x
+            self.y = self.target.y
+            self.my_animation = self.get_animation()
+   
               
     def update(self, target_state):
 
         if self.effect_name == "WALK_FOG":
-            if target_state[:4] == "WALK":
-                self.run = True
-                if self.previous_target_state != target_state:
-                    if target_state == "WALK_RIGHT":
-                        self.image = self.my_animation[0]
-                        self.offset_x = -22
-                    elif target_state == "WALK_LEFT":
-                        self.offset_x = 22
-                        self.image = self.my_animation[1]
-            else:
-                self.image = self.my_image_empty
-                self.run = False
-                
+            self.update_walk_fog(target_state)
+
+        elif self.effect_name == "JUMP_FOG":
+            self.update_jump_fog(target_state)
+
+
+    def update_jump_fog(self, target_state):
+
+        if not self.run:
+            self.image = self.my_animation
+            self.run = True
+
+        self.previous_target_state = target_state       
+
+    def update_walk_fog(self, target_state):
+        
+        if target_state[:4] == "WALK":
+            self.run = True
+            if self.previous_target_state != target_state:
+                if target_state == "WALK_RIGHT":
+                    self.image = self.my_animation[0]
+                    self.offset_x = -22
+                elif target_state == "WALK_LEFT":
+                    self.offset_x = 22
+                    self.image = self.my_animation[1]
+        else:
+            self.image = self.my_image_empty
+            self.run = False
+            
         if self.run:
             self.x = self.target.x + self.offset_x
             self.y = self.target.y + self.offset_y  
 
         self.previous_target_state = target_state
-
-            
+        
+        
     def get_empty_image(self):
         
         return pyglet.image.load(constants.PATH_EFFECT + "000" + ".png")
@@ -79,6 +111,9 @@ class Effect_sprite(pyglet.sprite.Sprite):
         
         if state == "WALK_FOG": #OK
             return 0, 0*constants.SPRITE_Y, 12*constants.SPRITE_X, constants.SPRITE_Y, True, 12, 0.05
+
+        if state == "JUMP_FOG": #OK
+            return 0, 3*constants.SPRITE_Y, 7*constants.SPRITE_X, constants.SPRITE_Y, False, 7, 0.03
 
 
     def anti_aliasied_texture(self, img):

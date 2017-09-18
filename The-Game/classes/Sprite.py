@@ -9,14 +9,16 @@ class New_sprite(pyglet.sprite.Sprite):
 
         super(New_sprite, self).__init__(img=img, x=x, y=y, batch=my_batch, group=my_group)
 
-        #global info - - - - - - - - - - - - - - - - -
+        #global info - - - - - - - - - - - - - - - - -      
         self.type_event = False
         self.type_base = False
         self.type_back = False
         self.type_front = False
         self.type_fps = False
         self.type_tile = False
+        self.type_deco = False
         self.type = spr_type
+        
         if spr_type[:5] == "event":
             self.type_event = True
         elif spr_type == "base":
@@ -27,8 +29,10 @@ class New_sprite(pyglet.sprite.Sprite):
             self.type_front = True
         elif spr_type[:3] == "fps":
             self.type_fps = True
-        elif spr_type[:3] == "tile":
+        elif spr_type[:4] == "tile":
             self.type_tile = True
+        elif spr_type[:4] == "deco":
+            self.type_deco = True
         self.z = z
         self.x_origin = x
         self.my_scene = my_scene
@@ -36,6 +40,9 @@ class New_sprite(pyglet.sprite.Sprite):
         self.sprite_list = []
         self.collidable = collidable
         self.rect = [0,0,32,32]
+        #load - - - - - - - - - - - - - - - - - - - -
+        self.my_image_origin = self.image
+        self.my_image_empty = pyglet.image.load(constants.PATH_EFFECT + "000" + ".png")
         #hud - - - - - - - - - - - - - - - - - - - - -
         number_sheet = constants.PATH_HUD + "008" + ".png"
         number_sheet_image = pyglet.image.load(number_sheet)
@@ -79,9 +86,16 @@ class New_sprite(pyglet.sprite.Sprite):
             self.y = 480 - 20
             
 
-    def update(self, sprite_list, dt):
+    def update(self, sprite_list, dt, target_load):
 
         self.sprite_list = sprite_list
+        self.target_load = target_load
+
+        if self.type_tile or self.type_deco:
+            if abs(self.target_load.x - self.x) > constants.SCREEN_X/2 + constants.SPRITE_X:
+                self.visible = False
+            else:
+                self.visible = True
         
         if self.type_event:
             pass

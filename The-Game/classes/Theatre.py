@@ -9,6 +9,18 @@ class Salle_de_theatre(pyglet.window.Window):
     
     def __init__(self):
 
+        print("#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#")
+        print("#         PROJECT SUPER RETRO WORLD by [The Missing Part]         #")
+        print("#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#")
+        print("Hello and welcome to the level selector.")
+        print("Main purpose: stress the hardware for optimisation.")
+        print("")
+
+        scene = ""
+        while scene not in ["hard", "simple"]:
+            scene = input("Please choose your test (hard / simple):")
+
+
         platform = pyglet.window.get_platform()
         display = platform.get_default_display()
         self.screens = display.get_screens()
@@ -30,7 +42,7 @@ class Salle_de_theatre(pyglet.window.Window):
         self.my_fullscreen = False
         self.aspect = [self.width/640.0,self.height/480.0]
         self.dt = 0
-        self.Piece_de_theatre = Piece.Piece_de_theatre(self)
+        self.Piece_de_theatre = Piece.Piece_de_theatre(self, scene)
 
         #gl.glEnable(gl.GL_BLEND)
         #gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
