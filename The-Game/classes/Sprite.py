@@ -17,6 +17,8 @@ class New_sprite(pyglet.sprite.Sprite):
         self.type_fps = False
         self.type_tile = False
         self.type_deco = False
+        self.type_event = False
+        self.type_textbox = False
         self.type = spr_type
         
         if spr_type[:5] == "event":
@@ -33,6 +35,10 @@ class New_sprite(pyglet.sprite.Sprite):
             self.type_tile = True
         elif spr_type[:4] == "deco":
             self.type_deco = True
+        elif spr_type == "textbox":
+            self.type_textbox = True
+            self.activation_textbox = False
+            
         self.z = z
         self.x_origin = x
         self.my_scene = my_scene
@@ -104,13 +110,24 @@ class New_sprite(pyglet.sprite.Sprite):
 
             return
         
-        if self.type_event:
+
+        if self.type_tile:
             pass
+        
+        elif self.type_event:
+            pass
+
         elif self.type_base or self.type_front:
             self.update_base_front()
+            
         elif self.type_back:
             self.update_back()
-        elif self.type_tile:
-            pass
+        
         elif self.type_fps:
             self.update_fps()
+
+        elif self.type_textbox:
+            if self.activation_textbox:
+                self.opacity = 255
+            else:
+                self.opacity = 0

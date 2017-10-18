@@ -37,10 +37,9 @@ class Scene_de_theatre(object):
         # = = = = = = = = = = = = = = = = = = = = = = = =
 
         #object finalisation- - - - - - - - - - - - - - - 
-        #self.my_event.my_player = self.player_sprite
         self.player_sprite.sprite_list = self.sprite_list
         self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
-        #self.my_event.my_sprite_list = self.sprite_list
+        self.player_sprite.textbox = self.textbox_sprite
 
         #info - - - - - - - - - - - - - - - - - - - - - - 
         print("Number of sprites: ", len(self.sprite_list))
@@ -59,6 +58,7 @@ class Scene_de_theatre(object):
         minimap = self.load_tiles()
         self.load_deco(minimap)
         self.load_events(minimap)
+        self.load_textbox()
         self.load_player()
         #self.load_frontground()
         self.load_HUD()
@@ -301,7 +301,21 @@ class Scene_de_theatre(object):
 
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
-                    
+
+
+    def load_textbox(self):
+        
+        my_scene = self.my_scene
+        textbox_batch = self.batch
+        
+        textbox = constants.PATH_TEXTBOX + "000.png"
+        textbox_z = pyglet.graphics.OrderedGroup(900)
+        textbox_image = pyglet.image.load(textbox)
+        self.anti_aliasied_texture(textbox_image)
+        self.textbox_sprite = Sprite.New_sprite(textbox_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = textbox_batch, my_group = textbox_z, spr_type = "textbox", collidable = False, my_scene = my_scene)
+        self.sprite_list.append(self.textbox_sprite)
+
+             
     def load_player(self):
         
         my_scene = self.my_scene

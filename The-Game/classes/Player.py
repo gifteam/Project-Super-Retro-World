@@ -17,6 +17,8 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.event_list = my_event_list
         self.event_action = Event_action.Event_action()
         self.check_event = True
+        self.textbox = None
+        self.my_batch = my_batch
         #scene - - - - - - - - - - - - - - - - - - - -
         self.scene_start = 0
         self.scene_start_step_1 = 80
@@ -221,7 +223,7 @@ class Player_sprite(pyglet.sprite.Sprite):
                     if (event_rect[0] + event_rect[2]) > (self.rect[0]) and (event_rect[0]) < (self.rect[0] + self.rect[2]):
                         if self.event_list[event_id][0][9] == 0:
                             #action when touch
-                            self.event_action.action(self.my_scene, self.event_list[event_id][0][0],self.event_list[event_id][1], self)
+                            self.event_action.action(self.my_scene, self.event_list[event_id][0][0],self.event_list[event_id][1], self.textbox, self)
                         else:
                             #need key (ENTER for example) to action
                             pass

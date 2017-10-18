@@ -84,6 +84,7 @@ PATH_EFFECT = "src\\visual_src\effect\\"
 PATH_HUD = "src\\visual_src\interface\\"
 PATH_LABEL = "src\\visual_src\label\\"
 PATH_EVENT = "src\\visual_src\event\\"
+PATH_TEXTBOX = "src\\visual_src\\textbox\\"
     #game title
 GAME_TITLE = "The game"
 

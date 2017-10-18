@@ -28,7 +28,8 @@ class Event(object):
             
         if my_scene == "simple":
             event_info.append([1, "005", 1, 99, False, 0, False, 0, 0, 0])
-
+            event_info.append([4, "005", 1, 99, False, 0, False, 0, 0, 0])
+            
         return event_info
 
     def action(self, event_id):
