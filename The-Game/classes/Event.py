@@ -1,62 +1,38 @@
-#Import basic librairies
-
 #Import personal packages
 from constants import constants
 
+#event_info structure:
+#[ID, A, B, C, D, E, F, G, H, I]
+# ID = event ID from minimap color (RGB color value divide by 100 = binary value)
+# A = filename "xxx" ( x = [0-9])
+# B = 1 if top_left anchor_y, 0 if bottom left anchor_y 
+# C = z
+# D = True if animated, False overwise
+# E = animated speed if animated
+# F = True if collidable, False overwise
+# G = -1, 0 or 1 = offset in X mesh
+# H = -1, 0 or 1 = offset in Y mesh
+# I = 0 (touch activation), 1 (click activation)
+
 class Event(object):
 
-    def __init__(self, my_theatre, my_piece, my_scene):
+    def __init__(self):
+        pass
         
-        self.my_theatre = my_theatre
-        self.my_piece = my_piece
-        self.my_scene = my_scene
-        self.my_player = None
-        self.my_sprite_list = []
+    def get_event(self, my_scene):
         
+        event_info = []
+        
+        if my_scene == "hard":
+            pass
+            
+        if my_scene == "simple":
+            event_info.append([1, "005", 1, 99, False, 0, False, 0, 0, 0])
+
+        return event_info
 
     def action(self, event_id):
-
-        if event_id == -1:
-            print("DEAD")
-            self.my_scene.new_name = "LEVEL_SELECT"
-        
-        if self.my_scene.name == "LEVEL_SELECT":
-            self.LEVEL_SELECT_action(event_id)
-            
-        if self.my_scene.name == "DESERT":
-            self.DESERT_action(event_id)
-
-        if self.my_scene.name == "TEMPLE":
-            self.TEMPLE_action(event_id)
-
-        if self.my_scene.name == "WATER":
-            self.WATER_action(event_id)
+        pass
 
             
-    def LEVEL_SELECT_action(self, event_id):
-        
-        if event_id == 0:
-            self.my_scene.new_name = "DESERT"
-            
-        elif event_id == 1:
-            self.my_scene.new_name = "TEMPLE"
-            
-        elif event_id == 2:
-            self.my_scene.new_name = "WATER"
 
-    def DESERT_action(self, event_id):
-        
-        if event_id == 0:
-            self.my_scene.new_name = "LEVEL_SELECT"
-            
-
-    def TEMPLE_action(self, event_id):
-        
-        if event_id == 0:
-            self.my_scene.new_name = "LEVEL_SELECT"
-            
-
-    def WATER_action(self, event_id):
-        
-        if event_id == 0:
-            self.my_scene.new_name = "LEVEL_SELECT"

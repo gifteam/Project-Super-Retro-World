@@ -122,7 +122,7 @@ class Ball_sprite(pyglet.sprite.Sprite):
         self.x = target.x+16
         self.y = target.y+16
         self.rect[0] = self.x + 3
-        self.rect[1] = self.y + 3
+        self.rect[1] = self.y - 3
         self.image = self.my_image_list[0]
         self.init_speed = target.moving_x_pattern[int(target.duration_moving)]
         

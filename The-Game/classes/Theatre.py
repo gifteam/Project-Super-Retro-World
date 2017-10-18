@@ -32,9 +32,9 @@ class Salle_de_theatre(pyglet.window.Window):
         super().__init__(constants.SCREEN_X,
                          constants.SCREEN_Y,
                          caption=constants.GAME_TITLE,
-                         vsync = True,
+                         vsync = False,
                          fullscreen = False,
-                         resizable = True)
+                         resizable = False)
                          #config=config,
                          #context=context)
                          #screen = screens[1])

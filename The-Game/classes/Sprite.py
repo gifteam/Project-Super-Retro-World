@@ -5,7 +5,7 @@ from constants import constants
 
 class New_sprite(pyglet.sprite.Sprite):
 
-    def __init__(self, img, x, y, z, my_batch, my_group, spr_type, collidable, my_scene):
+    def __init__(self, img, x, y, z, l, w, my_batch, my_group, spr_type, collidable, my_scene):
 
         super(New_sprite, self).__init__(img=img, x=x, y=y, batch=my_batch, group=my_group)
 
@@ -38,8 +38,9 @@ class New_sprite(pyglet.sprite.Sprite):
         self.my_scene = my_scene
         #collisions - - - - - - - - - - - - - - - - -
         self.sprite_list = []
+        self.player_sprite = None
         self.collidable = collidable
-        self.rect = [0,0,32,32]
+        self.rect = [x, y, l, w]
         #load - - - - - - - - - - - - - - - - - - - -
         self.my_image_origin = self.image
         self.my_image_empty = pyglet.image.load(constants.PATH_EFFECT + "000" + ".png")
@@ -51,17 +52,20 @@ class New_sprite(pyglet.sprite.Sprite):
         self.fps_refresh_rate = 10
         # - - - - - - - - - - - - - - - - - - - - - - 
 
+    def get_rect(self):
+        return self.rect
+
     def update_base_front(self):
 
         if self.my_scene != "LEVEL_SELECT":
-            self.x = int(self.sprite_list[0].x - constants.SCREEN_X/2)
+            self.x = int(self.player_sprite.x - constants.SCREEN_X/2)
             self.y = 0
 
 
     def update_back(self):
 
         if self.my_scene != "LEVEL_SELECT":
-            self.x = int(self.x_origin + self.sprite_list[0].x - constants.SCREEN_X/2 - self.sprite_list[0].x*self.z/10)
+            self.x = int(self.x_origin + self.player_sprite.x - constants.SCREEN_X/2 - self.player_sprite.x*self.z/10)
             self.y = 0
 
 
@@ -82,20 +86,23 @@ class New_sprite(pyglet.sprite.Sprite):
             self.fps_refresh += 1
 
         if self.my_scene != "LEVEL_SELECT": 
-            self.x = int(self.sprite_list[0].x - constants.SCREEN_X/2) + ID * 7 + 10
+            self.x = int(self.player_sprite.x - constants.SCREEN_X/2) + ID * 7 + 10
             self.y = 480 - 20
             
 
     def update(self, sprite_list, dt, target_load):
 
-        self.sprite_list = sprite_list
-        self.target_load = target_load
+        self.player_sprite = target_load
 
+        #determine if the sprite must be drawn or not
         if self.type_tile or self.type_deco:
-            if abs(self.target_load.x - self.x) > constants.SCREEN_X/2 + constants.SPRITE_X:
+            
+            self.visible = True
+            if (self.rect[0] + self.rect[2] < self.player_sprite.x - constants.SCREEN_X/2) or (
+                self.rect[0] > self.player_sprite.x + constants.SCREEN_X/2):
                 self.visible = False
-            else:
-                self.visible = True
+
+            return
         
         if self.type_event:
             pass
