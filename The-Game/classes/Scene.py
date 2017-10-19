@@ -219,15 +219,15 @@ class Scene_de_theatre(object):
                         speed = deco_sprite_info[5]
                         loop = True
                         deco_image_sequence = pyglet.image.ImageGrid(deco_image, 1, nb_frame)
-                        offset = x % nb_frame
-                        sequence_tmp = []
-                        for img in deco_image_sequence:
-                            sequence_tmp.append(deco_image_sequence[offset])
-                            offset += 1
-                            if offset >= nb_frame: offset = 0
-                            self.anti_aliasied_texture(img)
-
-                        deco_image_sequence = sequence_tmp   
+##                        offset = x % nb_frame
+##                        sequence_tmp = []
+##                        for img in deco_image_sequence:
+##                            sequence_tmp.append(deco_image_sequence[offset])
+##                            offset += 1
+##                            if offset >= nb_frame: offset = 0
+##                            self.anti_aliasied_texture(img)
+##
+##                        deco_image_sequence = sequence_tmp   
                         deco_image = pyglet.image.Animation.from_image_sequence(deco_image_sequence, speed, loop)
                     else:
                         self.anti_aliasied_texture(deco_image)

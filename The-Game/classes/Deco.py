@@ -32,6 +32,6 @@ class Deco(object):
         if my_scene == "simple":
             #deco_info.append([1, "005", 1, 99, True, 0.05, False, 0, 1])
             deco_info.append([2, "005", 1, 600, True, 0.05, False, 0, 1])
-            deco_info.append([3, "011", 0, 200, True, 0.05, False, 0, 0])
+            deco_info.append([3, "012", 0, 200, True, 0.1, False, 0, 0])
 
         return deco_info
