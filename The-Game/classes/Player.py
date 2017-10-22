@@ -4,7 +4,7 @@ from pyglet import window
 from pyglet.gl import *
 #Import personal packages
 from constants import constants
-from classes import Event_action, Ball, Effect
+from classes import Event, Ball, Effect
 
 class Player_sprite(pyglet.sprite.Sprite):
 
@@ -15,7 +15,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.my_scene = my_scene
         self.type = spr_type
         self.event_list = my_event_list
-        self.event_action = Event_action.Event_action()
+        self.event_action = None
         self.check_event = True
         self.textbox = None
         self.my_batch = my_batch

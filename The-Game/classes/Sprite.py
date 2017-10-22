@@ -23,6 +23,8 @@ class New_sprite(pyglet.sprite.Sprite):
         
         if spr_type[:5] == "event":
             self.type_event = True
+            self.state = "IDLE"
+            self.previous_state = self.state
         elif spr_type == "base":
             self.type_base = True
         elif spr_type == "back":
@@ -37,7 +39,7 @@ class New_sprite(pyglet.sprite.Sprite):
             self.type_deco = True
         elif spr_type == "textbox":
             self.type_textbox = True
-            self.activation_textbox = False
+            self.timeout_textbox = 0
             
         self.z = z
         self.x_origin = x
@@ -102,32 +104,29 @@ class New_sprite(pyglet.sprite.Sprite):
 
         #determine if the sprite must be drawn or not
         if self.type_tile or self.type_deco:
-            
             self.visible = True
             if (self.rect[0] + self.rect[2] < self.player_sprite.x - constants.SCREEN_X/2) or (
                 self.rect[0] > self.player_sprite.x + constants.SCREEN_X/2):
                 self.visible = False
-
             return
         
-
         if self.type_tile:
-            pass
+            return
         
-        elif self.type_event:
-            pass
+        if self.type_event:
+            return
 
-        elif self.type_base or self.type_front:
+        if self.type_base or self.type_front:
             self.update_base_front()
+            return
             
-        elif self.type_back:
+        if self.type_back:
             self.update_back()
+            return
         
-        elif self.type_fps:
+        if self.type_fps:
             self.update_fps()
+            return
 
-        elif self.type_textbox:
-            if self.activation_textbox:
-                self.opacity = 255
-            else:
-                self.opacity = 0
+        if self.type_textbox:
+            return

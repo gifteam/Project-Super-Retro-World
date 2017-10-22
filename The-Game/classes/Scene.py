@@ -23,7 +23,7 @@ class Scene_de_theatre(object):
         self.my_piece = my_piece
         self.my_scene = my_scene
         #event and batch- - - - - - - - - - - - - - - - - 
-        #self.my_event = Event.Event()
+        self.my_event = Event.Event(self.name)
         self.event_list = []
         self.batch = pyglet.graphics.Batch()
         #sprite lists - - - - - - - - - - - - - - - - - - 
@@ -39,6 +39,7 @@ class Scene_de_theatre(object):
         #object finalisation- - - - - - - - - - - - - - - 
         self.player_sprite.sprite_list = self.sprite_list
         self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
+        self.player_sprite.event_action = self.my_event
         self.player_sprite.textbox = self.textbox_sprite
 
         #info - - - - - - - - - - - - - - - - - - - - - - 
@@ -218,16 +219,7 @@ class Scene_de_theatre(object):
                         nb_frame = int(deco_image.width/constants.SPRITE_X)
                         speed = deco_sprite_info[5]
                         loop = True
-                        deco_image_sequence = pyglet.image.ImageGrid(deco_image, 1, nb_frame)
-##                        offset = x % nb_frame
-##                        sequence_tmp = []
-##                        for img in deco_image_sequence:
-##                            sequence_tmp.append(deco_image_sequence[offset])
-##                            offset += 1
-##                            if offset >= nb_frame: offset = 0
-##                            self.anti_aliasied_texture(img)
-##
-##                        deco_image_sequence = sequence_tmp   
+                        deco_image_sequence = pyglet.image.ImageGrid(deco_image, 1, nb_frame)  
                         deco_image = pyglet.image.Animation.from_image_sequence(deco_image_sequence, speed, loop)
                     else:
                         self.anti_aliasied_texture(deco_image)
@@ -240,7 +232,7 @@ class Scene_de_theatre(object):
 
         my_scene = self.my_scene
 
-        event_object = Event.Event()
+        event_object = self.my_event
         event_info = event_object.get_event(my_scene)
 
         event_sprite_info = []
@@ -257,48 +249,18 @@ class Scene_de_theatre(object):
                         ID = event_id
 
                 if is_event: #event ID  (001b to 111b)
+                    
                     event_sprite_info = event_info[ID]
                     
                     event = constants.PATH_EVENT + event_sprite_info[1] + ".png"
                     my_x = (x + event_sprite_info[7]) * constants.SPRITE_X
                     my_y = (y + event_sprite_info[8]) * constants.SPRITE_Y
-                    my_y_original = my_y
                     my_z = event_sprite_info[3]
                     event_z = pyglet.graphics.OrderedGroup(my_z)
                     event_collidable = event_sprite_info[6]
-                    event_image = pyglet.image.load(event)
-                    self.anti_aliasied_texture(event_image)
+                    event_image = event_sprite_info[11][event_sprite_info[10]]
                     
-                    if event_sprite_info[2] > 0:
-                        my_y += (-1) * event_sprite_info[2] * event_image.height + constants.SPRITE_Y
-
-                    if my_y < 0:
-                        y_cut = 0
-                        x_cut = 0
-                        h_cut = my_y_original + constants.SPRITE_X
-                        w_cut = event_image.width
-                        event_image = event_image.get_region(x_cut, y_cut, w_cut, h_cut)
-                        my_y = 0
-                                                
-                    if event_sprite_info[4]: #animated ?
-                        nb_frame = int(event_image.width/constants.SPRITE_X)
-                        speed = event_sprite_info[5]
-                        loop = True
-                        event_image_sequence = pyglet.image.ImageGrid(event_image, 1, nb_frame)
-                        offset = x % nb_frame
-                        sequence_tmp = []
-                        for img in event_image_sequence:
-                            sequence_tmp.append(event_image_sequence[offset])
-                            offset += 1
-                            if offset >= nb_frame: offset = 0
-                            self.anti_aliasied_texture(img)
-
-                        event_image_sequence = sequence_tmp   
-                        event_image = pyglet.image.Animation.from_image_sequence(event_image_sequence, speed, loop)
-                    else:
-                        self.anti_aliasied_texture(event_image)
                     event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable, my_scene = my_scene)
-
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
 
@@ -313,6 +275,7 @@ class Scene_de_theatre(object):
         textbox_image = pyglet.image.load(textbox)
         self.anti_aliasied_texture(textbox_image)
         self.textbox_sprite = Sprite.New_sprite(textbox_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = textbox_batch, my_group = textbox_z, spr_type = "textbox", collidable = False, my_scene = my_scene)
+        self.textbox_sprite.opacity = 0
         self.sprite_list.append(self.textbox_sprite)
 
              
