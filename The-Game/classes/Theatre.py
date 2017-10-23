@@ -12,13 +12,12 @@ class Salle_de_theatre(pyglet.window.Window):
         print("#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#")
         print("#         PROJECT SUPER RETRO WORLD by [The Missing Part]         #")
         print("#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#")
-        print("Hello and welcome to the level selector.")
-        print("Main purpose: stress the hardware for optimisation.")
+        print("Hello and welcome to the event test")
+        print("Main purpose: check animation and event states")
         print("")
 
-        scene = ""
-        while scene not in ["hard", "simple"]:
-            scene = input("Please choose your test (hard / simple):")
+        scene = "simple"
+
 
 
         platform = pyglet.window.get_platform()

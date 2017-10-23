@@ -39,8 +39,9 @@ class Scene_de_theatre(object):
         #object finalisation- - - - - - - - - - - - - - - 
         self.player_sprite.sprite_list = self.sprite_list
         self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
-        self.player_sprite.event_action = self.my_event
-        self.player_sprite.textbox = self.textbox_sprite
+        self.my_event.player_sprite = self.player_sprite
+        self.my_event.event_list = self.event_list
+        self.my_event.textbox_sprite = self.textbox_sprite
 
         #info - - - - - - - - - - - - - - - - - - - - - - 
         print("Number of sprites: ", len(self.sprite_list))
@@ -252,14 +253,13 @@ class Scene_de_theatre(object):
                     
                     event_sprite_info = event_info[ID]
                     
-                    event = constants.PATH_EVENT + event_sprite_info[1] + ".png"
                     my_x = (x + event_sprite_info[7]) * constants.SPRITE_X
                     my_y = (y + event_sprite_info[8]) * constants.SPRITE_Y
                     my_z = event_sprite_info[3]
                     event_z = pyglet.graphics.OrderedGroup(my_z)
                     event_collidable = event_sprite_info[6]
                     event_image = event_sprite_info[11][event_sprite_info[10]]
-                    
+                                        
                     event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable, my_scene = my_scene)
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
@@ -362,6 +362,8 @@ class Scene_de_theatre(object):
                         self.sprite_list_collidable.append(sprite)
 
             self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
+            
+            self.my_event.update(self.name)
             
             self.update_camera()
         

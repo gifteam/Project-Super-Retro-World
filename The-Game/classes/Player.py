@@ -14,10 +14,6 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.dt = 0
         self.my_scene = my_scene
         self.type = spr_type
-        self.event_list = my_event_list
-        self.event_action = None
-        self.check_event = True
-        self.textbox = None
         self.my_batch = my_batch
         #scene - - - - - - - - - - - - - - - - - - - -
         self.scene_start = 0
@@ -183,7 +179,6 @@ class Player_sprite(pyglet.sprite.Sprite):
 
         self.update_player_gravity()
         self.update_player_movement()
-        self.update_event()
         self.update_death()
         self.update_ball()
         self.update_anim_sequence()
@@ -211,22 +206,6 @@ class Player_sprite(pyglet.sprite.Sprite):
             self.reset_position()
             #self.my_event.action(-1)
             
-         
-    def update_event(self):
-
-        self.check_event = not self.check_event
-
-        if self.check_event:
-            for event_id in range(len(self.event_list)):
-                event_rect = self.event_list[event_id][1].get_rect()
-                if (event_rect[1] + event_rect[3]) > (self.rect[1]) and (event_rect[1]) < (self.rect[1] + self.rect[3]):
-                    if (event_rect[0] + event_rect[2]) > (self.rect[0]) and (event_rect[0]) < (self.rect[0] + self.rect[2]):
-                        if self.event_list[event_id][0][9] == 0:
-                            #action when touch
-                            self.event_action.action(self.my_scene, self.event_list[event_id][0][0],self.event_list[event_id][1], self.textbox, self)
-                        else:
-                            #need key (ENTER for example) to action
-                            pass
           
     def update_anim_sequence(self):
     
