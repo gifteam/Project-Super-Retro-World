@@ -20,6 +20,10 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.scene_start_step_1 = 80
         self.scene_start_step_2 = 140
         self.scene_start_step_3 = 220
+        #colorfilter - - - - - - - - - - - - - - - - -
+        self.go_colorfilter_red = False
+        self.go_colorfilter_green = False
+        self.go_colorfilter_blue = False
         #animation - - - - - - - - - - - - - - - - - -
         self.anim_state = "IDLE_RIGHT"
         self.old_anim_state = self.anim_state
@@ -465,10 +469,25 @@ class Player_sprite(pyglet.sprite.Sprite):
             self.moving_right = True
         if key == window.key.F5:
             self.reset_position()
+            
         if key == window.key.SPACE:
             self.want_to_jump = True
         if key == window.key.NUM_0:
             self.want_to_ball = True
+            
+        if key == window.key.NUM_1:
+            self.go_colorfilter_red = not self.go_colorfilter_red
+            self.go_colorfilter_green = False
+            self.go_colorfilter_blue = False
+        if key == window.key.NUM_2:
+            self.go_colorfilter_red = False
+            self.go_colorfilter_green = not self.go_colorfilter_green
+            self.go_colorfilter_blue = False
+        if key == window.key.NUM_3:
+            self.go_colorfilter_red = False
+            self.go_colorfilter_green = False
+            self.go_colorfilter_blue = not self.go_colorfilter_blue
+            
         if key == window.key.ENTER or key == window.key.RETURN:
             self.want_to_action = True
 

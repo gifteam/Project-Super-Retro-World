@@ -12,9 +12,9 @@ from constants import constants
 # 3 = z
 # 4 = True if animated, False overwise
 # 5 = animated speed if animated
-# 6 = True if collidable, False overwise
-# 7 = -1, 0 or 1 = offset in X mesh
-# 8 = -1, 0 or 1 = offset in Y mesh
+# [6.1 ; [6.2]] = 6.1: True if collidable, False overwise ; 6.2 (if collidable) : ["..." , "..."] side activation event: "LEFT", "RIGHT", "TOP", "BOTOM"
+# 7 = -x, 0 or x = offset in X mesh (step 0.25)
+# 8 = -x, 0 or x = offset in Y mesh (step 0.25)
 # 9 = 0 (touch activation), 1 (click activation)
 # 10 = IDLE/ACTIVE/SLEEP, event state
 # 11 = array of anim sprite state
@@ -49,7 +49,7 @@ class Event(object):
         if self.my_scene == "simple":
             my_ID = 0
             all_states = ["IDLE", "ACTIVE", "SLEEP"]
-            event_info_tmp = [1, "004", 1, 300, False, 0, False, 0, 0, 0, "IDLE", None, True, True]
+            event_info_tmp = [1, "004", 1, 300, True, 0.1, [True,["TOP"]], 0, 0, 0, "IDLE", None, True, True]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
@@ -58,14 +58,43 @@ class Event(object):
             self.link_id_pos[1] = my_ID
 
             my_ID += 1
-            event_info_tmp = [4, "006", 0, 300, True, 0.1, False, 0, 0, 0, "IDLE", None, True, False]
+            event_info_tmp = [4, "006", 0, 300, True, 0.1, [False, None], 0, 0, 0, "IDLE", None, True, False]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
             event_info_tmp[11] = event_sequence
             event_info.append(event_info_tmp)
             self.link_id_pos[4] = my_ID
-            
+
+            #colorfilter event
+
+            my_ID += 1 #BLUE ID = 2
+            event_info_tmp = [2, "005", 0, 300, False, 0, [True, []], 0, 0, 0, "IDLE", None, False, False]
+            event_sequence = {}
+            for id_state in range(len(all_states)):
+                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
+            event_info_tmp[11] = event_sequence
+            event_info.append(event_info_tmp)
+            self.link_id_pos[2] = my_ID
+
+            my_ID += 1 #GREEN ID = 6
+            event_info_tmp = [6, "005", 0, 300, False, 0, [True, []], 0, 0, 0, "IDLE", None, False, False]
+            event_sequence = {}
+            for id_state in range(len(all_states)):
+                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
+            event_info_tmp[11] = event_sequence
+            event_info.append(event_info_tmp)
+            self.link_id_pos[6] = my_ID
+
+            my_ID += 1 #RED ID = 18
+            event_info_tmp = [18, "005", 0, 300, False, 0, [True, []], 0, 0, 0, "IDLE", None, False, False]
+            event_sequence = {}
+            for id_state in range(len(all_states)):
+                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
+            event_info_tmp[11] = event_sequence
+            event_info.append(event_info_tmp)
+            self.link_id_pos[18] = my_ID
+
         return event_info
 
 
@@ -77,18 +106,20 @@ class Event(object):
 
     def action_level_simple(self):
         
-        if self.event_id == 1 and not self.player_sprite.new_jump:
-            #ACTION
-            if self.event_info[self.link_id_pos[self.event_id]][10] == "IDLE":
-                self.player_sprite.want_to_jump = True
-            
-        if self.event_id == 4:
-            self.textbox_sprite.x = self.event_sprite.x + 16 - self.textbox_sprite.image.width/2
-            self.textbox_sprite.y = self.event_sprite.y + self.textbox_sprite.image.height
+        if (self.event_id == 1 or self.event_id == 5 or self.event_id == 6 or self.event_id == 7) and not self.player_sprite.new_jump:
             if self.event_info[self.link_id_pos[self.event_id]][10] == "IDLE":
                 self.event_info[self.link_id_pos[self.event_id]][10] = "ACTIVE"
                 self.event_sprite.image = self.event_info[self.link_id_pos[self.event_id]][11]["ACTIVE"]
-                #ACTION
+                #ACTION = = = = = = = = = = = = = = = = = =
+                self.player_sprite.want_to_jump = True
+            
+        if self.event_id == 4:
+            if self.event_info[self.link_id_pos[self.event_id]][10] == "IDLE":
+                self.event_info[self.link_id_pos[self.event_id]][10] = "ACTIVE"
+                self.event_sprite.image = self.event_info[self.link_id_pos[self.event_id]][11]["ACTIVE"]
+                #ACTION = = = = = = = = = = = = = = = = = =
+                self.textbox_sprite.x = self.event_sprite.x + 16 - self.textbox_sprite.image.width/2
+                self.textbox_sprite.y = self.event_sprite.y + self.textbox_sprite.image.height
                 self.textbox_sprite.opacity = 255
 
 
@@ -103,6 +134,34 @@ class Event(object):
                     self.event_info[self.link_id_pos[self.event_id]][10] = "SLEEP"
                     self.event_sprite.image = self.event_info[self.link_id_pos[self.event_id]][11]["SLEEP"]
                     
+
+    def check_colorfilter_event(self):
+
+        self.event_sprite.collidable = False
+        self.event_sprite.opacity = 0
+        self.event_sprite.color = (0,0,0)
+
+        if (self.event_info[self.link_id_pos[self.event_id]][0] == 2 and
+            self.player_sprite.go_colorfilter_blue): #BLUE ID = 2
+
+            self.event_sprite.collidable = True
+            self.event_sprite.opacity = 255
+            self.event_sprite.color = (0,0,255)
+
+        elif (self.event_info[self.link_id_pos[self.event_id]][0] == 6 and
+              self.player_sprite.go_colorfilter_green): #GREEN ID = 6
+
+            self.event_sprite.collidable = True
+            self.event_sprite.opacity = 255
+            self.event_sprite.color = (0,255,0)
+            
+        elif (self.event_info[self.link_id_pos[self.event_id]][0] == 18 and
+              self.player_sprite.go_colorfilter_red): #RED ID = 18
+
+            self.event_sprite.collidable = True
+            self.event_sprite.opacity = 255
+            self.event_sprite.color = (255,0,0)
+
                     
     def update(self, my_scene):
         
@@ -115,9 +174,11 @@ class Event(object):
                 self.event_id = self.event_list[event_id][0][0]
                 self.event_sprite = self.event_list[event_id][1]
                 self.check_active_events()
+                self.check_colorfilter_event()
                 event_rect = self.event_list[event_id][1].get_rect()
-                if (event_rect[1] + event_rect[3]) > (self.player_sprite.rect[1]) and (event_rect[1]) < (self.player_sprite.rect[1] + self.player_sprite.rect[3]):
-                    if (event_rect[0] + event_rect[2]) > (self.player_sprite.rect[0]) and (event_rect[0]) < (self.player_sprite.rect[0] + self.player_sprite.rect[2]):
+                collision = self.event_list[event_id][0][6][0]
+                side_collision = self.event_list[event_id][0][6][1]
+                if self.activate_event_now(event_rect, self.player_sprite.rect, collision, side_collision):
                         if self.event_list[event_id][0][9] == 0:
                             #ACTION touch
                             self.action()
@@ -125,7 +186,43 @@ class Event(object):
                             #ACTION key
                             pass
 
-                
+
+    def activate_event_now(self, event_rect, target_rect, collision, side_collision):
+
+        if not collision: #non collidable event
+            if (event_rect[1] + event_rect[3]) >= (target_rect[1]) and (event_rect[1]) <= (target_rect[1] + target_rect[3]):
+                if (event_rect[0] + event_rect[2]) >= (target_rect[0]) and (event_rect[0]) <= (target_rect[0] + target_rect[2]):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            result_bool = False
+            for side in side_collision:
+                if side == "LEFT":
+                    if ((target_rect[0] == event_rect[0] - target_rect[2] - 1) and
+                        (target_rect[1] > event_rect[1] - target_rect[3]) and
+                        (target_rect[1] < event_rect[1] + event_rect[3])):
+                        result_bool = True
+                elif side == "RIGHT":
+                    if ((target_rect[0] == event_rect[0] + event_rect[2] + 1) and
+                        (target_rect[1] > event_rect[1] - target_rect[3]) and
+                        (target_rect[1] < event_rect[1] + event_rect[3])):
+                        result_bool = True
+                elif side == "TOP":
+                    if ((target_rect[1] == event_rect[1] + event_rect[3] + 1) and
+                        (target_rect[0] > event_rect[0] - target_rect[2]) and
+                        (target_rect[0] < event_rect[0] + event_rect[2])):
+                        result_bool = True
+                elif side == "BOTTOM":
+                    if ((target_rect[1] == event_rect[1] - target_rect[3] - 1) and
+                        (target_rect[0] > event_rect[0] - target_rect[2]) and
+                        (target_rect[0] < event_rect[0] + event_rect[2])):
+                        result_bool = True
+            return result_bool
+
+       
     def get_new_sequence(self, event_info_tmp, state):
         
         filename = event_info_tmp[1]

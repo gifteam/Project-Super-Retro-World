@@ -19,6 +19,7 @@ class New_sprite(pyglet.sprite.Sprite):
         self.type_deco = False
         self.type_event = False
         self.type_textbox = False
+        self.type_colorfilter = False
         self.type = spr_type
         
         if spr_type[:5] == "event":
@@ -40,6 +41,8 @@ class New_sprite(pyglet.sprite.Sprite):
         elif spr_type == "textbox":
             self.type_textbox = True
             self.timeout_textbox = 0
+        elif spr_type == "colorfilter":
+            self.type_colorfilter = True
             
         self.z = z
         self.x_origin = x
@@ -98,6 +101,25 @@ class New_sprite(pyglet.sprite.Sprite):
             self.y = 480 - 20
             
 
+    def update_colorfilter(self, target_load):
+
+        self.x = int(self.player_sprite.x - constants.SCREEN_X/2)
+        self.y = 0
+
+        if target_load.go_colorfilter_red:
+            self.opacity = 40
+            self.color = (255, 0, 0)
+        elif target_load.go_colorfilter_green:
+            self.opacity = 40
+            self.color = (0, 255, 0)  
+        elif target_load.go_colorfilter_blue:
+            self.opacity = 40
+            self.color = (0, 0, 255)
+        else:
+            self.opacity = 0
+            self.color = (0, 0, 0)
+            
+
     def update(self, sprite_list, dt, target_load):
 
         self.player_sprite = target_load
@@ -119,7 +141,11 @@ class New_sprite(pyglet.sprite.Sprite):
         if self.type_base or self.type_front:
             self.update_base_front()
             return
-            
+        
+        if self.type_colorfilter:
+            self.update_colorfilter(target_load)
+            return
+        
         if self.type_back:
             self.update_back()
             return

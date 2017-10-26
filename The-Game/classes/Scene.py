@@ -61,6 +61,7 @@ class Scene_de_theatre(object):
         self.load_deco(minimap)
         self.load_events(minimap)
         self.load_textbox()
+        self.load_colorfilter()
         self.load_player()
         #self.load_frontground()
         self.load_HUD()
@@ -257,7 +258,7 @@ class Scene_de_theatre(object):
                     my_y = (y + event_sprite_info[8]) * constants.SPRITE_Y
                     my_z = event_sprite_info[3]
                     event_z = pyglet.graphics.OrderedGroup(my_z)
-                    event_collidable = event_sprite_info[6]
+                    event_collidable = event_sprite_info[6][0]
                     event_image = event_sprite_info[11][event_sprite_info[10]]
                                         
                     event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable, my_scene = my_scene)
@@ -277,6 +278,21 @@ class Scene_de_theatre(object):
         self.textbox_sprite = Sprite.New_sprite(textbox_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = textbox_batch, my_group = textbox_z, spr_type = "textbox", collidable = False, my_scene = my_scene)
         self.textbox_sprite.opacity = 0
         self.sprite_list.append(self.textbox_sprite)
+
+
+    def load_colorfilter(self):
+
+        my_scene = self.my_scene
+        colorfilter_batch = self.batch
+        
+        colorfilter = constants.PATH_FRONT + "004.png"
+        colorfilter_z = pyglet.graphics.OrderedGroup(901)
+        colorfilter_image = pyglet.image.load(colorfilter)
+        self.anti_aliasied_texture(colorfilter_image)
+        self.colorfilter_sprite = Sprite.New_sprite(colorfilter_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = colorfilter_batch, my_group = colorfilter_z, spr_type = "colorfilter", collidable = False, my_scene = my_scene)
+        self.colorfilter_sprite.opacity = 0
+        self.colorfilter_sprite.color = (0,0,0)
+        self.sprite_list.append(self.colorfilter_sprite)
 
              
     def load_player(self):
