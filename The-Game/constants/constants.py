@@ -29,9 +29,9 @@ WAKE_UP_STYLE = {}
 
     #Level select style
 style = "simple"
-MAP_STYLE[style] = "002"
-BASE_BACK_STYLE[style] = "001"
-BACK_STYLE[style] = []
+MAP_STYLE[style] = "006"
+BASE_BACK_STYLE[style] = "forest_017"
+BACK_STYLE[style] = ["forest_016","forest_015","forest_014"]
 FRONT_STYLE[style] = "001"
 TILE_STYLE[style] = "003"
 ELEMENT_STYLE[style] = "001"
