@@ -69,7 +69,7 @@ class Event(object):
             #colorfilter event
 
             my_ID += 1 #BLUE ID = 2
-            event_info_tmp = [2, "005", 0, 300, False, 0, [True, []], 0, 0, 0, "IDLE", None, False, False]
+            event_info_tmp = [2, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
@@ -78,7 +78,7 @@ class Event(object):
             self.link_id_pos[2] = my_ID
 
             my_ID += 1 #GREEN ID = 6
-            event_info_tmp = [6, "005", 0, 300, False, 0, [True, []], 0, 0, 0, "IDLE", None, False, False]
+            event_info_tmp = [6, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
@@ -87,7 +87,7 @@ class Event(object):
             self.link_id_pos[6] = my_ID
 
             my_ID += 1 #RED ID = 18
-            event_info_tmp = [18, "005", 0, 300, False, 0, [True, []], 0, 0, 0, "IDLE", None, False, False]
+            event_info_tmp = [18, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
@@ -106,7 +106,7 @@ class Event(object):
 
     def action_level_simple(self):
         
-        if (self.event_id == 1 or self.event_id == 5 or self.event_id == 6 or self.event_id == 7) and not self.player_sprite.new_jump:
+        if self.event_id == 1 and not self.player_sprite.new_jump:
             if self.event_info[self.link_id_pos[self.event_id]][10] == "IDLE":
                 self.event_info[self.link_id_pos[self.event_id]][10] = "ACTIVE"
                 self.event_sprite.image = self.event_info[self.link_id_pos[self.event_id]][11]["ACTIVE"]
@@ -122,6 +122,10 @@ class Event(object):
                 self.textbox_sprite.y = self.event_sprite.y + self.textbox_sprite.image.height
                 self.textbox_sprite.opacity = 255
 
+        # colorfilter event action
+        if (self.event_id == 2 or self.event_id == 6 or self.event_id == 18) and self.event_sprite.collidable:
+            self.event_sprite.opacity = 255
+            
 
     def check_active_events(self):
 
@@ -145,21 +149,21 @@ class Event(object):
             self.player_sprite.go_colorfilter_blue): #BLUE ID = 2
 
             self.event_sprite.collidable = True
-            self.event_sprite.opacity = 255
+            self.event_sprite.opacity = 150
             self.event_sprite.color = (0,0,255)
 
         elif (self.event_info[self.link_id_pos[self.event_id]][0] == 6 and
               self.player_sprite.go_colorfilter_green): #GREEN ID = 6
 
             self.event_sprite.collidable = True
-            self.event_sprite.opacity = 255
+            self.event_sprite.opacity = 150
             self.event_sprite.color = (0,255,0)
             
         elif (self.event_info[self.link_id_pos[self.event_id]][0] == 18 and
               self.player_sprite.go_colorfilter_red): #RED ID = 18
 
             self.event_sprite.collidable = True
-            self.event_sprite.opacity = 255
+            self.event_sprite.opacity = 150
             self.event_sprite.color = (255,0,0)
 
                     

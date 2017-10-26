@@ -261,7 +261,7 @@ class Scene_de_theatre(object):
                     event_collidable = event_sprite_info[6][0]
                     event_image = event_sprite_info[11][event_sprite_info[10]]
                                         
-                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable, my_scene = my_scene)
+                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, 7, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable, my_scene = my_scene)
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
 
@@ -289,7 +289,7 @@ class Scene_de_theatre(object):
         colorfilter_z = pyglet.graphics.OrderedGroup(901)
         colorfilter_image = pyglet.image.load(colorfilter)
         self.anti_aliasied_texture(colorfilter_image)
-        self.colorfilter_sprite = Sprite.New_sprite(colorfilter_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = colorfilter_batch, my_group = colorfilter_z, spr_type = "colorfilter", collidable = False, my_scene = my_scene)
+        self.colorfilter_sprite = Sprite.New_sprite(colorfilter_image, 0, 0, 0, 0, 0, my_batch = colorfilter_batch, my_group = colorfilter_z, spr_type = "colorfilter", collidable = False, my_scene = my_scene)
         self.colorfilter_sprite.opacity = 0
         self.colorfilter_sprite.color = (0,0,0)
         self.sprite_list.append(self.colorfilter_sprite)
