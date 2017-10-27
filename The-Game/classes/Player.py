@@ -173,7 +173,7 @@ class Player_sprite(pyglet.sprite.Sprite):
             return constants.PLAYER_STYLE[self.my_scene], 0, 11*constants.SPRITE_Y, 3*constants.SPRITE_X, constants.SPRITE_Y, False, 3, 0.1
 
 
-    def update(self, sprite_list, dt, himself):
+    def update(self, sprite_list, dt, himself, check_timer):
 
         self.dt = dt
         self.update_player()
@@ -184,7 +184,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.update_player_gravity()
         self.update_player_movement()
         self.update_death()
-        self.update_ball()
+        #self.update_ball()
         self.update_anim_sequence()
         self.update_effects()
 

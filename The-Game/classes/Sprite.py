@@ -20,6 +20,7 @@ class New_sprite(pyglet.sprite.Sprite):
         self.type_event = False
         self.type_textbox = False
         self.type_colorfilter = False
+        self.near_player = False
         self.type = spr_type
         
         if spr_type[:5] == "event":
@@ -120,16 +121,25 @@ class New_sprite(pyglet.sprite.Sprite):
             self.color = (0, 0, 0)
             
 
-    def update(self, sprite_list, dt, target_load):
+    def update(self, sprite_list, dt, target_load, check_timer):
 
-        self.player_sprite = target_load
 
-        #determine if the sprite must be drawn or not
         if self.type_tile or self.type_deco:
-            self.visible = True
-            if (self.rect[0] + self.rect[2] < self.player_sprite.x - constants.SCREEN_X/2) or (
-                self.rect[0] > self.player_sprite.x + constants.SCREEN_X/2):
-                self.visible = False
+            #determine if the sprite is near the player
+            if check_timer % 60 == 0:
+                if (self.rect[0] + self.rect[2] < target_load.x - constants.SCREEN_X/2) or (
+                    self.rect[0] > target_load.x + constants.SCREEN_X/2):
+                    self.near_player = True
+                else:
+                    self.near_player = False
+
+            #determine if the sprite must be drawn or not
+            elif check_timer % 3 == 0:
+                if (self.rect[0] + self.rect[2] < target_load.x - constants.SCREEN_X/2) or (
+                    self.rect[0] > target_load.x + constants.SCREEN_X/2):
+                    self.visible = False
+                else:
+                    self.visible = True
             return
         
         if self.type_tile:
@@ -137,6 +147,8 @@ class New_sprite(pyglet.sprite.Sprite):
         
         if self.type_event:
             return
+
+        self.player_sprite = target_load
 
         if self.type_base or self.type_front:
             self.update_base_front()

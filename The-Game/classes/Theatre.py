@@ -16,16 +16,16 @@ class Salle_de_theatre(pyglet.window.Window):
         print("Main purpose: check animation and event states")
         print("")
 
-        scene = "simple"
+        scene = "GAME_START"
 
 
 
         platform = pyglet.window.get_platform()
         display = platform.get_default_display()
         self.screens = display.get_screens()
-        #self.screens[0].get_closest_mode(640,480))
-        #template = pyglet.gl.Config(double_buffer=True)#alpha_size=8)
-        #config = self.screens[0].get_best_config(template)
+        self.screens[1].get_closest_mode(640,480)
+        template = pyglet.gl.Config(double_buffer=True)#alpha_size=8)
+        config = self.screens[0].get_best_config(template)
         #context = config.create_context(None)
 
         super().__init__(constants.SCREEN_X,
@@ -33,8 +33,8 @@ class Salle_de_theatre(pyglet.window.Window):
                          caption=constants.GAME_TITLE,
                          vsync = False,
                          fullscreen = False,
-                         resizable = False)
-                         #config=config,
+                         resizable = False,
+                         config=config)
                          #context=context)
                          #screen = screens[1])
         
@@ -59,13 +59,13 @@ class Salle_de_theatre(pyglet.window.Window):
         if key == pyglet.window.key.F4:
             if self.fullscreen is True:
                 self.set_mouse_visible(True)
-                self.set_fullscreen(fullscreen=False, width = 640, height = 480)
+                self.set_fullscreen(fullscreen=False, screen = self.screens[0], width = 640, height = 480)
             else:
                 self.set_mouse_visible(False)
-                self.set_fullscreen(fullscreen=True, width = 640, height = 480)
+                self.set_fullscreen(fullscreen=True, screen = self.screens[0], width = 640, height = 480)
 
         if key == pyglet.window.key.ESCAPE:
-            self.set_fullscreen(fullscreen=False, width = 640, height = 480)
+            self.set_fullscreen(fullscreen=False, screen = self.screens[0], width = 640, height = 480)
             self.close()
 
     

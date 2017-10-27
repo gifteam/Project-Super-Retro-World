@@ -15,6 +15,7 @@ class Scene_de_theatre(object):
         self.run = True
         self.name = my_scene
         self.new_name = self.name
+        self.check_timer = 60
         #player - - - - - - - - - - - - - - - - - - - - - 
         self.player_pos = [320, 480]
         self.player_sprite = None
@@ -30,24 +31,62 @@ class Scene_de_theatre(object):
         self.sprite_list = []
         self.sprite_list_collidable = []
 
-        #LAUNCH SCENE = = = = = = = = = = = = = = = = = = 
-        self.my_scene_is_loaded = False
-        self.load_scene()
-        self.my_scene_is_loaded = True
-        # = = = = = = = = = = = = = = = = = = = = = = = =
+        #LAUNCH SCENE = = = = = = = = = = = = = = = = = =
+        if self.new_name == "GAME_START":
+            self.load_game_start()
+            self.game_start_phase = 0
+        else:
+            self.my_scene_is_loaded = False
+            self.load_scene()
+            self.my_scene_is_loaded = True
+           # = = = = = = = = = = = = = = = = = = = = = = = =
 
-        #object finalisation- - - - - - - - - - - - - - - 
-        self.player_sprite.sprite_list = self.sprite_list
-        self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
-        self.my_event.player_sprite = self.player_sprite
-        self.my_event.event_list = self.event_list
-        self.my_event.textbox_sprite = self.textbox_sprite
+            #object finalisation- - - - - - - - - - - - - - - 
+            self.player_sprite.sprite_list = self.sprite_list
+            self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
+            self.my_event.player_sprite = self.player_sprite
+            self.my_event.event_list = self.event_list
+            self.my_event.textbox_sprite = self.textbox_sprite
 
         #info - - - - - - - - - - - - - - - - - - - - - - 
         print("Number of sprites: ", len(self.sprite_list))
         print("Number of collidable sprites: ", len(self.sprite_list_collidable))
         
-  
+
+    def load_game_start(self):
+
+        my_batch = self.batch
+
+        game_start_black_image = constants.PATH_LABEL + "000.png"
+        game_start_disclamer_image = constants.PATH_LABEL + "001.png"
+        game_start_team_image = constants.PATH_LABEL + "002.png"
+        game_start_title_screen_image = constants.PATH_LABEL + "003.png"
+
+        game_start_black_image = pyglet.image.load(game_start_black_image)
+        game_start_disclamer_image = pyglet.image.load(game_start_disclamer_image)
+        game_start_team_image = pyglet.image.load(game_start_team_image)
+        game_start_title_screen_image = pyglet.image.load(game_start_title_screen_image)
+
+        self.anti_aliasied_texture(game_start_black_image)
+        self.anti_aliasied_texture(game_start_disclamer_image)
+        self.anti_aliasied_texture(game_start_team_image)
+        self.anti_aliasied_texture(game_start_title_screen_image)
+
+        game_start_black_z = pyglet.graphics.OrderedGroup(4)
+        game_start_disclamer_z = pyglet.graphics.OrderedGroup(3)
+        game_start_team_z = pyglet.graphics.OrderedGroup(2)
+        game_start_title_screen_z = pyglet.graphics.OrderedGroup(1)
+
+        sprite_game_start_black = pyglet.sprite.Sprite(img=game_start_black_image, x=0, y=0, batch=my_batch, group=game_start_black_z)
+        sprite_game_start_disclamer = pyglet.sprite.Sprite(img=game_start_disclamer_image, x=0, y=0, batch=my_batch, group=game_start_disclamer_z)
+        sprite_game_start_team = pyglet.sprite.Sprite(img=game_start_team_image, x=0, y=0, batch=my_batch, group=game_start_team_z) 
+        sprite_game_start_title_screen = pyglet.sprite.Sprite(img=game_start_title_screen_image, x=0, y=0, batch=my_batch, group=game_start_title_screen_z) 
+
+        self.sprite_list.append(sprite_game_start_black)
+        self.sprite_list.append(sprite_game_start_disclamer)
+        self.sprite_list.append(sprite_game_start_team)
+        self.sprite_list.append(sprite_game_start_title_screen)
+
     def load_scene(self):
 
         self.load_my_scene()
@@ -370,20 +409,69 @@ class Scene_de_theatre(object):
 
         if self.run:
 
-            self.sprite_list_collidable = []
-            
-            for sprite in self.sprite_list:
-                    sprite.update(self.sprite_list, dt, self.player_sprite)
-                    if sprite.visible and sprite.collidable:
-                        self.sprite_list_collidable.append(sprite)
+            if self.new_name != "GAME_START":
 
-            self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
+                self.sprite_list_collidable = []
+                
+                for sprite in self.sprite_list:
+                        sprite.update(self.sprite_list, dt, self.player_sprite, self.check_timer)
+                        if sprite.visible and sprite.collidable:
+                            self.sprite_list_collidable.append(sprite)
+
+                self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
+                
+                self.my_event.update(self.name)
+
+                self.update_camera()
             
-            self.my_event.update(self.name)
-            
-            self.update_camera()
+                if self.check_timer > 60:
+                    self.check_timer = 1
+                else:
+                    self.check_timer += 1
+            else:
+
+                self.update_game_start()
+                
         
-            
+        
+
+    def update_game_start(self):
+
+        self.game_start_phase += 1
+
+        if self.game_start_phase >= 100 and self.game_start_phase < 200:
+            if self.sprite_list[0].opacity > 0: self.sprite_list[0].opacity -= 5
+
+        if self.game_start_phase >= 600 and self.game_start_phase < 700:
+            if self.sprite_list[1].opacity > 0:
+                if self.sprite_list[0].opacity < 255:
+                    self.sprite_list[0].opacity += 5
+                else:
+                    self.sprite_list[1].opacity = 0
+
+        if self.game_start_phase >= 700 and self.game_start_phase < 800:
+            if self.sprite_list[0].opacity > 0: self.sprite_list[0].opacity -= 5
+
+        if self.game_start_phase >= 900 and self.game_start_phase < 1000:
+            if self.sprite_list[2].opacity > 0:
+                if self.sprite_list[0].opacity < 255:
+                    self.sprite_list[0].opacity += 5
+                else:
+                    self.sprite_list[2].opacity = 0
+
+        if self.game_start_phase >= 1000:       
+            if self.sprite_list[2].opacity == 0:
+                if self.sprite_list[0].opacity > 0: self.sprite_list[0].opacity -= 5
+
+
+        if self.game_start_phase > 1200:
+            self.new_name = "simple"
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, constants.SCREEN_X, 0, 480, 0, 1);
+        
+        
     def update_camera(self):
 
         if self.my_scene != "LEVEL_SELECT":
