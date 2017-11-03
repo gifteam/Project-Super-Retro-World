@@ -198,6 +198,7 @@ class Scene_de_theatre(object):
                     tile_length = constants.SPRITE_X * tile_length
                     tile_height = constants.SPRITE_Y
                     tile_image = pyglet.image.Texture.create(tile_length, tile_height*2)
+                    self.anti_aliasied_texture(tile_image)
                     my_local_x = 0
                     for ID in ID_tile_list:
                         tile_image.blit_into(tile_image_list[ID], my_local_x, 0, 0)
@@ -298,8 +299,7 @@ class Scene_de_theatre(object):
                     my_z = event_sprite_info[3]
                     event_z = pyglet.graphics.OrderedGroup(my_z)
                     event_collidable = event_sprite_info[6][0]
-                    event_image = event_sprite_info[11][event_sprite_info[10]]
-                                        
+                    event_image = event_sprite_info[11][event_sprite_info[10]]                 
                     event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, 7, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable, my_scene = my_scene)
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
@@ -391,12 +391,23 @@ class Scene_de_theatre(object):
         
     def key_pressed(self, key, modifiers):
 
-        self.player_sprite.key_pressed(key, modifiers)
+        if self.new_name != "GAME_START":
+            self.player_sprite.key_pressed(key, modifiers)
+        else:
+            if self.game_start_phase > 1000:
+                self.new_name = "simple"
+            else:
+                self.sprite_list[0].opacity = 255
+                self.sprite_list[1].opacity = 0
+                self.sprite_list[2].opacity = 0
+                self.sprite_list[3].opacity = 255
+                self.game_start_phase = 1000
         
 
     def key_released(self, key, modifiers):
 
-        self.player_sprite.key_released(key, modifiers)
+        if self.new_name != "GAME_START":
+            self.player_sprite.key_released(key, modifiers)
         
 
     def update(self, dt):
@@ -432,8 +443,7 @@ class Scene_de_theatre(object):
 
                 self.update_game_start()
                 
-        
-        
+
 
     def update_game_start(self):
 
@@ -463,13 +473,9 @@ class Scene_de_theatre(object):
             if self.sprite_list[2].opacity == 0:
                 if self.sprite_list[0].opacity > 0: self.sprite_list[0].opacity -= 5
 
-
-        if self.game_start_phase > 1200:
-            self.new_name = "simple"
-
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, constants.SCREEN_X, 0, 480, 0, 1);
+        glOrtho(0, constants.SCREEN_X, 0, constants.SCREEN_Y, 0, 1);
         
         
     def update_camera(self):
@@ -477,11 +483,11 @@ class Scene_de_theatre(object):
         if self.my_scene != "LEVEL_SELECT":
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(self.camera_target.x-constants.SCREEN_X/2, self.camera_target.x+constants.SCREEN_X/2, 0, 480, 0, 1);
+            glOrtho(self.camera_target.x-constants.SCREEN_X/2, self.camera_target.x+constants.SCREEN_X/2, 0, constants.SCREEN_Y, 0, 1);
         else:
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, constants.SCREEN_X, 0, 480, 0, 1);
+            glOrtho(0, constants.SCREEN_X, 0, constants.SCREEN_Y, 0, 1);
           
 
     def delete_all_sprites(self):
