@@ -3,7 +3,7 @@ import pyglet
 from pyglet.gl import *
 #Import personal packages
 from constants import constants
-from classes import Sprite, Player, Event, Deco
+from classes import Sprite, Player, Event, Deco, Menu
 
 class Scene_de_theatre(object):
 
@@ -16,17 +16,26 @@ class Scene_de_theatre(object):
         self.name = my_scene
         self.new_name = self.name
         self.check_timer = 60
-        #player - - - - - - - - - - - - - - - - - - - - - 
-        self.player_pos = [320, 480]
-        self.player_sprite = None
         #theatre- - - - - - - - - - - - - - - - - - - - - 
         self.my_theatre = my_theatre
         self.my_piece = my_piece
         self.my_scene = my_scene
+        #player - - - - - - - - - - - - - - - - - - - - - 
+        self.player_pos = [int(self.my_theatre.theatre_dim[0]/2), self.my_theatre.theatre_dim[1]]
+        self.player_sprite = None
+        #sound effect - - - - - - - - - - - - - - - - - -
+        pyglet.options['audio'] = ('openal', 'silent')
+        self.media_sound = pyglet.media.Player()
+        source = pyglet.media.load(constants.PATH_SOUND + "game_label_the_missing_part.wav")
+        self.media_sound.queue(source)
+        self.media_sound.volume = 1
+        #self.media_sound.play()
         #event and batch- - - - - - - - - - - - - - - - - 
         self.my_event = Event.Event(self.name)
         self.event_list = []
         self.batch = pyglet.graphics.Batch()
+        #menu - - - - - - - - - - - - - - - - - - - - - -
+        self.menu = Menu.Menu(self.name, self, self.batch)
         #sprite lists - - - - - - - - - - - - - - - - - - 
         self.sprite_list = []
         self.sprite_list_collidable = []
@@ -34,7 +43,6 @@ class Scene_de_theatre(object):
         #LAUNCH SCENE = = = = = = = = = = = = = = = = = =
         if self.new_name == "GAME_START":
             self.load_game_start()
-            self.game_start_phase = 0
         else:
             self.my_scene_is_loaded = False
             self.load_scene()
@@ -56,36 +64,8 @@ class Scene_de_theatre(object):
     def load_game_start(self):
 
         my_batch = self.batch
+        self.menu.init_menu("GAME_START")
 
-        game_start_black_image = constants.PATH_LABEL + "000.png"
-        game_start_disclamer_image = constants.PATH_LABEL + "001.png"
-        game_start_team_image = constants.PATH_LABEL + "002.png"
-        game_start_title_screen_image = constants.PATH_LABEL + "003.png"
-
-        game_start_black_image = pyglet.image.load(game_start_black_image)
-        game_start_disclamer_image = pyglet.image.load(game_start_disclamer_image)
-        game_start_team_image = pyglet.image.load(game_start_team_image)
-        game_start_title_screen_image = pyglet.image.load(game_start_title_screen_image)
-
-        self.anti_aliasied_texture(game_start_black_image)
-        self.anti_aliasied_texture(game_start_disclamer_image)
-        self.anti_aliasied_texture(game_start_team_image)
-        self.anti_aliasied_texture(game_start_title_screen_image)
-
-        game_start_black_z = pyglet.graphics.OrderedGroup(4)
-        game_start_disclamer_z = pyglet.graphics.OrderedGroup(3)
-        game_start_team_z = pyglet.graphics.OrderedGroup(2)
-        game_start_title_screen_z = pyglet.graphics.OrderedGroup(1)
-
-        sprite_game_start_black = pyglet.sprite.Sprite(img=game_start_black_image, x=0, y=0, batch=my_batch, group=game_start_black_z)
-        sprite_game_start_disclamer = pyglet.sprite.Sprite(img=game_start_disclamer_image, x=0, y=0, batch=my_batch, group=game_start_disclamer_z)
-        sprite_game_start_team = pyglet.sprite.Sprite(img=game_start_team_image, x=0, y=0, batch=my_batch, group=game_start_team_z) 
-        sprite_game_start_title_screen = pyglet.sprite.Sprite(img=game_start_title_screen_image, x=0, y=0, batch=my_batch, group=game_start_title_screen_z) 
-
-        self.sprite_list.append(sprite_game_start_black)
-        self.sprite_list.append(sprite_game_start_disclamer)
-        self.sprite_list.append(sprite_game_start_team)
-        self.sprite_list.append(sprite_game_start_title_screen)
 
     def load_scene(self):
 
@@ -113,32 +93,32 @@ class Scene_de_theatre(object):
 
     def load_background(self):
 
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
         
-        base = constants.PATH_BACK + constants.BASE_BACK_STYLE[my_scene] + ".png"
+        base = constants.PATH_BACK + constants.BASE_BACK_STYLE[my_scene_name] + ".png"
         base_z = pyglet.graphics.OrderedGroup(0)
         base_image = pyglet.image.load(base)
         self.anti_aliasied_texture(base_image)
-        base_sprite = Sprite.New_sprite(base_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = base_z, spr_type = "base", collidable = False, my_scene = my_scene)
+        base_sprite = Sprite.New_sprite(base_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = base_z, spr_type = "base", collidable = False, my_scene_name = my_scene_name, my_scene = self)
         self.sprite_list.append(base_sprite)
 
-        back_list = constants.BACK_STYLE[my_scene]
+        back_list = constants.BACK_STYLE[my_scene_name]
         back_sprite_list = []
         for back_id in range(len(back_list)):
-            back = constants.PATH_BACK + constants.BACK_STYLE[my_scene][back_id] + ".png"
+            back = constants.PATH_BACK + constants.BACK_STYLE[my_scene_name][back_id] + ".png"
             back_z = pyglet.graphics.OrderedGroup(back_id + 2)
             back_image = pyglet.image.load(back)
             self.anti_aliasied_texture(back_image)
             for i in range(2):
-                back_sprite = Sprite.New_sprite(back_image, constants.SCREEN_X*i, 0, back_id + 1, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = back_z, spr_type = "back", collidable = False, my_scene = my_scene)
+                back_sprite = Sprite.New_sprite(back_image, constants.SCREEN_X*i, 0, back_id + 1, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = back_z, spr_type = "back", collidable = False, my_scene_name = my_scene_name, my_scene = self)
                 self.sprite_list.append(back_sprite)
     
     
     def load_tiles(self):
         
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
 
-        tileset_path = constants.PATH_TILE+ constants.TILE_STYLE[my_scene] + ".png"
+        tileset_path = constants.PATH_TILE+ constants.TILE_STYLE[my_scene_name] + ".png"
         tile_z = pyglet.graphics.OrderedGroup(100)
         tileset_image = pyglet.image.load(tileset_path)
         self.anti_aliasied_texture(tileset_image)
@@ -153,7 +133,7 @@ class Scene_de_theatre(object):
         tile_image_list[16:20] = tile_image_list_64px[8:]
         tile_image_list[20:] = tile_image_list_32px[20:]
         
-        minimap = constants.PATH_MAP + constants.MAP_STYLE[my_scene] + ".png"
+        minimap = constants.PATH_MAP + constants.MAP_STYLE[my_scene_name] + ".png"
         minimap_image = pyglet.image.load(minimap)
         minimap_data = minimap_image.get_image_data()
         minimap_pixels = minimap_data.get_data('RGB', minimap_image.width * 3)
@@ -203,7 +183,7 @@ class Scene_de_theatre(object):
                     for ID in ID_tile_list:
                         tile_image.blit_into(tile_image_list[ID], my_local_x, 0, 0)
                         my_local_x += constants.SPRITE_X
-                    tile_sprite = Sprite.New_sprite(tile_image, tile_x, tile_y, 100, tile_length, tile_height, my_batch = my_batch, my_group = tile_z, spr_type = "tile", collidable = collidable, my_scene = my_scene)
+                    tile_sprite = Sprite.New_sprite(tile_image, tile_x, tile_y, 100, tile_length, tile_height, my_batch = my_batch, my_group = tile_z, spr_type = "tile", collidable = collidable, my_scene_name = my_scene_name, my_scene = self)
                     self.sprite_list.append(tile_sprite)
                     complete_tile = False
                     tile_length = 0
@@ -214,15 +194,15 @@ class Scene_de_theatre(object):
     
     def load_deco(self, minimap_array):
 
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
 
         deco_object = Deco.Deco()
-        deco_info = deco_object.get_deco(my_scene)
+        deco_info = deco_object.get_deco(my_scene_name)
 
         deco_sprite_info = []
         
-        for y in range(self.get_minimap_height(my_scene)):
-            for x in range(self.get_minimap_width(my_scene)):
+        for y in range(self.get_minimap_height(my_scene_name)):
+            for x in range(self.get_minimap_width(my_scene_name)):
                 
                 ID = self.get_deco_id_from_color(minimap_array[y][x])
                 is_deco = False
@@ -265,22 +245,22 @@ class Scene_de_theatre(object):
                         deco_image = pyglet.image.Animation.from_image_sequence(deco_image_sequence, speed, loop)
                     else:
                         self.anti_aliasied_texture(deco_image)
-                    deco_sprite = Sprite.New_sprite(deco_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = deco_z, spr_type = "deco", collidable = deco_collidable, my_scene = my_scene)
+                    deco_sprite = Sprite.New_sprite(deco_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = deco_z, spr_type = "deco", collidable = deco_collidable, my_scene_name = my_scene_name, my_scene = self)
 
                     self.sprite_list.append(deco_sprite)
 
     
     def load_events(self, minimap_array):
 
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
 
         event_object = self.my_event
-        event_info = event_object.get_event(my_scene)
+        event_info = event_object.get_event(my_scene_name)
 
         event_sprite_info = []
         
-        for y in range(self.get_minimap_height(my_scene)):
-            for x in range(self.get_minimap_width(my_scene)):
+        for y in range(self.get_minimap_height(my_scene_name)):
+            for x in range(self.get_minimap_width(my_scene_name)):
                 
                 ID = self.get_deco_id_from_color(minimap_array[y][x])
                 is_event = False
@@ -300,35 +280,35 @@ class Scene_de_theatre(object):
                     event_z = pyglet.graphics.OrderedGroup(my_z)
                     event_collidable = event_sprite_info[6][0]
                     event_image = event_sprite_info[11][event_sprite_info[10]]                 
-                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, 7, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable, my_scene = my_scene)
+                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, 7, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable , my_scene_name = my_scene_name, my_scene = self)
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
 
 
     def load_textbox(self):
         
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
         textbox_batch = self.batch
         
         textbox = constants.PATH_TEXTBOX + "000.png"
         textbox_z = pyglet.graphics.OrderedGroup(900)
         textbox_image = pyglet.image.load(textbox)
         self.anti_aliasied_texture(textbox_image)
-        self.textbox_sprite = Sprite.New_sprite(textbox_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = textbox_batch, my_group = textbox_z, spr_type = "textbox", collidable = False, my_scene = my_scene)
+        self.textbox_sprite = Sprite.New_sprite(textbox_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = textbox_batch, my_group = textbox_z, spr_type = "textbox", collidable = False , my_scene_name = my_scene_name, my_scene = self)
         self.textbox_sprite.opacity = 0
         self.sprite_list.append(self.textbox_sprite)
 
 
     def load_colorfilter(self):
 
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
         colorfilter_batch = self.batch
         
         colorfilter = constants.PATH_FRONT + "004.png"
         colorfilter_z = pyglet.graphics.OrderedGroup(901)
         colorfilter_image = pyglet.image.load(colorfilter)
         self.anti_aliasied_texture(colorfilter_image)
-        self.colorfilter_sprite = Sprite.New_sprite(colorfilter_image, 0, 0, 0, 0, 0, my_batch = colorfilter_batch, my_group = colorfilter_z, spr_type = "colorfilter", collidable = False, my_scene = my_scene)
+        self.colorfilter_sprite = Sprite.New_sprite(colorfilter_image, 0, 0, 0, 0, 0, my_batch = colorfilter_batch, my_group = colorfilter_z, spr_type = "colorfilter", collidable = False , my_scene_name = my_scene_name, my_scene = self)
         self.colorfilter_sprite.opacity = 0
         self.colorfilter_sprite.color = (0,0,0)
         self.sprite_list.append(self.colorfilter_sprite)
@@ -336,26 +316,26 @@ class Scene_de_theatre(object):
              
     def load_player(self):
         
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
 
         player_z = pyglet.graphics.OrderedGroup(400)
-        self.player_sprite = Player.Player_sprite(self.player_pos[0], self.player_pos[1], 400, my_batch = self.batch, my_group = player_z, spr_type = "player", collidable = False, my_scene = my_scene, my_event_list = self.event_list)
+        self.player_sprite = Player.Player_sprite(self.player_pos[0], self.player_pos[1], 400, my_batch = self.batch, my_group = player_z, spr_type = "player", collidable = False, my_scene = my_scene_name, my_event_list = self.event_list)
 
         self.sprite_list.insert(0, self.player_sprite)
 
     
     def load_frontground(self):
         
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
         
-        front = constants.PATH_FRONT + constants.FRONT_STYLE[my_scene] + ".png"
+        front = constants.PATH_FRONT + constants.FRONT_STYLE[my_scene_name] + ".png"
         front_z = pyglet.graphics.OrderedGroup(800)
         front_image = pyglet.image.load(front)
         self.anti_aliasied_texture(front_image)
         front_batch = self.batch
         front_sequence = pyglet.image.ImageGrid(front_image, 1, 4)
         front_animation = pyglet.image.Animation.from_image_sequence(front_sequence, 0.25, True)
-        front_sprite = Sprite.New_sprite(front_animation, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = front_batch, my_group = front_z, spr_type = "front", collidable = False, my_scene = my_scene)
+        front_sprite = Sprite.New_sprite(front_animation, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = front_batch, my_group = front_z, spr_type = "front", collidable = False , my_scene_name = my_scene_name, my_scene = self)
         self.sprite_list.append(front_sprite)
 
         ambiance = constants.PATH_FRONT + "003" + ".png"
@@ -363,13 +343,13 @@ class Scene_de_theatre(object):
         ambiance_image = pyglet.image.load(ambiance)
         self.anti_aliasied_texture(ambiance_image)
         ambiance_batch = self.batch
-        ambiance_sprite = Sprite.New_sprite(ambiance_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = ambiance_batch, my_group = ambiance_z, spr_type = "front", collidable = False, my_scene = my_scene)
+        ambiance_sprite = Sprite.New_sprite(ambiance_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = ambiance_batch, my_group = ambiance_z, spr_type = "front", collidable = False , my_scene_name = my_scene_name, my_scene = self)
         self.sprite_list.append(ambiance_sprite)
         
 
     def load_HUD(self):
 
-        my_scene = self.my_scene
+        my_scene_name = self.my_scene
         
         fps = str(pyglet.clock.get_fps())
         
@@ -380,7 +360,7 @@ class Scene_de_theatre(object):
         number_list = pyglet.image.ImageGrid(number_sheet_image, 1, 10)
     
         for num in range(4):
-            number_sprite = Sprite.New_sprite(number_list[0], 2+num*7, 460, 900, constants.SPRITE_X, constants.SPRITE_Y, my_batch = hud_batch, my_group = number_z, spr_type = "fps_" + str(num), collidable = False, my_scene = my_scene)
+            number_sprite = Sprite.New_sprite(number_list[0], 2+num*7, 460, 900, constants.SPRITE_X, constants.SPRITE_Y, my_batch = hud_batch, my_group = number_z, spr_type = "fps_" + str(num), collidable = False , my_scene_name = my_scene_name, my_scene = self)
             self.sprite_list.append(number_sprite)
 
 
@@ -394,14 +374,7 @@ class Scene_de_theatre(object):
         if self.new_name != "GAME_START":
             self.player_sprite.key_pressed(key, modifiers)
         else:
-            if self.game_start_phase > 1000:
-                self.new_name = "simple"
-            else:
-                self.sprite_list[0].opacity = 255
-                self.sprite_list[1].opacity = 0
-                self.sprite_list[2].opacity = 0
-                self.sprite_list[3].opacity = 255
-                self.game_start_phase = 1000
+            self.menu.key_pressed(key)
         
 
     def key_released(self, key, modifiers):
@@ -441,53 +414,19 @@ class Scene_de_theatre(object):
                     self.check_timer += 1
             else:
 
-                self.update_game_start()
+                self.menu.update()
                 
-
-
-    def update_game_start(self):
-
-        self.game_start_phase += 1
-
-        if self.game_start_phase >= 100 and self.game_start_phase < 200:
-            if self.sprite_list[0].opacity > 0: self.sprite_list[0].opacity -= 5
-
-        if self.game_start_phase >= 600 and self.game_start_phase < 700:
-            if self.sprite_list[1].opacity > 0:
-                if self.sprite_list[0].opacity < 255:
-                    self.sprite_list[0].opacity += 5
-                else:
-                    self.sprite_list[1].opacity = 0
-
-        if self.game_start_phase >= 700 and self.game_start_phase < 800:
-            if self.sprite_list[0].opacity > 0: self.sprite_list[0].opacity -= 5
-
-        if self.game_start_phase >= 900 and self.game_start_phase < 1000:
-            if self.sprite_list[2].opacity > 0:
-                if self.sprite_list[0].opacity < 255:
-                    self.sprite_list[0].opacity += 5
-                else:
-                    self.sprite_list[2].opacity = 0
-
-        if self.game_start_phase >= 1000:       
-            if self.sprite_list[2].opacity == 0:
-                if self.sprite_list[0].opacity > 0: self.sprite_list[0].opacity -= 5
-
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, constants.SCREEN_X, 0, constants.SCREEN_Y, 0, 1);
-        
         
     def update_camera(self):
 
         if self.my_scene != "LEVEL_SELECT":
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(self.camera_target.x-constants.SCREEN_X/2, self.camera_target.x+constants.SCREEN_X/2, 0, constants.SCREEN_Y, 0, 1);
+            glOrtho(self.camera_target.x-self.my_theatre.theatre_dim[0]/2, self.camera_target.x+self.my_theatre.theatre_dim[0]/2, 0, self.my_theatre.theatre_dim[1], 0, 1);
         else:
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(0, constants.SCREEN_X, 0, constants.SCREEN_Y, 0, 1);
+            glOrtho(0, self.my_theatre.theatre_dim[0], 0, self.my_theatre.theatre_dim[1], 0, 1);
           
 
     def delete_all_sprites(self):

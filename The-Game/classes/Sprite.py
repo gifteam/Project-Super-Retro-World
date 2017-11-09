@@ -1,11 +1,12 @@
 #Import basic librairies
 import pyglet
+from pyglet.gl import *
 #Import personal packages
 from constants import constants
 
 class New_sprite(pyglet.sprite.Sprite):
 
-    def __init__(self, img, x, y, z, l, w, my_batch, my_group, spr_type, collidable, my_scene):
+    def __init__(self, img, x, y, z, l, w, my_batch, my_group, spr_type, collidable, my_scene_name, my_scene):
 
         super(New_sprite, self).__init__(img=img, x=x, y=y, batch=my_batch, group=my_group)
 
@@ -47,6 +48,7 @@ class New_sprite(pyglet.sprite.Sprite):
             
         self.z = z
         self.x_origin = x
+        self.my_scene_name = my_scene_name
         self.my_scene = my_scene
         #collisions - - - - - - - - - - - - - - - - -
         self.sprite_list = []
@@ -60,6 +62,8 @@ class New_sprite(pyglet.sprite.Sprite):
         number_sheet = constants.PATH_HUD + "008" + ".png"
         number_sheet_image = pyglet.image.load(number_sheet)
         self.number_list = pyglet.image.ImageGrid(number_sheet_image, 1, 10)
+        for num in range(len(self.number_list)):
+            self.anti_aliasied_texture(self.number_list[num])
         self.fps_refresh = 0
         self.fps_refresh_rate = 10
         # - - - - - - - - - - - - - - - - - - - - - - 
@@ -69,15 +73,15 @@ class New_sprite(pyglet.sprite.Sprite):
 
     def update_base_front(self):
 
-        if self.my_scene != "LEVEL_SELECT":
-            self.x = int(self.player_sprite.x - constants.SCREEN_X/2)
+        if self.my_scene_name != "LEVEL_SELECT":
+            self.x = int(self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2)
             self.y = 0
 
 
     def update_back(self):
 
-        if self.my_scene != "LEVEL_SELECT":
-            self.x = int(self.x_origin + self.player_sprite.x - constants.SCREEN_X/2 - self.player_sprite.x*self.z/10)
+        if self.my_scene_name != "LEVEL_SELECT":
+            self.x = int(self.x_origin + self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2 - self.player_sprite.x*self.z/10)
             self.y = 0
 
 
@@ -92,19 +96,18 @@ class New_sprite(pyglet.sprite.Sprite):
             if len(fps) > 4:
                 fps = "9999"
             num = int(fps[ID])
-            
             self.image = self.number_list[num]
         else:
             self.fps_refresh += 1
 
-        if self.my_scene != "LEVEL_SELECT": 
-            self.x = int(self.player_sprite.x - constants.SCREEN_X/2) + ID * 7 + 10
-            self.y = 480 - 20
+        if self.my_scene_name != "LEVEL_SELECT": 
+            self.x = int(self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2) + ID * 7 + 10
+            self.y = self.my_scene.my_theatre.theatre_dim[1] - 20
             
 
     def update_colorfilter(self, target_load):
 
-        self.x = int(self.player_sprite.x - constants.SCREEN_X/2)
+        self.x = int(self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2)
         self.y = 0
 
         if target_load.go_colorfilter_red:
@@ -127,16 +130,16 @@ class New_sprite(pyglet.sprite.Sprite):
         if self.type_tile or self.type_deco:
             #determine if the sprite is near the player
             if check_timer % 60 == 0:
-                if (self.rect[0] + self.rect[2] < target_load.x - constants.SCREEN_X/2) or (
-                    self.rect[0] > target_load.x + constants.SCREEN_X/2):
+                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
+                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
                     self.near_player = True
                 else:
                     self.near_player = False
 
             #determine if the sprite must be drawn or not
             elif check_timer % 3 == 0:
-                if (self.rect[0] + self.rect[2] < target_load.x - constants.SCREEN_X/2) or (
-                    self.rect[0] > target_load.x + constants.SCREEN_X/2):
+                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
+                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
                     self.visible = False
                 else:
                     self.visible = True
@@ -168,3 +171,10 @@ class New_sprite(pyglet.sprite.Sprite):
 
         if self.type_textbox:
             return
+
+    def anti_aliasied_texture(self, img):
+        
+        texture = img.get_texture()
+        glBindTexture(texture.target, texture.id)
+        glTexParameteri(texture.target,GL_TEXTURE_MAG_FILTER,GL_NEAREST)
+        glBindTexture(texture.target,0)

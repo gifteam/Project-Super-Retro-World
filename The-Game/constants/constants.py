@@ -29,7 +29,7 @@ WAKE_UP_STYLE = {}
 
     #Level select style
 style = "simple"
-MAP_STYLE[style] = "001"
+MAP_STYLE[style] = "006"
 BASE_BACK_STYLE[style] = "forest_017"
 BACK_STYLE[style] = []
 FRONT_STYLE[style] = "001"
@@ -57,8 +57,8 @@ HITBOX_STYLE = "001"
 SPRITE_X = 32
 SPRITE_Y = 32 
     #Number of tiles per dimension
-TILES_X = int(SCREEN_X/SPRITE_X)
-TILES_Y = int(SCREEN_Y/SPRITE_Y)
+TILES_X = 32
+TILES_Y = 32
     #Txt box style
 TXTBOX_SPEED = 5 #from 0 to 10 max
     #layers info (z value)

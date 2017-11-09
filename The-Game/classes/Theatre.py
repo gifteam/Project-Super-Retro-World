@@ -22,14 +22,20 @@ class Salle_de_theatre(pyglet.window.Window):
 
         platform = pyglet.window.get_platform()
         display = platform.get_default_display()
-        self.screens = display.get_screens()
-        self.screens[0].get_closest_mode(640,480)
+        self.screens = display.get_screens()    
+        screen = display.get_default_screen()
+        self.window_width = int(screen.width/2)
+        self.window_height = int(screen.height/2)
+        self.theatre_dim = [self.window_width, self.window_height]
+        #print(screen_width, screen_height)
+        #print(screen_width/2, screen_height/2)
+        #self.screens[0].get_closest_mode(640,480)
         template = pyglet.gl.Config(double_buffer=True)#alpha_size=8)
         config = self.screens[0].get_best_config(template)
         #context = config.create_context(None)
 
-        super().__init__(constants.SCREEN_X,
-                         constants.SCREEN_Y,
+        super().__init__(self.window_width,
+                         self.window_height,
                          caption=constants.GAME_TITLE,
                          vsync = False,
                          fullscreen = False,
@@ -39,7 +45,7 @@ class Salle_de_theatre(pyglet.window.Window):
                          #screen = screens[1])
         
         self.my_fullscreen = False
-        self.aspect = [self.width/640.0,self.height/480.0]
+        #self.aspect = [self.width/640.0,self.height/480.0]
         self.dt = 0
         self.Piece_de_theatre = Piece.Piece_de_theatre(self, scene)
 
@@ -54,19 +60,21 @@ class Salle_de_theatre(pyglet.window.Window):
 
             
     def on_key_press(self, key, modifiers):
+        
         self.Piece_de_theatre.key_pressed(key, modifiers)
 
         if key == pyglet.window.key.F4:
             if self.fullscreen is True:
                 self.set_mouse_visible(True)
-                self.set_fullscreen(fullscreen=False, screen = self.screens[0], width = 683, height = 384)
+                self.set_fullscreen(fullscreen=False, screen = self.screens[0])
             else:
                 self.set_mouse_visible(False)
-                self.set_fullscreen(fullscreen=True, screen = self.screens[0], width = 1366, height = 768)
+                self.set_fullscreen(fullscreen=True, screen = self.screens[0])
 
-        if key == pyglet.window.key.ESCAPE:
-            self.set_fullscreen(fullscreen=False, screen = self.screens[0], width = 683, height = 384)
-            self.close()
+        #if key == pyglet.window.key.ESCAPE:
+            #self.set_mouse_visible(True)
+            #self.set_fullscreen(fullscreen=False, screen = self.screens[0])
+            #self.close()
 
     
     def on_key_release(self, key, modifiers):
@@ -76,9 +84,4 @@ class Salle_de_theatre(pyglet.window.Window):
     def update(self, dt):
 
         self.Piece_de_theatre.update(dt)
-
-
-    def change_fullscreen_mode(self):
-        
-        self.set_fullscreen(self.my_fullscreen)
         
