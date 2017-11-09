@@ -2,6 +2,7 @@
 import pyglet
 from pyglet import window
 from pyglet.gl import *
+import pygame
 #Import personal packages
 from constants import constants
 from classes import Sprite, Player, Event, Deco
@@ -19,13 +20,20 @@ class Menu(object):
         self.enter_menu_timer = 0
         self.menu_enter_complete = False
         self.menu_name = ""
-        #menu management - - - - - - - - - 
+        #menu management- - - - - - - - - -
         self.my_key_pressed = None
         self.menu_state = ""
         self.previous_menu_state = ""
         self.menu_list_position = 0
         self.menu_list_position_max = 0
-
+        #menu sound effect  - - - - - - - -
+        sound_effect_path = r"C:\Users\jfmir\Dropbox\Python_project\src\sound_src\game_menu_select_02.wav"
+        self.sound_effect_select = pygame.mixer.Sound(sound_effect_path)
+        sound_effect_path = r"C:\Users\jfmir\Dropbox\Python_project\src\sound_src\game_menu_select_01.wav"
+        self.sound_effect_move = pygame.mixer.Sound(sound_effect_path)
+        #sound_effect_path = r"C:\Users\jfmir\Dropbox\Python_project\src\sound_src\game_label_the_missing_part.wav"
+        #self.sound_effect_team = pygame.mixer.Sound(sound_effect_path)
+        
         
     def init_menu(self, menu_name):
 
@@ -145,6 +153,9 @@ class Menu(object):
             if self.enter_menu_timer % 20 == 0 and self.menu_sprite[0].opacity < 255:
                 self.menu_sprite[0].opacity += 50
 
+        if self.enter_menu_timer == 640:
+            pass #self.sound_effect_team.play()
+
         if self.enter_menu_timer == 700:
             self.menu_sprite[1].visible = False
             self.menu_sprite[2].visible = True                       
@@ -211,7 +222,8 @@ class Menu(object):
                     self.scene.my_theatre.close()
 
             elif self.menu_state == "CHOOSE LEVEL":
-                
+
+                self.sound_effect_select.play()
                 if self.menu_list_position == 0:
                     self.scene.new_name = "simple"
                 elif self.menu_list_position == 1:
@@ -226,19 +238,23 @@ class Menu(object):
                 
         elif self.my_key_pressed == window.key.UP:
 
-            self.menu_list_position -= 1
-            self.menu_list_position = self.menu_list_position % self.menu_list_position_max
-            self.menu_sprite[7].y = self.menu_sprite[6].y + self.menu_sprite[6].image.height - self.menu_sprite[7].image.height - self.menu_list_position*32
-            self.my_key_pressed = None
-            return
+            if self.menu_state == "MAIN MENU" or self.menu_state == "CHOOSE OPTION" or self.menu_state == "CHOOSE LEVEL":
+                self.sound_effect_move.play()
+                self.menu_list_position -= 1
+                self.menu_list_position = self.menu_list_position % self.menu_list_position_max
+                self.menu_sprite[7].y = self.menu_sprite[6].y + self.menu_sprite[6].image.height - self.menu_sprite[7].image.height - self.menu_list_position*32
+                self.my_key_pressed = None
+                return
             
         elif self.my_key_pressed == window.key.DOWN:
 
-            self.menu_list_position += 1
-            self.menu_list_position = self.menu_list_position % self.menu_list_position_max
-            self.menu_sprite[7].y = self.menu_sprite[6].y + self.menu_sprite[6].image.height - self.menu_sprite[7].image.height - self.menu_list_position*32
-            self.my_key_pressed = None
-            return
+            if self.menu_state == "MAIN MENU" or self.menu_state == "CHOOSE OPTION" or self.menu_state == "CHOOSE LEVEL":
+                self.sound_effect_move.play()
+                self.menu_list_position += 1
+                self.menu_list_position = self.menu_list_position % self.menu_list_position_max
+                self.menu_sprite[7].y = self.menu_sprite[6].y + self.menu_sprite[6].image.height - self.menu_sprite[7].image.height - self.menu_list_position*32
+                self.my_key_pressed = None
+                return
 
         elif self.my_key_pressed == window.key.ESCAPE:
 

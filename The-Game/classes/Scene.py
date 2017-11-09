@@ -23,13 +23,6 @@ class Scene_de_theatre(object):
         #player - - - - - - - - - - - - - - - - - - - - - 
         self.player_pos = [int(self.my_theatre.theatre_dim[0]/2), self.my_theatre.theatre_dim[1]]
         self.player_sprite = None
-        #sound effect - - - - - - - - - - - - - - - - - -
-        pyglet.options['audio'] = ('openal', 'silent')
-        self.media_sound = pyglet.media.Player()
-        source = pyglet.media.load(constants.PATH_SOUND + "game_label_the_missing_part.wav")
-        self.media_sound.queue(source)
-        self.media_sound.volume = 1
-        #self.media_sound.play()
         #event and batch- - - - - - - - - - - - - - - - - 
         self.my_event = Event.Event(self.name)
         self.event_list = []

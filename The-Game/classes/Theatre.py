@@ -1,6 +1,7 @@
 #Import basic librairies
 import pyglet
 from pyglet.gl import *
+import pygame
 #Import personal packages
 from constants import constants
 from classes import Piece
@@ -18,7 +19,9 @@ class Salle_de_theatre(pyglet.window.Window):
 
         scene = "GAME_START"
 
-
+        pygame.mixer.pre_init(44100, -16, 1, 512)
+        pygame.mixer.init()
+        pygame.init()
 
         platform = pyglet.window.get_platform()
         display = platform.get_default_display()
