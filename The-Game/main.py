@@ -1,6 +1,7 @@
 #Import basic librairies
 import pyglet, sys
 from pyglet import clock
+import pygame
 #Import personal packages
 from classes import Theatre
 from constants import constants
