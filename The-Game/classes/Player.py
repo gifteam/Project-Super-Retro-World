@@ -15,6 +15,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.my_scene = my_scene
         self.type = spr_type
         self.my_batch = my_batch
+        self.type_fps = False
         #scene - - - - - - - - - - - - - - - - - - - -
         self.scene_start = 0
         self.scene_start_step_1 = 80

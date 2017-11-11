@@ -47,17 +47,16 @@ class Salle_de_theatre(pyglet.window.Window):
                          #context=context)
                          #screen = screens[1])
         
-        self.my_fullscreen = False
-        #self.aspect = [self.width/640.0,self.height/480.0]
+        #self.set_mouse_visible(False)
+        #self.set_fullscreen(fullscreen=True, screen = self.screens[0])
+        
         self.dt = 0
         self.Piece_de_theatre = Piece.Piece_de_theatre(self, scene)
-
-        #gl.glEnable(gl.GL_BLEND)
-        #gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA)
         
 
     def on_draw(self):
-        
+
+        pyglet.clock.tick()
         self.clear()
         self.Piece_de_theatre.Scene_de_theatre.batch.draw()
 
@@ -74,10 +73,16 @@ class Salle_de_theatre(pyglet.window.Window):
                 self.set_mouse_visible(False)
                 self.set_fullscreen(fullscreen=True, screen = self.screens[0])
 
-        #if key == pyglet.window.key.ESCAPE:
-            #self.set_mouse_visible(True)
-            #self.set_fullscreen(fullscreen=False, screen = self.screens[0])
-            #self.close()
+        if key == pyglet.window.key.ESCAPE:
+            self.set_mouse_visible(True)
+            self.set_fullscreen(fullscreen=False, screen = self.screens[0])
+
+            for spr_i in self.Piece_de_theatre.Scene_de_theatre.sprite_list:
+                if spr_i.type_fps:
+                    spr_i.fps_file.close()
+                    
+            self.close()
+            
 
     
     def on_key_release(self, key, modifiers):

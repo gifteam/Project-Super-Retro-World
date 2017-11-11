@@ -27,9 +27,9 @@ class Menu(object):
         self.menu_list_position = 0
         self.menu_list_position_max = 0
         #menu sound effect  - - - - - - - -
-        sound_effect_path = r"C:\Users\jfmir\Dropbox\Python_project\src\sound_src\game_menu_select_02.wav"
+        sound_effect_path = r"src\sound_src\game_menu_select_02.wav"
         self.sound_effect_select = pygame.mixer.Sound(sound_effect_path)
-        sound_effect_path = r"C:\Users\jfmir\Dropbox\Python_project\src\sound_src\game_menu_select_01.wav"
+        sound_effect_path = r"src\sound_src\game_menu_select_01.wav"
         self.sound_effect_move = pygame.mixer.Sound(sound_effect_path)
         #sound_effect_path = r"C:\Users\jfmir\Dropbox\Python_project\src\sound_src\game_label_the_missing_part.wav"
         #self.sound_effect_team = pygame.mixer.Sound(sound_effect_path)
@@ -96,7 +96,7 @@ class Menu(object):
         
         src_list.append(constants.PATH_LABEL + "000.png")
         src_list.append(constants.PATH_LABEL + "001.png")
-        src_list.append(constants.PATH_LABEL + "002.png")
+        src_list.append(constants.PATH_LABEL + "012.png")
         src_list.append(constants.PATH_LABEL + "003.png")
         src_list.append(constants.PATH_LABEL + "004.png")
         src_list.append(constants.PATH_LABEL + "005.png")
@@ -104,14 +104,26 @@ class Menu(object):
         src_list.append(constants.PATH_LABEL + "007.png")
         src_list.append(constants.PATH_LABEL + "010.png")
         src_list.append(constants.PATH_LABEL + "011.png")
+        src_list.append(constants.PATH_LABEL + "002.png")
 
         sprt_list = []
         for i in range(len(src_list)):
             z_grp = pyglet.graphics.OrderedGroup(len(src_list) - 1 - i)
-            img_aa = pyglet.image.load(src_list[i])
-            self.anti_aliasied_texture(img_aa)
-            x = int((self.scene.my_theatre.theatre_dim[0] - img_aa.width)/2)
-            y = int((self.scene.my_theatre.theatre_dim[1] - img_aa.height)/2)
+
+            if i == 2:
+                img_aa = pyglet.image.load(src_list[i])
+                sequence_aa = pyglet.image.ImageGrid(img_aa, 1, 16)
+                for my_img_aa in sequence_aa:
+                    self.anti_aliasied_texture(my_img_aa)
+                    x = int((self.scene.my_theatre.theatre_dim[0] - my_img_aa.width)/2)
+                    y = int((self.scene.my_theatre.theatre_dim[1] - my_img_aa.height)/2)+50
+                self.img_anim_the_missing_part = pyglet.image.Animation.from_image_sequence(sequence_aa, 0.2, False)
+                
+            else:
+                img_aa = pyglet.image.load(src_list[i])
+                self.anti_aliasied_texture(img_aa)
+                x = int((self.scene.my_theatre.theatre_dim[0] - img_aa.width)/2)
+                y = int((self.scene.my_theatre.theatre_dim[1] - img_aa.height)/2)
 
             if i >= 3 and i <= 6:
                 y -= 100
@@ -158,27 +170,30 @@ class Menu(object):
 
         if self.enter_menu_timer == 700:
             self.menu_sprite[1].visible = False
-            self.menu_sprite[2].visible = True                       
+            self.menu_sprite[2].visible = True
+            self.menu_sprite[10].visible = True
+            self.menu_sprite[2].image = self.img_anim_the_missing_part
 
         if self.enter_menu_timer >= 700 and self.enter_menu_timer < 800:
             if self.enter_menu_timer % 20 == 0 and self.menu_sprite[0].opacity > 5:
                 self.menu_sprite[0].opacity -= 50
 
-        if self.enter_menu_timer >= 900 and self.enter_menu_timer < 1000:
+        if self.enter_menu_timer >= 960 and self.enter_menu_timer < 1060:
             if self.enter_menu_timer % 20 == 0 and self.menu_sprite[0].opacity < 255:
                 self.menu_sprite[0].opacity += 50
 
-        if self.enter_menu_timer == 1000:
+        if self.enter_menu_timer == 1060:
             self.menu_sprite[2].visible = False
+            self.menu_sprite[10].visible = False
             self.menu_sprite[3].visible = True
             self.menu_sprite[8].visible = True
             self.menu_sprite[9].visible = True 
 
-        if self.enter_menu_timer >= 1000:
+        if self.enter_menu_timer >= 1060:
             if self.enter_menu_timer % 20 == 0 and self.menu_sprite[0].opacity > 5:
                 self.menu_sprite[0].opacity -= 50
 
-        if self.enter_menu_timer > 1000 and self.menu_sprite[0].opacity == 0:
+        if self.enter_menu_timer > 1060 and self.menu_sprite[0].opacity == 0:
             self.menu_enter_complete = True
             self.menu_sprite[0].visible = False
             self.menu_sprite[1].visible = False
@@ -193,7 +208,10 @@ class Menu(object):
         for i in range(len(self.menu_sprite)):
             self.menu_sprite[i].visible = False
         self.menu_sprite[3].visible = True
-        self.menu_sprite[8].visible = True 
+        self.menu_sprite[8].visible = True
+        self.menu_sprite[0].opacity = 0
+        self.enter_menu_timer = 1061
+        
        
 
     def update_menu_GAME_START(self):

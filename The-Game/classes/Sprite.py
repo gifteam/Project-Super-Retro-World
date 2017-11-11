@@ -36,6 +36,7 @@ class New_sprite(pyglet.sprite.Sprite):
             self.type_front = True
         elif spr_type[:3] == "fps":
             self.type_fps = True
+            self.fps_file = open("fps_" + my_scene_name +".txt","w")
         elif spr_type[:4] == "tile":
             self.type_tile = True
         elif spr_type[:4] == "deco":
@@ -92,6 +93,7 @@ class New_sprite(pyglet.sprite.Sprite):
         if self.fps_refresh >= self.fps_refresh_rate:
             self.fps_refresh = 0
             fps = str(int(pyglet.clock.get_fps()))
+            self.fps_file.write(fps+ '\n')
             fps = "0" * (4-len(fps)) + fps
             if len(fps) > 4:
                 fps = "9999"
