@@ -1,13 +1,7 @@
 #Constants -----
     #FPS
 FRAMES_PER_SECOND = 60
-FRAMES_MAX = 180
-    #screen size
-SCREEN_X = 640 #683# 1280
-SCREEN_Y = 480 #384# 960
-    #center immobile screen size
-IMMOBILE_SCREEN_X = 640/2
-IMMOBILE_SCREEN_Y = 480/2
+FRAMES_MAX = 60
 #---------------
     #scene dictionary style
 MAP_STYLE = {}
@@ -27,7 +21,7 @@ ENEMYSET_STYLE = {}
 LOADING_STYLE = {}
 WAKE_UP_STYLE = {}
 
-    #Level select style
+    #LEVEL SIMPLE
 style = "simple"
 MAP_STYLE[style] = "006"
 BASE_BACK_STYLE[style] = "forest_017"
@@ -39,9 +33,21 @@ PLAYER_STYLE[style] = "005"
 ENEMYSET_STYLE[style] = "002"
 LOADING_STYLE[style] = "002"
 WAKE_UP_STYLE[style] = "004"
-    #Level 01 style
+    #LEVEL MEDIUM
+style = "medium"
+MAP_STYLE[style] = "002"
+BASE_BACK_STYLE[style] = "forest_017"
+BACK_STYLE[style] = []
+FRONT_STYLE[style] = "001"
+TILE_STYLE[style] = "003"
+ELEMENT_STYLE[style] = "001"
+PLAYER_STYLE[style] = "005"
+ENEMYSET_STYLE[style] = "002"
+LOADING_STYLE[style] = "002"
+WAKE_UP_STYLE[style] = "004"
+    #LEVEL HARD
 style = "hard"
-MAP_STYLE[style] = "005"
+MAP_STYLE[style] = "001"
 BASE_BACK_STYLE[style] = "forest_017"
 BACK_STYLE[style] = ["forest_016","forest_015","forest_014"]
 FRONT_STYLE[style] = "001"
