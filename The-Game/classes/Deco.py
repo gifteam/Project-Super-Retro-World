@@ -28,4 +28,8 @@ class Deco(object):
             #deco_info.append([2, "005", 1, 600, True, 0.05, False, 0, 1])
             deco_info.append([3, "012", 0, 200, True, 0.1, False, 0, 0])
 
+        if my_scene == "hard":
+            pass
+            #deco_info.append([3, "012", 0, 200, True, 0.1, False, 0, 0])
+
         return deco_info

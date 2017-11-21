@@ -245,7 +245,7 @@ class Menu(object):
                 if self.menu_list_position == 0:
                     self.scene.new_name = "simple"
                 elif self.menu_list_position == 1:
-                    self.scene.new_name = "simple"
+                    self.scene.new_name = "medium"
                 else:
                     self.scene.new_name = "hard"
 

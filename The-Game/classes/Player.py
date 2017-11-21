@@ -4,7 +4,7 @@ from pyglet import window
 from pyglet.gl import *
 #Import personal packages
 from constants import constants
-from classes import Event, Ball, Effect
+from classes import Event, Effect
 
 class Player_sprite(pyglet.sprite.Sprite):
 
@@ -22,6 +22,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.scene_start_step_2 = 140
         self.scene_start_step_3 = 220
         #colorfilter - - - - - - - - - - - - - - - - -
+        self.go_colorfilter_new = False
         self.go_colorfilter_red = False
         self.go_colorfilter_green = False
         self.go_colorfilter_blue = False
@@ -45,9 +46,6 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.sprite_list_collidable = []
         self.collidable = collidable
         self.rect = [0,0,18,24]
-        #ball - - - - - - - - - - - - - - - - - - - -
-        self.want_to_ball = False
-        self.ball = Ball.Ball_sprite(x, y, z-1, my_batch, self)
         #run + jump effect - - - - - - - - - - - - - -
         self.fog_sprite = Effect.Effect_sprite(z-1, "WALK_FOG", my_batch, self)
         #jump - - - - - - - - - - - - - - - - - - - -
@@ -185,7 +183,6 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.update_player_gravity()
         self.update_player_movement()
         self.update_death()
-        #self.update_ball()
         self.update_anim_sequence()
         self.update_effects()
 
@@ -194,22 +191,11 @@ class Player_sprite(pyglet.sprite.Sprite):
 
         self.fog_sprite.update(self.anim_state)
 
-        
-    def update_ball(self):
-        
-        if self.want_to_ball:
-            
-            if not self.ball.activated:
-                self.ball.activation(self, self.sprite_list_collidable)
-
-        self.ball.update()
-
             
     def update_death(self):
 
         if self.y < 0 - constants.SPRITE_Y:
             self.reset_position()
-            #self.my_event.action(-1)
             
           
     def update_anim_sequence(self):
@@ -240,7 +226,7 @@ class Player_sprite(pyglet.sprite.Sprite):
 
             step = self.falling_y_pattern[self.duration_falling]
             test = True
-            
+
             while test:
                 if step < 0:
                     test = False
@@ -436,17 +422,19 @@ class Player_sprite(pyglet.sprite.Sprite):
 
     def can_move(self, step):
         for sprite in self.sprite_list_collidable:
-            if (sprite.x + sprite.rect[2]) >= (self.rect[0] + step) and (sprite.x) <= (self.rect[0] + self.rect[2] + step):
-                if (sprite.y + sprite.rect[3]) >= (self.rect[1]) and (sprite.y) <= (self.rect[1] + self.rect[3]):
-                    return False
+            if sprite.collidable:
+                if (sprite.x + sprite.rect[2]) >= (self.rect[0] + step) and (sprite.x) <= (self.rect[0] + self.rect[2] + step):
+                    if (sprite.y + sprite.rect[3]) >= (self.rect[1]) and (sprite.y) <= (self.rect[1] + self.rect[3]):
+                        return False
         return True
     
         
     def can_fall(self, step):
         for sprite in self.sprite_list_collidable:
-            if (sprite.x + sprite.rect[2]) >= (self.rect[0]) and (sprite.x) <= (self.rect[0] + self.rect[2]):
-                if (sprite.y + sprite.rect[3]) >= (self.rect[1] + step) and (sprite.y) <= (self.rect[1] + self.rect[3] + step):
-                    return False
+            if sprite.collidable:
+                if (sprite.x + sprite.rect[2]) >= (self.rect[0]) and (sprite.x) <= (self.rect[0] + self.rect[2]):
+                    if (sprite.y + sprite.rect[3]) >= (self.rect[1] + step) and (sprite.y) <= (self.rect[1] + self.rect[3] + step):
+                        return False
         return True
 
     
@@ -473,18 +461,19 @@ class Player_sprite(pyglet.sprite.Sprite):
             
         if key == window.key.SPACE:
             self.want_to_jump = True
-        if key == window.key.NUM_0:
-            self.want_to_ball = True
             
         if key == window.key.NUM_1:
+            self.go_colorfilter_new = True
             self.go_colorfilter_red = not self.go_colorfilter_red
             self.go_colorfilter_green = False
             self.go_colorfilter_blue = False
         if key == window.key.NUM_2:
+            self.go_colorfilter_new = True
             self.go_colorfilter_red = False
             self.go_colorfilter_green = not self.go_colorfilter_green
             self.go_colorfilter_blue = False
         if key == window.key.NUM_3:
+            self.go_colorfilter_new = True
             self.go_colorfilter_red = False
             self.go_colorfilter_green = False
             self.go_colorfilter_blue = not self.go_colorfilter_blue
@@ -501,8 +490,6 @@ class Player_sprite(pyglet.sprite.Sprite):
             self.moving_right = False
         if key == window.key.SPACE:
             self.want_to_jump = False
-        if key == window.key.NUM_0:
-            self.want_to_ball = False
         if key == window.key.ENTER or key == window.key.RETURN:
             self.want_to_action = False
 

@@ -21,7 +21,6 @@ class New_sprite(pyglet.sprite.Sprite):
         self.type_event = False
         self.type_textbox = False
         self.type_colorfilter = False
-        self.near_player = False
         self.type = spr_type
         
         if spr_type[:5] == "event":
@@ -36,7 +35,7 @@ class New_sprite(pyglet.sprite.Sprite):
             self.type_front = True
         elif spr_type[:3] == "fps":
             self.type_fps = True
-            self.fps_file = open("fps_" + my_scene_name +".txt","w")
+            #self.fps_file = open("fps_" + my_scene_name +".txt","w")
         elif spr_type[:4] == "tile":
             self.type_tile = True
         elif spr_type[:4] == "deco":
@@ -93,7 +92,7 @@ class New_sprite(pyglet.sprite.Sprite):
         if self.fps_refresh >= self.fps_refresh_rate:
             self.fps_refresh = 0
             fps = str(int(pyglet.clock.get_fps()))
-            self.fps_file.write(fps+ '\n')
+            #self.fps_file.write(fps+ '\n')
             fps = "0" * (4-len(fps)) + fps
             if len(fps) > 4:
                 fps = "9999"
@@ -102,50 +101,50 @@ class New_sprite(pyglet.sprite.Sprite):
         else:
             self.fps_refresh += 1
 
-        if self.my_scene_name != "LEVEL_SELECT": 
-            self.x = int(self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2) + ID * 7 + 10
-            self.y = self.my_scene.my_theatre.theatre_dim[1] - 20
+        #if self.my_scene_name != "LEVEL_SELECT": 
+        #    self.x = int(self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2) + ID * 7 + 10
+        #    self.y = self.my_scene.my_theatre.theatre_dim[1] - 20
             
 
-    def update_colorfilter(self, target_load):
+    def update_colorfilter(self):
 
-        self.x = int(self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2)
-        self.y = 0
-
-        if target_load.go_colorfilter_red:
+        if self.player_sprite.go_colorfilter_new:
+            self.player_sprite.go_colorfilter_new = False
+            self.visible = True
+            self.collidable = True
             self.opacity = 40
-            self.color = (255, 0, 0)
-        elif target_load.go_colorfilter_green:
-            self.opacity = 40
-            self.color = (0, 255, 0)  
-        elif target_load.go_colorfilter_blue:
-            self.opacity = 40
-            self.color = (0, 0, 255)
-        else:
-            self.opacity = 0
-            self.color = (0, 0, 0)
-            
+            if self.player_sprite.go_colorfilter_red:
+                self.color = (255, 0, 0)
+            elif self.player_sprite.go_colorfilter_green:
+                self.color = (0, 255, 0)  
+            elif self.player_sprite.go_colorfilter_blue:
+                self.color = (0, 0, 255)
+            else:
+                self.visible = False
+                self.collidable = False
 
-    def update(self, sprite_list, dt, target_load, check_timer):
+    
+    def update(self, sprite_list, dt, target, check_timer):
 
-
-        if self.type_tile or self.type_deco:
-            #determine if the sprite is near the player
-            if check_timer % 60 == 0:
-                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
-                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
-                    self.near_player = True
-                else:
-                    self.near_player = False
-
-            #determine if the sprite must be drawn or not
-            elif check_timer % 3 == 0:
-                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
-                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
-                    self.visible = False
-                else:
-                    self.visible = True
-            return
+        self.player_sprite = target
+        
+##        if self.type_tile or self.type_deco:
+##            #determine if the sprite is near the player
+##            if check_timer % 60 == 0:
+##                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
+##                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
+##                    self.near_player = True
+##                else:
+##                    self.near_player = False
+##
+##            #determine if the sprite must be drawn or not
+##            elif check_timer % 3 == 0:
+##                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
+##                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
+##                    self.visible = False
+##                else:
+##                    self.visible = True
+##            return
         
         if self.type_tile:
             return
@@ -153,18 +152,16 @@ class New_sprite(pyglet.sprite.Sprite):
         if self.type_event:
             return
 
-        self.player_sprite = target_load
-
         if self.type_base or self.type_front:
-            self.update_base_front()
+            #self.update_base_front()
             return
         
         if self.type_colorfilter:
-            self.update_colorfilter(target_load)
+            self.update_colorfilter()
             return
         
         if self.type_back:
-            self.update_back()
+            #self.update_back()
             return
         
         if self.type_fps:

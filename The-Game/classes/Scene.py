@@ -353,7 +353,7 @@ class Scene_de_theatre(object):
         number_list = pyglet.image.ImageGrid(number_sheet_image, 1, 10)
     
         for num in range(4):
-            number_sprite = Sprite.New_sprite(number_list[0], 2+num*7, 460, 900, constants.SPRITE_X, constants.SPRITE_Y, my_batch = hud_batch, my_group = number_z, spr_type = "fps_" + str(num), collidable = False , my_scene_name = my_scene_name, my_scene = self)
+            number_sprite = Sprite.New_sprite(number_list[0], 2+num*7, 0, 900, constants.SPRITE_X, constants.SPRITE_Y, my_batch = hud_batch, my_group = number_z, spr_type = "fps_" + str(num), collidable = False , my_scene_name = my_scene_name, my_scene = self)
             self.sprite_list.append(number_sprite)
 
 
@@ -388,14 +388,14 @@ class Scene_de_theatre(object):
 
             if self.new_name != "GAME_START":
 
-                self.sprite_list_collidable = []
-                
+##                self.sprite_list_collidable = []
+##                
                 for sprite in self.sprite_list:
-                        sprite.update(self.sprite_list, dt, self.player_sprite, self.check_timer)
-                        if sprite.visible and sprite.collidable:
-                            self.sprite_list_collidable.append(sprite)
+                    sprite.update(self.sprite_list, dt, self.player_sprite, self.check_timer)
+##                    if sprite.visible and sprite.collidable:
+##                        self.sprite_list_collidable.append(sprite)
 
-                self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
+##                self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
                 
                 self.my_event.update(self.name)
 
@@ -411,11 +411,12 @@ class Scene_de_theatre(object):
                 
         
     def update_camera(self):
-
+        pass
+    
         if self.my_scene != "LEVEL_SELECT":
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(self.camera_target.x-self.my_theatre.theatre_dim[0]/2, self.camera_target.x+self.my_theatre.theatre_dim[0]/2, 0, self.my_theatre.theatre_dim[1], 0, 1);
+            glOrtho(0, self.my_theatre.theatre_dim[0], 0, self.my_theatre.theatre_dim[1], 0, 1);
         else:
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
@@ -511,8 +512,8 @@ class Scene_de_theatre(object):
             return 12
         else:
             return 13
-
-
+        
+        
     def anti_aliasied_texture(self, img):
         
         texture = img.get_texture()
