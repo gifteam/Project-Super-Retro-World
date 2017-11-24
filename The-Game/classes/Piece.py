@@ -14,7 +14,7 @@ class Piece_de_theatre(object):
 
 
     def update(self, dt):
-        
+
         self.Scene_de_theatre.update(dt)
         
  

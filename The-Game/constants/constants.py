@@ -2,6 +2,37 @@
     #FPS
 FRAMES_PER_SECOND = 60
 FRAMES_MAX = 60
+#ID for Deco and Events ---------
+#Trinaire code
+# ID [R G B]
+#  0  0 0 0 TILE
+#  1  0 0 1 START POS
+#  2  0 0 2 BLUE FILTER
+#  3  0 1 0 DECO
+#  4  0 1 1 DECO
+#  5  0 1 2 DECO
+#  6  0 2 0 GREEN FILTER
+#  7  0 2 1 DECO
+#  8  0 2 2 DECO
+#  9  1 0 0 DECO
+# 10  1 0 1 DECO
+# 11  1 0 2 DECO
+# 12  1 1 0 DECO
+# 13  1 1 1 DECO
+# 14  1 1 2 DECO
+# 15  1 2 0 EVENT
+# 16  1 2 1 EVENT
+# 17  1 2 2 EVENT
+# 18  2 0 0 RED FILTER
+# 19  2 0 1 EVENT
+# 20  2 0 2 EVENT
+# 21  2 1 0 EVENT
+# 22  2 1 1 EVENT
+# 23  2 1 2 EVENT
+# 24  2 2 0 EVENT
+# 25  2 2 1 EVENT
+# 26  2 2 2 EVENT
+
 #---------------
     #scene dictionary style
 MAP_STYLE = {}
@@ -22,8 +53,8 @@ LOADING_STYLE = {}
 WAKE_UP_STYLE = {}
 
     #LEVEL SIMPLE
-style = "simple"
-MAP_STYLE[style] = "006"
+style = "LEVEL_0_0"
+MAP_STYLE[style] = "LEVEL_0_0"
 BASE_BACK_STYLE[style] = "forest_017"
 BACK_STYLE[style] = []
 FRONT_STYLE[style] = "001"
@@ -34,8 +65,8 @@ ENEMYSET_STYLE[style] = "002"
 LOADING_STYLE[style] = "002"
 WAKE_UP_STYLE[style] = "004"
     #LEVEL MEDIUM
-style = "medium"
-MAP_STYLE[style] = "002"
+style = "LEVEL_1_0"
+MAP_STYLE[style] = "LEVEL_1_0"
 BASE_BACK_STYLE[style] = "forest_017"
 BACK_STYLE[style] = []
 FRONT_STYLE[style] = "001"
@@ -46,8 +77,8 @@ ENEMYSET_STYLE[style] = "002"
 LOADING_STYLE[style] = "002"
 WAKE_UP_STYLE[style] = "004"
     #LEVEL HARD
-style = "hard"
-MAP_STYLE[style] = "001"
+style = "LEVEL_2_0"
+MAP_STYLE[style] = "LEVEL_2_0"
 BASE_BACK_STYLE[style] = "forest_017"
 BACK_STYLE[style] = ["forest_016","forest_015","forest_014"]
 FRONT_STYLE[style] = "001"

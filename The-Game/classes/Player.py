@@ -1,6 +1,7 @@
 #Import basic librairies
 import pyglet
 from pyglet import window
+import time
 from pyglet.gl import *
 #Import personal packages
 from constants import constants
@@ -10,17 +11,14 @@ class Player_sprite(pyglet.sprite.Sprite):
 
     def __init__(self, x, y, z, my_batch, my_group, spr_type, collidable, my_scene, my_event_list):
 
+        #debug - - - - - - - - - - - - - - - - - - -
+        self.print_dt = 0 # Nb of frame to print dt time (duration) for each procedure
         #game - - - - - - - - - - - - - - - - - - - -
         self.dt = 0
         self.my_scene = my_scene
         self.type = spr_type
         self.my_batch = my_batch
         self.type_fps = False
-        #scene - - - - - - - - - - - - - - - - - - - -
-        self.scene_start = 0
-        self.scene_start_step_1 = 80
-        self.scene_start_step_2 = 140
-        self.scene_start_step_3 = 220
         #colorfilter - - - - - - - - - - - - - - - - -
         self.go_colorfilter_new = False
         self.go_colorfilter_red = False
@@ -172,8 +170,8 @@ class Player_sprite(pyglet.sprite.Sprite):
             return constants.PLAYER_STYLE[self.my_scene], 0, 11*constants.SPRITE_Y, 3*constants.SPRITE_X, constants.SPRITE_Y, False, 3, 0.1
 
 
-    def update(self, sprite_list, dt, himself, check_timer):
-
+    def update(self, sprite_list, dt, himself):
+            
         self.dt = dt
         self.update_player()
 
@@ -186,6 +184,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         self.update_anim_sequence()
         self.update_effects()
 
+        self.print_dt -= 1
 
     def update_effects(self):
 
@@ -203,8 +202,7 @@ class Player_sprite(pyglet.sprite.Sprite):
         if self.anim_state != self.old_anim_state:
             self.image = self.all_anim_sequences[self.anim_state]
             self.old_anim_state = self.anim_state
-            #print(self.anim_state)
-
+            
             
     def update_player_gravity(self):
         
@@ -275,52 +273,50 @@ class Player_sprite(pyglet.sprite.Sprite):
                 self.new_jump = False
             
         self.old_jump = self.new_jump
-            
 
+            
     def update_player_animation(self):
 
+        # When you walk
+        # Switch to jump animation (complete one) 
         if self.new_jump and not ("JUMP" in self.anim_state):
-            if self.new_direction == "RIGHT":
-                self.anim_state = "JUMP_COMPLETE_RIGHT"
-            else:
-                self.anim_state = "JUMP_COMPLETE_LEFT"
-            self.fog_sprite.change_effect("JUMP_FOG")
-            return
-
-        if self.new_jump and self._frame_index == 1 and self.anim_state[:13] == "JUMP_COMPLETE":
-            if self.new_direction == "RIGHT":
-                self.anim_state = "JUMP_RIGHT"
-            else:
-                self.anim_state = "JUMP_LEFT" 
+            self.go_to_complete_jump_anim()
             return
         
+        # When you jump (complete version)
+        # Switch to basic jump anim (after complete one)
+        if self.new_jump and self._frame_index == 1 and self.anim_state[:13] == "JUMP_COMPLETE":
+            self.go_to_jump_anim()
+            return
+
+        # When you jump (simple version)
+        # Change direction
         if self.new_jump and self.anim_state[:13] != "JUMP_COMPLETE":
-            if self.new_direction == "RIGHT":
-                self.anim_state = "JUMP_RIGHT"
-            else:
-                self.anim_state = "JUMP_LEFT"
-              
+            self.go_to_change_jump_dir()
+
+        # When you jump
+        # Stop here (self.new_jump == True)
         if self.anim_state[:5] == "JUMP_" and self.new_jump:
             return
 
-
+        # When you jump
+        # Switch to fall animation (self.new_jump == False)
+        # Also stop here (self.new_fall == True)
         if self.new_fall:
             if not ("FALL" in self.anim_state) or ("FALL_COMPLETE" in self.anim_state) and self._frame_index < 2: 
                 self.anim_state = "FALL_COMPLETE_" + self.new_direction
-                return
             elif self._frame_index == 2 and self.anim_state[:13] == "FALL_COMPLETE":
                 self.anim_state = "FALL_" + self.new_direction
-                return   
+            return
         elif self.old_fall:
             self.anim_state = "IDLE_" + self.new_direction
             return
 
-        if self.new_fall:
-            return
         
         if self.fog_sprite.effect_name != "WALK_FOG":
             self.fog_sprite.change_effect("WALK_FOG")
-         
+
+
         if self.anim_state[:7] == "TO_THE_":
             if self._frame_index == 2:
                 self.anim_state = "WALK_" + self.new_direction
@@ -341,7 +337,6 @@ class Player_sprite(pyglet.sprite.Sprite):
             self.anim_state = "WALK_RIGHT"
             return
 
-  
         if self.anim_state[:5] == "BREAK":
             if self.duration_moving == 0:
                 if self.anim_state[len(self.anim_state)-1] == "1":
@@ -350,24 +345,21 @@ class Player_sprite(pyglet.sprite.Sprite):
                 elif self._frame_index == 2:
                     self.anim_state = "IDLE_EDGE_" + self.new_direction
             return
-
-                
+      
         if self.anim_state[:4] != "IDLE" and self.anim_state[:5] != "BREAK":
             if self.anim_state == "WALK_LEFT":
                 self.anim_state = "BREAK_LEFT_01"          
             elif self.anim_state == "WALK_RIGHT":
                 self.anim_state = "BREAK_RIGHT_01"
             return
-        
-        return
+
                 
     def update_player_movement(self):
 
         if self.anim_state == "DEATH":
-            return            
+            return
 
         self.update_player_animation()
-
         self.moving_left_old = self.moving_left
         self.moving_right_old = self.moving_right
 
@@ -494,6 +486,28 @@ class Player_sprite(pyglet.sprite.Sprite):
             self.want_to_action = False
 
 
+    def go_to_complete_jump_anim(self):
+        if self.new_direction == "RIGHT":
+            self.anim_state = "JUMP_COMPLETE_RIGHT"
+        else:
+            self.anim_state = "JUMP_COMPLETE_LEFT"
+        self.fog_sprite.change_effect("JUMP_FOG")
+
+
+    def go_to_jump_anim(self):
+        if self.new_direction == "RIGHT":
+            self.anim_state = "JUMP_RIGHT"
+        else:
+            self.anim_state = "JUMP_LEFT"
+
+
+    def go_to_change_jump_dir(self):
+        if self.new_direction == "RIGHT":
+            self.anim_state = "JUMP_RIGHT"
+        else:
+            self.anim_state = "JUMP_LEFT"
+
+            
     def anti_aliasied_texture(self, img):
         
         texture = img.get_texture()

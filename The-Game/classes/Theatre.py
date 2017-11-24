@@ -23,7 +23,6 @@ class Salle_de_theatre(pyglet.window.Window):
     def on_draw(self):
 
         pyglet.clock.tick()
-        
         self.clear()
         self.Piece_de_theatre.Scene_de_theatre.batch.draw()
 

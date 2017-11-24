@@ -5,8 +5,9 @@ from pyglet.gl import *
 from constants import constants
 
 #event_info structure:
-#[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-# 0 = event ID from minimap color (RGB color value divide by 100 = binary value)
+#[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+# 0 = event ID from minimap color (RGB color value divide by 100 = trinary value)
+#     possible values = 15 16 17 19 20 21 22 23 24 25 26
 # 1 = filename "xxx" ( x = [0-9])
 # 2 = 1 if top_left anchor_y, 0 if bottom left anchor_y 
 # 3 = z
@@ -42,69 +43,38 @@ class Event(object):
         event_info = []
         event_info_tmp = []
         self.link_id_pos = {}
+        my_ID = -1
+        all_states = ["IDLE", "ACTIVE", "SLEEP"]
         
-        if self.my_scene == "hard":
-            pass
-            
-        if self.my_scene == "simple":
-            my_ID = 0
-            all_states = ["IDLE", "ACTIVE", "SLEEP"]
-            event_info_tmp = [1, "004", 1, 300, True, 0.1, [True,["TOP"]], 0, 0, 0, "IDLE", None, True, True]
-            event_sequence = {}
-            for id_state in range(len(all_states)):
-                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
-            event_info_tmp[11] = event_sequence
-            event_info.append(event_info_tmp)
-            self.link_id_pos[1] = my_ID
-
+        if self.my_scene == "LEVEL_0_0":
             my_ID += 1
-            event_info_tmp = [4, "006", 0, 300, True, 0.1, [False, None], 0, 0, 0, "IDLE", None, True, False]
+            EVENT_ID = 15
+            event_info_tmp = [EVENT_ID, "006", 0, 300, True, 0.1, [False, None], 0, 0, 0, "IDLE", None, True, False]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
             event_info_tmp[11] = event_sequence
             event_info.append(event_info_tmp)
-            self.link_id_pos[4] = my_ID
+            self.link_id_pos[EVENT_ID] = my_ID
 
-            #colorfilter event
-
-            my_ID += 1 #BLUE ID = 2
-            event_info_tmp = [2, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
-            event_sequence = {}
-            for id_state in range(len(all_states)):
-                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
-            event_info_tmp[11] = event_sequence
-            event_info.append(event_info_tmp)
-            self.link_id_pos[2] = my_ID
-
-            my_ID += 1 #GREEN ID = 6
-            event_info_tmp = [6, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
-            event_sequence = {}
-            for id_state in range(len(all_states)):
-                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
-            event_info_tmp[11] = event_sequence
-            event_info.append(event_info_tmp)
-            self.link_id_pos[6] = my_ID
-
-            my_ID += 1 #RED ID = 18
-            event_info_tmp = [18, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
-            event_sequence = {}
-            for id_state in range(len(all_states)):
-                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
-            event_info_tmp[11] = event_sequence
-            event_info.append(event_info_tmp)
-            self.link_id_pos[18] = my_ID
+        #color filter event whatever the level
+        my_ID += 1
+        event_info.append(self.add_colorfilter_to_event_list("RED", my_ID))
+        my_ID += 1
+        event_info.append(self.add_colorfilter_to_event_list("GREEN", my_ID))
+        my_ID += 1
+        event_info.append(self.add_colorfilter_to_event_list("BLUE", my_ID))
 
         return event_info
 
 
     def action(self):
 
-        if self.scene == "simple":
-            self.action_level_simple()
+        if self.scene == "LEVEL_0_0":
+            self.action_LEVEL_0_0()
 
 
-    def action_level_simple(self):
+    def action_LEVEL_0_0(self):
         
         if self.event_id == 1 and not self.player_sprite.new_jump:
             if self.event_info[self.link_id_pos[self.event_id]][10] == "IDLE":
@@ -113,13 +83,13 @@ class Event(object):
                 #ACTION = = = = = = = = = = = = = = = = = =
                 self.player_sprite.want_to_jump = True
             
-        if self.event_id == 4:
+        if self.event_id == 15:
             if self.event_info[self.link_id_pos[self.event_id]][10] == "IDLE":
                 self.event_info[self.link_id_pos[self.event_id]][10] = "ACTIVE"
                 self.event_sprite.image = self.event_info[self.link_id_pos[self.event_id]][11]["ACTIVE"]
                 #ACTION = = = = = = = = = = = = = = = = = =
-                self.textbox_sprite.x = self.event_sprite.x + 16 - self.textbox_sprite.image.width/2
-                self.textbox_sprite.y = self.event_sprite.y + self.textbox_sprite.image.height
+                self.textbox_sprite.x = 100 #self.event_sprite.x + 16 - self.textbox_sprite.image.width/2
+                self.textbox_sprite.y = 100 #self.event_sprite.y + self.textbox_sprite.image.height
                 self.textbox_sprite.opacity = 255
 
         # colorfilter event action
@@ -141,9 +111,13 @@ class Event(object):
 
     def check_colorfilter_event(self):
 
-        self.event_sprite.collidable = False
-        self.event_sprite.opacity = 0
-        self.event_sprite.color = (0,0,0)
+        if (self.event_info[self.link_id_pos[self.event_id]][0] == 2 or
+            self.event_info[self.link_id_pos[self.event_id]][0] == 6 or
+            self.event_info[self.link_id_pos[self.event_id]][0] == 18):
+
+            self.event_sprite.collidable = False
+            self.event_sprite.opacity = 0
+            self.event_sprite.color = (0,0,0)
 
         if (self.event_info[self.link_id_pos[self.event_id]][0] == 2 and
             self.player_sprite.go_colorfilter_blue): #BLUE ID = 2
@@ -266,7 +240,45 @@ class Event(object):
             
         return animation
     
+
+    def add_colorfilter_to_event_list(self, color, my_ID):
+
+        returned_event_info_colorfilter = [None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+        all_states = ["IDLE", "ACTIVE", "SLEEP"]
+        
+        if color == "BLUE":
+            BLUE_ID = 2
+            event_info_tmp = [BLUE_ID, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
+            event_sequence = {}
+            for id_state in range(len(all_states)):
+                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
+            event_info_tmp[11] = event_sequence
+            returned_event_info_colorfilter = event_info_tmp
+            self.link_id_pos[BLUE_ID] = my_ID
+
+        elif color == "GREEN":
+            GREEN_ID = 6
+            event_info_tmp = [GREEN_ID, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
+            event_sequence = {}
+            for id_state in range(len(all_states)):
+                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
+            event_info_tmp[11] = event_sequence
+            returned_event_info_colorfilter = event_info_tmp
+            self.link_id_pos[GREEN_ID] = my_ID
+
+        elif color == "RED":
+            RED_ID = 18
+            event_info_tmp = [RED_ID, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
+            event_sequence = {}
+            for id_state in range(len(all_states)):
+                event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
+            event_info_tmp[11] = event_sequence
+            returned_event_info_colorfilter = event_info_tmp
+            self.link_id_pos[RED_ID] = my_ID
+
+        return returned_event_info_colorfilter
     
+
     def anti_aliasied_texture(self, img):
         
         texture = img.get_texture()

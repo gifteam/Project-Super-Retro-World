@@ -92,7 +92,6 @@ class New_sprite(pyglet.sprite.Sprite):
         if self.fps_refresh >= self.fps_refresh_rate:
             self.fps_refresh = 0
             fps = str(int(pyglet.clock.get_fps()))
-            #self.fps_file.write(fps+ '\n')
             fps = "0" * (4-len(fps)) + fps
             if len(fps) > 4:
                 fps = "9999"
@@ -100,11 +99,7 @@ class New_sprite(pyglet.sprite.Sprite):
             self.image = self.number_list[num]
         else:
             self.fps_refresh += 1
-
-        #if self.my_scene_name != "LEVEL_SELECT": 
-        #    self.x = int(self.player_sprite.x - self.my_scene.my_theatre.theatre_dim[0]/2) + ID * 7 + 10
-        #    self.y = self.my_scene.my_theatre.theatre_dim[1] - 20
-            
+   
 
     def update_colorfilter(self):
 
@@ -124,52 +119,15 @@ class New_sprite(pyglet.sprite.Sprite):
                 self.collidable = False
 
     
-    def update(self, sprite_list, dt, target, check_timer):
+    def update(self, sprite_list, dt, target):
 
         self.player_sprite = target
         
-##        if self.type_tile or self.type_deco:
-##            #determine if the sprite is near the player
-##            if check_timer % 60 == 0:
-##                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
-##                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
-##                    self.near_player = True
-##                else:
-##                    self.near_player = False
-##
-##            #determine if the sprite must be drawn or not
-##            elif check_timer % 3 == 0:
-##                if (self.rect[0] + self.rect[2] < target_load.x - self.my_scene.my_theatre.theatre_dim[0]/2) or (
-##                    self.rect[0] > target_load.x + self.my_scene.my_theatre.theatre_dim[0]/2):
-##                    self.visible = False
-##                else:
-##                    self.visible = True
-##            return
-        
-        if self.type_tile:
-            return
-        
-        if self.type_event:
-            return
-
-        if self.type_base or self.type_front:
-            #self.update_base_front()
-            return
-        
         if self.type_colorfilter:
             self.update_colorfilter()
-            return
-        
-        if self.type_back:
-            #self.update_back()
-            return
-        
-        if self.type_fps:
+        elif self.type_fps:
             self.update_fps()
-            return
 
-        if self.type_textbox:
-            return
 
     def anti_aliasied_texture(self, img):
         

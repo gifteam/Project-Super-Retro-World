@@ -243,11 +243,11 @@ class Menu(object):
 
                 self.sound_effect_select.play()
                 if self.menu_list_position == 0:
-                    self.scene.new_name = "simple"
+                    self.scene.new_name = "LEVEL_0_0"
                 elif self.menu_list_position == 1:
-                    self.scene.new_name = "medium"
+                    self.scene.new_name = "LEVEL_1_0"
                 else:
-                    self.scene.new_name = "hard"
+                    self.scene.new_name = "LEVEL_2_0"
 
                     
             self.my_key_pressed = None

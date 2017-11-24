@@ -21,7 +21,7 @@ class Scene_de_theatre(object):
         self.my_piece = my_piece
         self.my_scene = my_scene
         #player - - - - - - - - - - - - - - - - - - - - - 
-        self.player_pos = [int(self.my_theatre.theatre_dim[0]/2), self.my_theatre.theatre_dim[1]]
+        self.player_pos = [0,0]
         self.player_sprite = None
         #event and batch- - - - - - - - - - - - - - - - - 
         self.my_event = Event.Event(self.name)
@@ -205,7 +205,7 @@ class Scene_de_theatre(object):
                         is_deco = True
                         ID = deco_id
 
-                if is_deco: #deco ID  (001b to 111b)
+                if is_deco: #deco ID
 
                     deco_sprite_info = deco_info[ID]
                     
@@ -257,14 +257,19 @@ class Scene_de_theatre(object):
                 
                 ID = self.get_deco_id_from_color(minimap_array[y][x])
                 is_event = False
+
+                if ID == 1: #set player origin position
+                    self.player_pos[0] = x * constants.SPRITE_X
+                    self.player_pos[1] = y * constants.SPRITE_Y + 1
+                    
                 
                 for event_id in range(len(event_info)):
                     if event_info[event_id][0] == ID:
                         is_event = True
                         ID = event_id
+                        break
 
                 if is_event: #event ID  (001b to 111b)
-                    
                     event_sprite_info = event_info[ID]
                     
                     my_x = (x + event_sprite_info[7]) * constants.SPRITE_X
@@ -273,7 +278,7 @@ class Scene_de_theatre(object):
                     event_z = pyglet.graphics.OrderedGroup(my_z)
                     event_collidable = event_sprite_info[6][0]
                     event_image = event_sprite_info[11][event_sprite_info[10]]                 
-                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, 7, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable , my_scene_name = my_scene_name, my_scene = self)
+                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable , my_scene_name = my_scene_name, my_scene = self)
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
 
@@ -379,6 +384,10 @@ class Scene_de_theatre(object):
     def update(self, dt):
 
         if self.new_name != self.name:
+            print(" - - - - - - - - - - - - - - - ")
+            print("creation de la nouvelle scene :")
+            print(self.name, "=>", self.new_name)
+            print(" - - - - - - - - - - - - - - - ")
             self.name = self.new_name
             self.delete_all_sprites()
             self.run = False
@@ -387,24 +396,14 @@ class Scene_de_theatre(object):
         if self.run:
 
             if self.new_name != "GAME_START":
-
-##                self.sprite_list_collidable = []
-##                
+         
                 for sprite in self.sprite_list:
-                    sprite.update(self.sprite_list, dt, self.player_sprite, self.check_timer)
-##                    if sprite.visible and sprite.collidable:
-##                        self.sprite_list_collidable.append(sprite)
-
-##                self.player_sprite.sprite_list_collidable = self.sprite_list_collidable
+                    sprite.update(self.sprite_list, dt, self.player_sprite)
                 
                 self.my_event.update(self.name)
 
                 self.update_camera()
             
-                if self.check_timer > 60:
-                    self.check_timer = 1
-                else:
-                    self.check_timer += 1
             else:
 
                 self.menu.update()
