@@ -21,6 +21,7 @@ class New_sprite(pyglet.sprite.Sprite):
         self.type_event = False
         self.type_textbox = False
         self.type_colorfilter = False
+        self.type_colorfilter_push = False
         self.type = spr_type
         
         if spr_type[:5] == "event":
@@ -45,6 +46,14 @@ class New_sprite(pyglet.sprite.Sprite):
             self.timeout_textbox = 0
         elif spr_type == "colorfilter":
             self.type_colorfilter = True
+        elif spr_type == "colorfilter_push":
+            self.type_colorfilter_push = True
+            self.colorfilter_push_image_list = []
+            self.colorfilter_push_image_list.append(img.get_region(0, 0, 26, 30))
+            self.colorfilter_push_image_list.append(img.get_region(26, 0, 26, 30))
+            self.colorfilter_push_image_list.append(img.get_region(52, 0, 26, 30))
+            self.image = self.colorfilter_push_image_list[0]
+            self.y = 12
             
         self.z = z
         self.x_origin = x
@@ -104,27 +113,46 @@ class New_sprite(pyglet.sprite.Sprite):
     def update_colorfilter(self):
 
         if self.player_sprite.go_colorfilter_new:
-            self.player_sprite.go_colorfilter_new = False
             self.visible = True
-            self.collidable = True
             self.opacity = 40
             if self.player_sprite.go_colorfilter_red:
                 self.color = (255, 0, 0)
             elif self.player_sprite.go_colorfilter_green:
-                self.color = (0, 255, 0)  
+                self.color = (0, 255, 0)
             elif self.player_sprite.go_colorfilter_blue:
                 self.color = (0, 0, 255)
             else:
                 self.visible = False
-                self.collidable = False
 
-    
+
+    def update_colorfilter_push(self):
+
+
+        if self.player_sprite.go_colorfilter_new:
+            self.player_sprite.go_colorfilter_new = False
+            self.visible = True
+            self.opacity = 255
+            if self.player_sprite.go_colorfilter_red:
+                self.image = self.colorfilter_push_image_list[0]
+                self.x = 12 + 262
+            elif self.player_sprite.go_colorfilter_green:
+                self.image = self.colorfilter_push_image_list[1]
+                self.x = 41 + 262
+            elif self.player_sprite.go_colorfilter_blue:
+                self.image = self.colorfilter_push_image_list[2]
+                self.x = 70 + 262
+            else:
+                self.visible = False
+
+        
     def update(self, sprite_list, dt, target):
 
         self.player_sprite = target
         
         if self.type_colorfilter:
             self.update_colorfilter()
+        elif self.type_colorfilter_push:
+            self.update_colorfilter_push()
         elif self.type_fps:
             self.update_fps()
 

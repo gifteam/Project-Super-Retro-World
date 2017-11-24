@@ -37,9 +37,7 @@ class Scene_de_theatre(object):
         if self.new_name == "GAME_START":
             self.load_game_start()
         else:
-            self.my_scene_is_loaded = False
             self.load_scene()
-            self.my_scene_is_loaded = True
            # = = = = = = = = = = = = = = = = = = = = = = = =
 
             #object finalisation- - - - - - - - - - - - - - - 
@@ -75,7 +73,7 @@ class Scene_de_theatre(object):
         self.load_textbox()
         self.load_colorfilter()
         self.load_player()
-        #self.load_frontground()
+        self.load_frontground()
         self.load_HUD()
         self.load_camera()
 
@@ -311,7 +309,15 @@ class Scene_de_theatre(object):
         self.colorfilter_sprite.color = (0,0,0)
         self.sprite_list.append(self.colorfilter_sprite)
 
-             
+        colorfilter_push = constants.PATH_FRONT + "002.png"
+        colorfilter_push_z = pyglet.graphics.OrderedGroup(1000)
+        colorfilter_push_image = pyglet.image.load(colorfilter_push)
+        self.anti_aliasied_texture(colorfilter_push_image)
+        self.colorfilter_push_sprite = Sprite.New_sprite(colorfilter_push_image, 0, 0, 0, 0, 0, my_batch = colorfilter_batch, my_group = colorfilter_push_z, spr_type = "colorfilter_push", collidable = False , my_scene_name = my_scene_name, my_scene = self)
+        self.colorfilter_push_sprite.opacity = 0
+        self.sprite_list.append(self.colorfilter_push_sprite)
+
+        
     def load_player(self):
         
         my_scene_name = self.my_scene
@@ -327,22 +333,20 @@ class Scene_de_theatre(object):
         my_scene_name = self.my_scene
         
         front = constants.PATH_FRONT + constants.FRONT_STYLE[my_scene_name] + ".png"
-        front_z = pyglet.graphics.OrderedGroup(800)
+        front_z = pyglet.graphics.OrderedGroup(999)
         front_image = pyglet.image.load(front)
         self.anti_aliasied_texture(front_image)
         front_batch = self.batch
-        front_sequence = pyglet.image.ImageGrid(front_image, 1, 4)
-        front_animation = pyglet.image.Animation.from_image_sequence(front_sequence, 0.25, True)
-        front_sprite = Sprite.New_sprite(front_animation, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = front_batch, my_group = front_z, spr_type = "front", collidable = False , my_scene_name = my_scene_name, my_scene = self)
+        front_sprite = Sprite.New_sprite(front_image, 262, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = front_batch, my_group = front_z, spr_type = "front", collidable = False , my_scene_name = my_scene_name, my_scene = self)
         self.sprite_list.append(front_sprite)
 
-        ambiance = constants.PATH_FRONT + "003" + ".png"
-        ambiance_z = pyglet.graphics.OrderedGroup(799)
-        ambiance_image = pyglet.image.load(ambiance)
-        self.anti_aliasied_texture(ambiance_image)
-        ambiance_batch = self.batch
-        ambiance_sprite = Sprite.New_sprite(ambiance_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = ambiance_batch, my_group = ambiance_z, spr_type = "front", collidable = False , my_scene_name = my_scene_name, my_scene = self)
-        self.sprite_list.append(ambiance_sprite)
+##        ambiance = constants.PATH_FRONT + "004" + ".png"
+##        ambiance_z = pyglet.graphics.OrderedGroup(799)
+##        ambiance_image = pyglet.image.load(ambiance)
+##        self.anti_aliasied_texture(ambiance_image)
+##        ambiance_batch = self.batch
+##        ambiance_sprite = Sprite.New_sprite(ambiance_image, 0, 0, 0, constants.SPRITE_X, constants.SPRITE_Y, my_batch = ambiance_batch, my_group = ambiance_z, spr_type = "front", collidable = False , my_scene_name = my_scene_name, my_scene = self)
+##        self.sprite_list.append(ambiance_sprite)
         
 
     def load_HUD(self):
