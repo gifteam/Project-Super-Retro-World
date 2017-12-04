@@ -5,7 +5,7 @@ from pyglet.gl import *
 from constants import constants
 
 #event_info structure:
-#[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+#[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 # 0 = event ID from minimap color (RGB color value divide by 100 = trinary value)
 #     possible values = 15 16 17 19 20 21 22 23 24 25 26
 # 1 = filename "xxx" ( x = [0-9])
@@ -21,6 +21,7 @@ from constants import constants
 # 11 = array of anim sprite state
 # 12 = If animated: loop = True/False
 # 13 = from ACTIVE to SLEEP (False) or to IDLE (True)?
+# [14.1 ; 14.2] = hitbox [w;h]
 
 class Event(object):
 
@@ -49,7 +50,7 @@ class Event(object):
         if self.my_scene == "LEVEL_0_0":
             my_ID += 1
             EVENT_ID = 15
-            event_info_tmp = [EVENT_ID, "006", 0, 300, True, 0.1, [False, None], 0, 0, 0, "IDLE", None, True, False]
+            event_info_tmp = [EVENT_ID, "006", 0, 300, True, 0.1, [False, None], 0, 0, 0, "IDLE", None, True, False, [constants.SPRITE_X, constants.SPRITE_Y]]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
@@ -93,9 +94,19 @@ class Event(object):
                 self.textbox_sprite.opacity = 255
 
         # colorfilter event action
-        if (self.event_id == 2 or self.event_id == 6 or self.event_id == 18) and self.event_sprite.collidable:
-            self.event_sprite.opacity = 255
+        if (self.event_id == 6) and self.event_sprite.collidable:
+            self.event_sprite.y += 1
+            self.event_sprite.rect[1] += 1
+            self.player_sprite.y += 1
+            self.player_sprite.rect[1] += 1
             
+
+        # colorfilter event action
+        if (self.event_id == 18) and self.event_sprite.collidable:
+            self.event_sprite.y -= 1
+            self.event_sprite.rect[1] -= 1
+            self.player_sprite.y -= 1
+            self.player_sprite.rect[1] -= 1
 
     def check_active_events(self):
 
@@ -116,29 +127,25 @@ class Event(object):
             self.event_info[self.link_id_pos[self.event_id]][0] == 18):
 
             self.event_sprite.collidable = False
-            self.event_sprite.opacity = 0
-            self.event_sprite.color = (0,0,0)
+            self.event_sprite.visible = False
 
         if (self.event_info[self.link_id_pos[self.event_id]][0] == 2 and
             self.player_sprite.go_colorfilter_blue): #BLUE ID = 2
 
             self.event_sprite.collidable = True
-            self.event_sprite.opacity = 150
-            self.event_sprite.color = (0,0,255)
+            self.event_sprite.visible = True
 
         elif (self.event_info[self.link_id_pos[self.event_id]][0] == 6 and
               self.player_sprite.go_colorfilter_green): #GREEN ID = 6
 
             self.event_sprite.collidable = True
-            self.event_sprite.opacity = 150
-            self.event_sprite.color = (0,255,0)
+            self.event_sprite.visible = True
             
         elif (self.event_info[self.link_id_pos[self.event_id]][0] == 18 and
               self.player_sprite.go_colorfilter_red): #RED ID = 18
 
             self.event_sprite.collidable = True
-            self.event_sprite.opacity = 150
-            self.event_sprite.color = (255,0,0)
+            self.event_sprite.visible = True
 
                     
     def update(self, my_scene):
@@ -237,18 +244,19 @@ class Event(object):
                 animation = sequence[0]
         else:
             animation = complete_image
+            self.anti_aliasied_texture(animation)
             
         return animation
     
 
     def add_colorfilter_to_event_list(self, color, my_ID):
 
-        returned_event_info_colorfilter = [None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+        returned_event_info_colorfilter = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
         all_states = ["IDLE", "ACTIVE", "SLEEP"]
         
         if color == "BLUE":
             BLUE_ID = 2
-            event_info_tmp = [BLUE_ID, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
+            event_info_tmp = [BLUE_ID, "002", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True, [32, 7]]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
@@ -258,7 +266,7 @@ class Event(object):
 
         elif color == "GREEN":
             GREEN_ID = 6
-            event_info_tmp = [GREEN_ID, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
+            event_info_tmp = [GREEN_ID, "003", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True, [32, 7]]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])
@@ -268,7 +276,7 @@ class Event(object):
 
         elif color == "RED":
             RED_ID = 18
-            event_info_tmp = [RED_ID, "005", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True]
+            event_info_tmp = [RED_ID, "001", 0, 300, False, 0, [True, ["TOP"]], 0, 0, 0, "IDLE", None, False, True, [32, 7]]
             event_sequence = {}
             for id_state in range(len(all_states)):
                 event_sequence[all_states[id_state]] = self.get_new_sequence(event_info_tmp, all_states[id_state])

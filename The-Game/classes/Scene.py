@@ -273,10 +273,12 @@ class Scene_de_theatre(object):
                     my_x = (x + event_sprite_info[7]) * constants.SPRITE_X
                     my_y = (y + event_sprite_info[8]) * constants.SPRITE_Y
                     my_z = event_sprite_info[3]
+                    my_w = event_sprite_info[14][0]
+                    my_h = event_sprite_info[14][1]
                     event_z = pyglet.graphics.OrderedGroup(my_z)
                     event_collidable = event_sprite_info[6][0]
                     event_image = event_sprite_info[11][event_sprite_info[10]]                 
-                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, constants.SPRITE_X, constants.SPRITE_Y, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable , my_scene_name = my_scene_name, my_scene = self)
+                    event_sprite = Sprite.New_sprite(event_image, my_x, my_y, my_z, my_w, my_h, my_batch = self.batch, my_group = event_z, spr_type = "event", collidable = event_collidable , my_scene_name = my_scene_name, my_scene = self)
                     self.sprite_list.append(event_sprite)
                     self.event_list.append([event_sprite_info, event_sprite])
 

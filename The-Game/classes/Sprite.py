@@ -53,7 +53,7 @@ class New_sprite(pyglet.sprite.Sprite):
             self.colorfilter_push_image_list.append(img.get_region(26, 0, 26, 30))
             self.colorfilter_push_image_list.append(img.get_region(52, 0, 26, 30))
             self.image = self.colorfilter_push_image_list[0]
-            self.y = 12
+            self.y = 10
             
         self.z = z
         self.x_origin = x
