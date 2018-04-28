@@ -1,9 +1,9 @@
 //include standard libraries
 #include <iostream>
 //include custom Theater scene class header
-#include "Theater_scene_class.h"
+#include ""/home/ayoub/Project-Super-Retro-World/cpp_project/Super_Retro_World/include/Theater_scene_class.h"
 //include Sprite.h to create the sprite list
-#include "Sprite_class.h"
+#include ""/home/ayoub/Project-Super-Retro-World/cpp_project/Super_Retro_World/include/Sprite_class.h"
 
 //constructor
 Theater_scene::Theater_scene(void)

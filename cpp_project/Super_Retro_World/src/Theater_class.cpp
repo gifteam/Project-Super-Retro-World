@@ -4,11 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 //include custom Theater class header
-#include "Theater_class.h"
+#include ""/home/ayoub/Project-Super-Retro-World/cpp_project/Super_Retro_World/include/Theater_class.hpp"
 //include custom Theater play class header
-#include "Theater_play_class.h"
+#include ""/home/ayoub/Project-Super-Retro-World/cpp_project/Super_Retro_World/include/Theater_play_class.hpp"
 //include constants struct
-#include "Constants.h"
+#include ""/home/ayoub/Project-Super-Retro-World/cpp_project/Super_Retro_World/include/Constants.hpp"
 
 //constructor
 Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480), "My window")
@@ -31,7 +31,7 @@ Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480),
         //setVerticalSyncEnabled(true);
     setFramerateLimit(60);
     fps_show_timeout = 30;
-    glEnable(GL_TEXTURE_2D); //pas compris ce que ça faisait
+    glEnable(GL_TEXTURE_2D); //pas compris ce que ï¿½a faisait
 
     //set font
     if (!font.loadFromFile("file/font/font_001.ttf"))
