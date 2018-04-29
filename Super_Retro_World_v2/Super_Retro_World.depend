@@ -498,3 +498,59 @@
 	<map>
 	<string>
 
+1523680194 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\main.cpp
+	<iostream>
+	<SFML/Graphics.hpp>
+	"../include/Theater_class.hpp"
+	"../include/Constants.hpp"
+
+1523660990 c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\include\theater_class.hpp
+	<string>
+	<SFML/Graphics.hpp>
+	<SFML/System.hpp>
+	"../include/Theater_play_class.hpp"
+	"../include/Constants.hpp"
+
+1523661424 c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\include\theater_play_class.hpp
+	<string>
+	"../include/Theater_scene_class.hpp"
+	"../include/Constants.hpp"
+
+1524482548 c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\include\theater_scene_class.hpp
+	<string>
+	<vector>
+	"../include/Sprite_class.hpp"
+	"../include/Constants.hpp"
+
+1524481887 c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\include\sprite_class.hpp
+	<SFML/Graphics.hpp>
+
+1523660255 c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\include\constants.hpp
+	<map>
+	<string>
+
+1524482955 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\sprite_class.cpp
+	<iostream>
+	<SFML/Graphics.hpp>
+	"../include/Sprite_class.hpp"
+
+1523662040 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\theater_class.cpp
+	<iostream>
+	<SFML/Graphics.hpp>
+	<SFML/OpenGL.hpp>
+	"../include/Theater_class.hpp"
+	"../include/Theater_play_class.hpp"
+	"../include/Constants.hpp"
+
+1523661524 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\theater_play_class.cpp
+	<iostream>
+	"../include/Theater_play_class.hpp"
+	"../include/Theater_scene_class.hpp"
+	"../include/Constants.hpp"
+
+1524482835 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\theater_scene_class.cpp
+	<iostream>
+	"../include/Theater_scene_class.hpp"
+	"../include/Sprite_class.hpp"
+	"../include/Constants.hpp"
+

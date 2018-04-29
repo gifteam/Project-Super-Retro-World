@@ -1,8 +1,8 @@
 SET PATH=%PATH%;C:\MinGW\bin;
-g++ -lstdc++ main.cpp src\*.cpp -o project_compiled.exe -Iinclude/ -ISFML/bin/ -BSFML/include/ -ISFML/include/ -LSFML/include/ -LSFML/lib/ -lsfml-network -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lopengl32
-rem -lstdc++
-rem -Wall -Wextra -Werror
 
+mingw32-g++.exe -Wall -fexceptions -DSFML_STATIC -O2 -DSFML_STATIC -ISFML\include -Idll -ISFML\include -Idll -c main.cpp -o obj\main.o
+mingw32-g++.exe -Wall -fexceptions -DSFML_STATIC -O2 -DSFML_STATIC -ISFML\include -Idll -ISFML\include -Idll -c src\*.cpp -o obj\*.o
 
-rem g++ main.o -o sfml-app -Lc:\SFML-2.0\lib -lsfml-window -lsfml-system
+mingw32-g++.exe -LSFML\lib -Ldll -LSFML\lib -Ldll -o Super_Retro_World_executable.exe obj\*.o -s -lsfml-network -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -lopengl32
+
 pause
