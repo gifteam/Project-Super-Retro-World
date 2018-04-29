@@ -1,0 +1,623 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.9.20)  17 OCT 2017 14:42
+entering extended mode
+**./CdC.tex
+(CdC.tex
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 75 language(s) loaded.
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\report.cls"
+Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size10.clo"
+File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\color.sty"
+Package: color 2016/07/10 v1.1e Standard LaTeX Color (DPC)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\color.cfg"
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 147.
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\pdftex.def"
+File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count88
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\graphics.cfg"
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+)
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+("C:\Program Files\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count89
+\Gm@cntv=\count90
+\c@Gm@tempcnt=\count91
+\Gm@bindingoffset=\dimen105
+\Gm@wd@mp=\dimen106
+\Gm@odd@mp=\dimen107
+\Gm@even@mp=\dimen108
+\Gm@layoutwidth=\dimen109
+\Gm@layoutheight=\dimen110
+\Gm@layouthoffset=\dimen111
+\Gm@layoutvoffset=\dimen112
+\Gm@dimlist=\toks15
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg")) (CdC.aux
+
+LaTeX Warning: Label `fig:sub2' multiply defined.
+
+
+LaTeX Warning: Label `fig:sub2' multiply defined.
+
+
+LaTeX Warning: Label `fig:sub2' multiply defined.
+
+
+LaTeX Warning: Label `fig:sub2' multiply defined.
+
+
+LaTeX Warning: Label `fig:sub2' multiply defined.
+
+
+LaTeX Warning: Label `Minimap' multiply defined.
+
+)
+\openout1 = `CdC.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+ ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count92
+\scratchdimen=\dimen113
+\scratchbox=\box26
+\nofMPsegments=\count93
+\nofMParguments=\count94
+\everyMPshowfont=\toks16
+\MPscratchCnt=\count95
+\MPscratchDim=\dimen114
+\MPnumerator=\count96
+\makeMPintoPDFobject=\count97
+\everyMPtoPDFconversion=\toks17
+) ("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\grfext.sty"
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvdefinekeys.sty"
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+))
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvsetkeys.sty"
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\etexcmds.sty"
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(56.9055pt, 500.484pt, 56.9055pt)
+* v-part:(T,H,B)=(56.9055pt, 681.15898pt, 56.9055pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=500.484pt
+* \textheight=681.15898pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-52.36449pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(CdC.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 3.
+ [1
+
+
+{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+)
+\tf@toc=\write3
+\openout3 = `CdC.toc'.
+
+ [2] [3
+
+]
+Chapter 1.
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+[4
+
+] [5
+
+]
+Chapter 1.
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no § in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ª in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ª in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ¢ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ª in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ¹ in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+[6
+
+]
+Chapter 2.
+[7
+
+]
+Chapter 3.
+[8
+
+]
+Chapter 4.
+<img_src/Team_logo_003.png, id=30, 31.61812pt x 32.37094pt>
+File: img_src/Team_logo_003.png Graphic file (type png)
+
+<use img_src/Team_logo_003.png>
+Package pdftex.def Info: img_src/Team_logo_003.png used on input line 66.
+(pdftex.def)             Requested size: 165.16063pt x 169.13936pt.
+
+<img_src/Team_logo_002.png, id=32, 88.07906pt x 73.02281pt>
+File: img_src/Team_logo_002.png Graphic file (type png)
+
+<use img_src/Team_logo_002.png>
+Package pdftex.def Info: img_src/Team_logo_002.png used on input line 72.
+(pdftex.def)             Requested size: 165.16063pt x 136.92853pt.
+
+<img_src/Team_logo_001.png, id=33, 95.6072pt x 74.52844pt>
+File: img_src/Team_logo_001.png Graphic file (type png)
+
+<use img_src/Team_logo_001.png>
+Package pdftex.def Info: img_src/Team_logo_001.png used on input line 78.
+(pdftex.def)             Requested size: 165.16063pt x 128.7641pt.
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+ [9
+
+ <./img_src/Team_logo_003.png> <./img_src/Team_logo_002.png> <./img_src/Team_lo
+go_001.png>]
+<img_src/Team_logo_004.png, id=40, 85.82062pt x 112.92188pt>
+File: img_src/Team_logo_004.png Graphic file (type png)
+
+<use img_src/Team_logo_004.png>
+Package pdftex.def Info: img_src/Team_logo_004.png used on input line 87.
+(pdftex.def)             Requested size: 187.68149pt x 246.97116pt.
+
+<img_src/Team_logo_005.png, id=41, 89.58469pt x 115.18031pt>
+File: img_src/Team_logo_005.png Graphic file (type png)
+
+<use img_src/Team_logo_005.png>
+Package pdftex.def Info: img_src/Team_logo_005.png used on input line 93.
+(pdftex.def)             Requested size: 187.68149pt x 241.32158pt.
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 85--97
+[]$[]$ $[]$ 
+ []
+
+<img_src/Team_logo_007.png, id=42, 109.1578pt x 109.1578pt>
+File: img_src/Team_logo_007.png Graphic file (type png)
+
+<use img_src/Team_logo_007.png>
+Package pdftex.def Info: img_src/Team_logo_007.png used on input line 102.
+(pdftex.def)             Requested size: 187.68149pt x 187.68279pt.
+
+<img_src/Team_logo_008.png, id=43, 109.1578pt x 109.1578pt>
+File: img_src/Team_logo_008.png Graphic file (type png)
+
+<use img_src/Team_logo_008.png>
+Package pdftex.def Info: img_src/Team_logo_008.png used on input line 108.
+(pdftex.def)             Requested size: 187.68149pt x 187.68279pt.
+
+Overfull \hbox (2.2222pt too wide) in paragraph at lines 100--112
+[]$[]$ $[]$ 
+ []
+
+[10 <./img_src/Team_logo_004.png> <./img_src/Team_logo_005.png> <./img_src/Team
+_logo_007.png> <./img_src/Team_logo_008.png>]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 118.
+
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 118.
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no § in font cmr10!
+ [11] [12
+
+]
+Chapter 1.
+[13
+
+]
+Chapter 2.
+[14
+
+] [15
+
+]
+Chapter 1.
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ª in font cmbx10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+[16
+
+]
+Chapter 2.
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ª in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+Missing character: There is no â in font cmr10!
+Missing character: There is no € in font cmr10!
+Missing character: There is no ™ in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ´ in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ´ in font cmr10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no ¹ in font cmbx10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+[17
+
+]
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no â in font cmbx10!
+Missing character: There is no € in font cmbx10!
+Missing character: There is no ™ in font cmbx10!
+Missing character: There is no Ã in font cmbx10!
+Missing character: There is no   in font cmbx10!
+ [18]
+Chapter 3.
+[19
+
+]
+Chapter 4.
+[20
+
+] [21
+
+]
+Chapter 1.
+[22
+
+]
+Chapter 2.
+[23
+
+]
+Chapter 3.
+<img_src/Chara_design_001.png, id=93, 170.13562pt x 189.70876pt>
+File: img_src/Chara_design_001.png Graphic file (type png)
+
+<use img_src/Chara_design_001.png>
+Package pdftex.def Info: img_src/Chara_design_001.png used on input line 200.
+(pdftex.def)             Requested size: 170.1352pt x 189.70828pt.
+
+<img_src/Chara_design_002.png, id=94, 72.27pt x 72.27pt>
+File: img_src/Chara_design_002.png Graphic file (type png)
+
+<use img_src/Chara_design_002.png>
+Package pdftex.def Info: img_src/Chara_design_002.png used on input line 206.
+(pdftex.def)             Requested size: 72.2698pt x 72.2698pt.
+ [24
+
+ <./img_src/Chara_design_001.png (PNG copy)> <./img_src/Chara_design_002.png (P
+NG copy)>] [25
+
+]
+Chapter 1.
+[26
+
+]
+Chapter 2.
+[27
+
+] [28
+
+]
+Chapter 1.
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ¨ in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+<img_src/minimap_002.png, id=111, 150.5625pt x 112.92188pt>
+File: img_src/minimap_002.png Graphic file (type png)
+
+<use img_src/minimap_002.png>
+Package pdftex.def Info: img_src/minimap_002.png used on input line 229.
+(pdftex.def)             Requested size: 150.56212pt x 112.92159pt.
+
+<img_src/map_001.png, id=112, 481.04718pt x 361.35pt>
+File: img_src/map_001.png Graphic file (type png)
+
+<use img_src/map_001.png>
+Package pdftex.def Info: img_src/map_001.png used on input line 235.
+(pdftex.def)             Requested size: 481.046pt x 361.34912pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ¨ in font cmr10!
+[29
+
+ <./img_src/minimap_002.png (PNG copy)>] [30 <./img_src/map_001.png>]
+Chapter 2.
+[31
+
+]
+Chapter 3.
+Missing character: There is no Ã in font cmbx12!
+Missing character: There is no   in font cmbx12!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ª in font cmr10!
+<img_src/Opti_tiles_001.png, id=124, 358.33875pt x 209.28188pt>
+File: img_src/Opti_tiles_001.png Graphic file (type png)
+
+<use img_src/Opti_tiles_001.png>
+Package pdftex.def Info: img_src/Opti_tiles_001.png used on input line 259.
+(pdftex.def)             Requested size: 358.33788pt x 209.28134pt.
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+ [32
+
+ <./img_src/Opti_tiles_001.png>]
+Missing character: There is no Â in font cmr10!
+Missing character: There is no ° in font cmr10!
+
+<img_src/Opti_tiles_002.png, id=129, 357.58594pt x 209.28188pt>
+File: img_src/Opti_tiles_002.png Graphic file (type png)
+
+<use img_src/Opti_tiles_002.png>
+Package pdftex.def Info: img_src/Opti_tiles_002.png used on input line 274.
+(pdftex.def)             Requested size: 357.58505pt x 209.28134pt.
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Â in font cmr10!
+Missing character: There is no ° in font cmr10!
+
+<img_src/Opti_tiles_003.png, id=130, 356.83313pt x 209.28188pt>
+File: img_src/Opti_tiles_003.png Graphic file (type png)
+
+<use img_src/Opti_tiles_003.png>
+Package pdftex.def Info: img_src/Opti_tiles_003.png used on input line 282.
+(pdftex.def)             Requested size: 356.83224pt x 209.28134pt.
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+ [33 <./img_src/Opti_tiles_002.png> <./img_src/Opti_tiles_003.png>]
+Missing character: There is no Â in font cmr10!
+Missing character: There is no ° in font cmr10!
+
+<img_src/Opti_tiles_004.png, id=136, 356.83313pt x 209.28188pt>
+File: img_src/Opti_tiles_004.png Graphic file (type png)
+
+<use img_src/Opti_tiles_004.png>
+Package pdftex.def Info: img_src/Opti_tiles_004.png used on input line 292.
+(pdftex.def)             Requested size: 356.83224pt x 209.28134pt.
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no ª in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no   in font cmr10!
+ [34 <./img_src/Opti_tiles_004.png>] (CdC.lof
+Missing character: There is no Â in font cmr10!
+Missing character: There is no ° in font cmr10!
+Missing character: There is no Â in font cmr10!
+Missing character: There is no ° in font cmr10!
+Missing character: There is no Â in font cmr10!
+Missing character: There is no ° in font cmr10!
+)
+\tf@lof=\write4
+\openout4 = `CdC.lof'.
+
+
+[35
+
+] (CdC.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 2131 strings out of 493323
+ 31396 string characters out of 3139066
+ 99346 words of memory out of 3000000
+ 5645 multiletter control sequences out of 15000+200000
+ 6370 words of font info for 23 fonts, out of 3000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 39i,8n,25p,659b,287s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on CdC.pdf (35 pages, 147899 bytes).
+PDF statistics:
+ 158 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
+

@@ -1,0 +1,55 @@
+\contentsline {part}{I\hspace {1em}Historique}{3}
+\contentsline {chapter}{\numberline {1}Tracabilit\'{e}}{4}
+\contentsline {section}{\numberline {1.1}Versions du document actuel}{4}
+\contentsline {part}{II\hspace {1em}Introduction}{5}
+\contentsline {chapter}{\numberline {1}Description du projet}{6}
+\contentsline {section}{\numberline {1.1}Synopsis}{6}
+\contentsline {paragraph}{{\color {red}Un jeune robot} m\'{e}lancolique ne reçoit plus de nouvelles de son ami d’enfance. Il avait pour habitude de lui envoyer des cartes postales de ses vacances mais a subitement arrêt\'{e} de le faire il y a peu. }{6}
+\contentsline {paragraph}{{\color {red}Le jeune robot} parcourt souvent ces cartes en se rem\'{e}morant son ami qui ne donne plus de nouvelles. Il a construit une machine pouvant projeter ces cartes sur une grande toile afin de pouvoir ressentir la joie de voyager à travers le monde, comme son ami a toujours pu le faire.}{6}
+\contentsline {paragraph}{Au fil de ces cartes, {\color {red}il} se rendra compte que son ami a \'{e}t\'{e} enlev\'{e} par un être myst\'{e}rieux et continuera de parcourir le monde grâce à se machine afin de continuer son enquête.}{6}
+\contentsline {paragraph}{Une fois qu’{\color {red}il} aura compris qui est le kidnappeur et où il cache son ami, il s’y rendra, mais priv\'{e} de ses pouvoirs il ne pourra rien faire. Son ami d’enfance fournira alors la derni\`{e}re carte postale qu’il n’a pas pu envoyer. Cela permettra {\color {red}au jeune robot} de d\'{e}bloquer le dernier monde et de sauver son ami avant qu’il ne se fasse kidnapper.}{6}
+\contentsline {chapter}{\numberline {2}Documents relatifs et sources}{7}
+\contentsline {chapter}{\numberline {3}Objectifs}{8}
+\contentsline {paragraph}{L'objectif principal du projet est de proposer une exp\'{e}rience r\'{e}tro aux joueurs.}{8}
+\contentsline {chapter}{\numberline {4}Equipe de d\'{e}veloppement}{9}
+\contentsline {section}{\numberline {4.1}Logo}{9}
+\contentsline {paragraph}{Le logo doit repr\'{e}senter le potentiel de l'\'{e}quipe à pouvoir cr\'{e}er du gameplay \'{e}mergent et unique. Le but est donc d'imager l'imagination et la technique => Un cerveau dont la partie manquante viendrait d'ajouter. "The missing part" est pour l'instant le nom retenu pour l'\'{e}quipe.}{9}
+\contentsline {section}{\numberline {4.2}Membres}{11}
+\contentsline {part}{III\hspace {1em}Organisation}{12}
+\contentsline {chapter}{\numberline {1}Organisation de l'\'{e}quipe de d\'{e}veloppement}{13}
+\contentsline {chapter}{\numberline {2}R\^{o}les et responsabilit\'{e}s}{14}
+\contentsline {part}{IV\hspace {1em}Exigences}{15}
+\contentsline {chapter}{\numberline {1}Crit\`{e}res pour valider une exigence}{16}
+\contentsline {section}{\numberline {1.1}Liste des crit\`{e}res}{16}
+\contentsline {paragraph}{Ci-dessous la liste restraintes des crit\`{e}res devant être valid\'{e}s pour qu'une nouvelle exigence soit analys\'{e}e:}{16}
+\contentsline {chapter}{\numberline {2}Exigences majeures du projet}{17}
+\contentsline {section}{\numberline {2.1}Niveaux du jeu}{17}
+\contentsline {paragraph}{Les niveaux du jeu sont d\'{e}coup\'{e}s en 2 cat\'{e}gories : les niveaux projet\'{e}s par la machine et ceux dans le monde r\'{e}el.}{17}
+\contentsline {subsection}{\numberline {2.1.1}Niveaux projet\'{e}s par la machine}{17}
+\contentsline {paragraph}{Les niveaux projet\'{e}s par la machine permettent au jeune robot de pouvoir revivre les voyages de son ami à travers le monde et de faire avance le sc\'{e}nario (l’enquête). Il y a en tout 7 mondes à visiter:}{17}
+\contentsline {paragraph}{Chacun de ces mondes est construit de la mani\`{e}re suivante :}{17}
+\contentsline {paragraph}{Les 2 premiers niveaux permettent au joueur de d\'{e}couvrir la m\'{e}canique principale du monde (par exemple : sauts contre les murs) et de la mettre à l’\'{e}preuve face à elle (par exemple : les ennemis peuvent sauter contre un mur ou de s’y accrocher. Le joueur ne peut pas le faire avant d’avoir vaincu le mini-boss. Les 2 niveaux suivants ainsi que le boss de monde mettent le joueur à l’\'{e}preuve avec cette m\'{e}canique (où il doit progresser avec ce nouveau pouvoir). Dans l’exemple cit\'{e}, le boss de monde fournirait alors le saut de mur infini.}{17}
+\contentsline {paragraph}{De mani\`{e}re g\'{e}n\'{e}rale, le mini-boss fournit la 1\`{e}re partie du pouvoir à d\'{e}bloquer. Le boss de monde fournit la seconde.}{17}
+\contentsline {subsection}{\numberline {2.1.2}Niveaux dans le monde r\'{e}el}{18}
+\contentsline {paragraph}{Les niveaux dans le monde r\'{e}el permettent de r\'{e}cup\'{e}rer les cartes postales. Le monde r\'{e}el prend place dans la ville natale du jeune robot et les cartes sont dispers\'{e}es dans les sous-sols du hangar.}{18}
+\contentsline {paragraph}{Le hangar est construit ainsi :}{18}
+\contentsline {paragraph}{Le boss fourni la carte postale qui d\'{e}bloque l’acc\`{e}s à un monde.}{18}
+\contentsline {chapter}{\numberline {3}Exigences mineures du projet}{19}
+\contentsline {chapter}{\numberline {4}Historique des propositions d'exigences}{20}
+\contentsline {part}{V\hspace {1em}Recherche et d\'{e}veloppement}{21}
+\contentsline {chapter}{\numberline {1}Game design}{22}
+\contentsline {chapter}{\numberline {2}Level design}{23}
+\contentsline {chapter}{\numberline {3}Chara design}{24}
+\contentsline {section}{\numberline {3.1}Robot (Joueur)}{24}
+\contentsline {part}{VI\hspace {1em}R\'{e}alisation}{25}
+\contentsline {chapter}{\numberline {1}Processus}{26}
+\contentsline {chapter}{\numberline {2}Planning}{27}
+\contentsline {part}{VII\hspace {1em}Suivi et contr\^{o}le}{28}
+\contentsline {chapter}{\numberline {1}Environnement de d\'{e}veloppement}{29}
+\contentsline {section}{\numberline {1.1}Map Editor}{29}
+\contentsline {chapter}{\numberline {2}Tests}{31}
+\contentsline {chapter}{\numberline {3}Optimisations}{32}
+\contentsline {section}{\numberline {3.1}Maitriser le nombre de sprites à l'\'{e}cran}{32}
+\contentsline {subsection}{\numberline {3.1.1}Version non optimis\'{e}e}{32}
+\contentsline {subsection}{\numberline {3.1.2}Propositions d'optimisations}{33}
+\contentsline {subsection}{\numberline {3.1.3}Conclusion}{34}
