@@ -21,15 +21,17 @@ void Sprite::update(void)
         update_player();
     }
 }
-
+//set new size
 void Sprite::set_size(unsigned int w, unsigned int h)
 {
     width = w;
     height = h;
 }
-
+//update the player movements
 void Sprite::update_player(void)
 {
+    this->move(0.0f, 0.5f);
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         std::cout << "left" << std::endl;

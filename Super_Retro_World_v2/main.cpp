@@ -6,7 +6,6 @@
 #include "include/Theater_class.hpp"
 #include "include/Constants.hpp"
 
-
 //main procedure
 int main(int argc, char* argv[])
 {
@@ -17,6 +16,4 @@ int main(int argc, char* argv[])
     //returning correct exit value (0)
     return 0;
     //end of procedure
-
-
 }

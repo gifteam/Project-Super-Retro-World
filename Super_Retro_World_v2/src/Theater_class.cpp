@@ -28,7 +28,7 @@ Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480),
     //setSize(window_size);
 
     //set fps and global graphics attributes
-    setFramerateLimit(60);
+    setFramerateLimit(80);
     fps_show_timeout = 30;
     //glEnable(GL_TEXTURE_2D); //pas compris ce que �a faisait
 
