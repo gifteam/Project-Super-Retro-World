@@ -30,7 +30,7 @@ Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480),
     //set fps and global graphics attributes
     setFramerateLimit(60);
     fps_show_timeout = 30;
-    glEnable(GL_TEXTURE_2D); //pas compris ce que ça faisait
+    //glEnable(GL_TEXTURE_2D); //pas compris ce que ï¿½a faisait
 
     //set font
     if (!font.loadFromFile("file/font/font_001.ttf"))
