@@ -15,9 +15,10 @@ Theater_play::Theater_play(void)
 }
 
 //update
-void Theater_play::update()
+void Theater_play::update(int framerate)
 {
-    this->My_theater_scene.update();
+    this->framerate = framerate;
+    this->My_theater_scene.update(framerate);
 }
 
 void Theater_play::set_map(MAP* p_my_map)

@@ -14,13 +14,14 @@
 Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480), "My window")
 {
     //initializing every window attributes
-    scene = "";
-    name = "window";
-    fps = 0;
-    x = 0;
-    y = 0;
-    width = 640;
-    height = 480;
+    this->scene = "";
+    this->name = "window";
+    this->fps = 0;
+    this->x = 0;
+    this->y = 0;
+    this->width = 640;
+    this->height = 480;
+    this->framerate = 0;
 
     //set the size of the window
     //window_size.x = width;
@@ -30,16 +31,16 @@ Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480),
     //set fps and global graphics attributes
     setFramerateLimit(80);
     fps_show_timeout = 30;
-    //glEnable(GL_TEXTURE_2D); //pas compris ce que �a faisait
+    //glEnable(GL_TEXTURE_2D); //pas compris ce que ca faisait
 
     //set font
     if (!font.loadFromFile("file/font/font_001.ttf"))
     {
         std::cout << "error loading font" << std::endl;
     }
-    text.setFont(font);
-    text.setString("FPS : N/A");
-    text.setCharacterSize(14);
+    this->text.setFont(font);
+    this->text.setString("FPS : N/A");
+    this->text.setCharacterSize(14);
 
     //set levels characteristics
     create_MAP();
@@ -60,7 +61,7 @@ void Theater::update(void)
                 this->close();
         }
 
-        this->My_theater_play.update();
+        this->My_theater_play.update(this->framerate);
 
         this->clear();
         this->draw_Theater();
@@ -85,14 +86,14 @@ void Theater::update_FPS(void)
     if (this->fps_show_timeout >= 30)
     {
         this->fps_show_timeout = 0;
-        int framerate = 1 / (frameTime.asMilliseconds() * 0.001);
-        if (framerate <= 0)
+        this->framerate = 1 / (frameTime.asMilliseconds() * 0.001);
+        if (this->framerate <= 0)
         {
             this->text.setString("FPS : N/A");
         }
         else
         {
-            this->text.setString("FPS : " + std::to_string(framerate));
+            this->text.setString("FPS : " + std::to_string(this->framerate));
         }
     }
 

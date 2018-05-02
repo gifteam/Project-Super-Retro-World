@@ -33,6 +33,7 @@ class Theater: public sf::RenderWindow
         sf::CircleShape shape;
         sf::Event event;
         int fps_show_timeout;
+        int framerate;
         //declaring constructor + functions
         Theater();
         void update();

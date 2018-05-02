@@ -17,12 +17,13 @@ class Theater_scene
         std::string name;
         std::string previous_name;
         MAP* my_map;
+        int framerate;
         //declaring sprite list (vector)
         std::vector<Sprite*> My_sprite_list;
         //declaring constructor
         Theater_scene();
         //declaring classic functions
-        void update(void);
+        void update(int framerate);
         void set_map(MAP* p_my_map);
         //load functions
         void load_new_scene(void);

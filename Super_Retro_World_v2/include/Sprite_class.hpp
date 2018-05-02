@@ -15,10 +15,11 @@ class Sprite: public sf::Sprite
         unsigned int width;
         unsigned int height;
         std::string type;
+        int framerate;
         //declaring constructor
         Sprite(std::string s_type = "UNKNOWN");
         //classic update function
-        void update(void);
+        void update(int framerate);
         void update_player(void);
         //setter function
         void set_size(unsigned int w, unsigned int h);

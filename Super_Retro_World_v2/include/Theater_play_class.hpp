@@ -17,10 +17,11 @@ class Theater_play
         //declaring public game attributes
         std::string name = "";
         MAP* my_map;
+        int framerate;
         //declaring constructor
         Theater_play();
         //declaring classic functions
-        void update();
+        void update(int framerate);
         void set_map(MAP* p_my_map);
 };
 

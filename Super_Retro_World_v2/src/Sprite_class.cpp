@@ -13,43 +13,46 @@ Sprite::Sprite(std::string s_type) : sf::Sprite::Sprite()
     type = s_type;
 }
 
-void Sprite::update(void)
+void Sprite::update(int framerate)
 {
+    this->framerate = framerate;
     //update player sprite
     if (this->type.compare("PLAYER") == 0)
     {
         update_player();
     }
 }
+
+//update the player movements
+void Sprite::update_player(void)
+{
+    this->move(0.0f, 100.0f/this->framerate);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        std::cout << "left" << std::endl;
+        this->move(-100.0f/this->framerate, 0.0f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        std::cout << "right" << std::endl;
+        this->move(100.0f/this->framerate, 0.0f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        std::cout << "up" << std::endl;
+        this->move(0.0f, -100.0f/this->framerate);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        std::cout << "down" << std::endl;
+        this->move(0.0f, 100.0f/this->framerate);
+    }
+}
+
 //set new size
 void Sprite::set_size(unsigned int w, unsigned int h)
 {
     width = w;
     height = h;
-}
-//update the player movements
-void Sprite::update_player(void)
-{
-    this->move(0.0f, 0.5f);
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        std::cout << "left" << std::endl;
-        this->move(-1.0f, 0.0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        std::cout << "right" << std::endl;
-        this->move(1.0f, 0.0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-        std::cout << "up" << std::endl;
-        this->move(0.0f, -1.0f);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        std::cout << "down" << std::endl;
-        this->move(0.0f, 1.0f);
-    }
 }

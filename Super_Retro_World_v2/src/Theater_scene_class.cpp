@@ -16,8 +16,9 @@ Theater_scene::Theater_scene(void)
 }
 
 //update (check if the scene has change)
-void Theater_scene::update()
+void Theater_scene::update(int framerate)
 {
+    this->framerate = framerate;
     if (name.compare(previous_name) != 0)
     {
         std::cout << "loading new scene" << std::endl;
@@ -114,7 +115,7 @@ void Theater_scene::load_map(void)
             g = pixel_color.g;
             b = pixel_color.b;
             //BLACK pixel => it's a solid sprite !
-            if (r==0 && b==0 && b==0)
+            if (r==0 && g==0 && b==0)
             {
                 spr_x = map_x * 32;
                 spr_y = map_y * 32;
@@ -155,7 +156,7 @@ void Theater_scene::update_current_scene(void)
 {
     for (unsigned int i = 0 ; i < this->My_sprite_list.size() ; i++)
     {
-       this->My_sprite_list[i]->update();
+       this->My_sprite_list[i]->update(this->framerate);
     }
 }
 
