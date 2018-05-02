@@ -16,11 +16,16 @@ class Sprite: public sf::Sprite
         unsigned int height;
         std::string type;
         int framerate;
+        //declaring physical part
+        float acceleration;
+        float speed;
         //declaring constructor
         Sprite(std::string s_type = "UNKNOWN");
         //classic update function
         void update(int framerate);
         void update_player(void);
+        //physic update
+        void update_gravity(void);
         //setter function
         void set_size(unsigned int w, unsigned int h);
 };

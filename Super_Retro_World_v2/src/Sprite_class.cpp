@@ -11,6 +11,8 @@ Sprite::Sprite(std::string s_type) : sf::Sprite::Sprite()
     std::cout << "Sprite constructor" << std::endl;
     //define the sprite type
     type = s_type;
+    acceleration = 2.0f;
+    speed = 0.0f;
 }
 
 void Sprite::update(int framerate)
@@ -20,14 +22,22 @@ void Sprite::update(int framerate)
     if (this->type.compare("PLAYER") == 0)
     {
         update_player();
+        update_gravity();
     }
 }
+
+//update the physical part of the sprites
+//update the gravity
+void Sprite::update_gravity(void)
+{
+    speed += acceleration;
+    this->move(0.0f, speed/this->framerate);
+}
+
 
 //update the player movements
 void Sprite::update_player(void)
 {
-    this->move(0.0f, 100.0f/this->framerate);
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         std::cout << "left" << std::endl;
