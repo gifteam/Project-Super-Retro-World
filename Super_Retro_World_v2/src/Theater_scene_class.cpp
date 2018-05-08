@@ -156,7 +156,7 @@ void Theater_scene::update_current_scene(void)
 {
     for (unsigned int i = 0 ; i < this->My_sprite_list.size() ; i++)
     {
-       this->My_sprite_list[i]->update(this->framerate);
+       this->My_sprite_list[i]->update(this->framerate, this->My_sprite_list, i);
     }
 }
 

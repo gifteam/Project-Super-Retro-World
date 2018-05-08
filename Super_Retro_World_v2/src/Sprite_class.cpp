@@ -11,18 +11,24 @@ Sprite::Sprite(std::string s_type) : sf::Sprite::Sprite()
     std::cout << "Sprite constructor" << std::endl;
     //define the sprite type
     type = s_type;
-    acceleration = 2.0f;
-    speed = 0.0f;
+    vertical_acceleration = 200.0f;
+    vertical_speed = 0.0f;
+    max_vertical_speed = 200.0f;
+    horizontal_acceleration = 500.0f;
+    horizontal_speed = 0.0f;
+    max_horizontal_speed = 100.0f;
 }
 
-void Sprite::update(int framerate)
+void Sprite::update(int framerate, std::vector<Sprite*> sprite_list, int sprite_id)
 {
     this->framerate = framerate;
     //update player sprite
     if (this->type.compare("PLAYER") == 0)
     {
-        update_player();
-        update_gravity();
+        update_player_direction(); //horizontal speed update
+        update_gravity(); //vertical speed update
+        update_collision(); //correction of the trajectory
+        update_player_movement(); //move the player accordingly
     }
 }
 
@@ -30,33 +36,51 @@ void Sprite::update(int framerate)
 //update the gravity
 void Sprite::update_gravity(void)
 {
-    speed += acceleration;
-    this->move(0.0f, speed/this->framerate);
+    if (vertical_speed + vertical_acceleration/this->framerate <= max_vertical_speed) { vertical_speed += vertical_acceleration/this->framerate; }
+    //this->move(0.0f, vertical_speed/this->framerate);
 }
 
+//update the collision with others sprites
+void Sprite::update_collision(void)
+{
+    float current_x = this->getPosition().x;
+    float current_y = this->getPosition().y;
+    float dest_x = current_x + horizontal_speed;
+    float dest_y = current_y + vertical_speed;
+}
 
-//update the player movements
-void Sprite::update_player(void)
+//update player movement
+void Sprite::update_player_movement(void)
+{
+    this->move(horizontal_speed/this->framerate, vertical_speed/this->framerate);
+}
+
+//update the player direction
+void Sprite::update_player_direction(void)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        std::cout << "left" << std::endl;
-        this->move(-100.0f/this->framerate, 0.0f);
+        if (horizontal_speed - horizontal_acceleration/this->framerate >= (-1) * max_horizontal_speed) { horizontal_speed -= horizontal_acceleration/this->framerate; }
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        std::cout << "right" << std::endl;
-        this->move(100.0f/this->framerate, 0.0f);
+        if (horizontal_speed + horizontal_acceleration/this->framerate <= max_horizontal_speed) { horizontal_speed += horizontal_acceleration/this->framerate; }
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    else
     {
-        std::cout << "up" << std::endl;
-        this->move(0.0f, -100.0f/this->framerate);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-    {
-        std::cout << "down" << std::endl;
-        this->move(0.0f, 100.0f/this->framerate);
+        if (horizontal_speed < 0)
+        {
+            horizontal_speed += horizontal_acceleration/this->framerate;
+        }
+        else if (horizontal_speed > 0)
+        {
+            horizontal_speed -= horizontal_acceleration/this->framerate;
+        }
+
+        if (horizontal_speed > (-1) * horizontal_acceleration/this->framerate && horizontal_speed < horizontal_acceleration/this->framerate)
+        {
+            horizontal_speed = 0;
+        }
     }
 }
 
