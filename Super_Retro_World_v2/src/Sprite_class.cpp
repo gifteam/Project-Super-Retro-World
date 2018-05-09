@@ -85,23 +85,8 @@ void Sprite::update_player_movement(void)
         float vector_y = current_y - previous_y;
         //set to last good position
         this->setPosition(sf::Vector2f(previous_x, previous_y));
-        //todo change speed
+        //todo: detect collision side to perform speed adjustment
         vertical_speed = 0;
-        //try to move correctly (by reducing the direction vector)
-        /*bool no_movement = false;
-        do
-        {
-            vector_x /= 2;
-            vector_y /= 2;
-            std::cout << vector_x << ";" << vector_y << std::endl;
-            //try with X direction first
-            this->move(vector_x, vector_y);
-            current_x = this->getPosition().x;
-            current_y = this->getPosition().y;
-            //check if there is a real movement (in pixel)
-            if (current_x==previous_x && current_y == current_y) { no_movement = true; }
-
-        }while(check_collision() && no_movement == false);*/
     }
 }
 

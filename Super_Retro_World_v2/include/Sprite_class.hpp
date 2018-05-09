@@ -23,6 +23,10 @@ class Sprite: public sf::Sprite
         unsigned int current_sprite_id;
         //declaring collision variables and collision check function
         bool collidable;
+        bool collide_floor;
+        bool collide_left_wall;
+        bool collide_right_wall;
+        bool collide_roof;
         bool check_collision(void);
         //sprite others variables
         sf::Color origin_color;
