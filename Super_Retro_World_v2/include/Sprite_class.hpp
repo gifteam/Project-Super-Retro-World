@@ -18,10 +18,22 @@ class Sprite: public sf::Sprite
         unsigned int height;
         std::string type;
         int framerate;
-        //declaring physical part
+        //declaring general sprites variables
+        std::vector<Sprite*> sprite_list;
+        unsigned int current_sprite_id;
+        //declaring collision variables and collision check function
+        bool collidable;
+        bool check_collision(void);
+        //sprite others variables
+        sf::Color origin_color;
+        int previous_x;
+        int previous_y;
+        //declaring acceleration and speed in both axes (X anb Y)
+        //Y
         float vertical_acceleration;
         float vertical_speed;
         float max_vertical_speed;
+        //X
         float horizontal_acceleration;
         float horizontal_speed;
         float max_horizontal_speed;
@@ -29,11 +41,10 @@ class Sprite: public sf::Sprite
         Sprite(std::string s_type = "UNKNOWN");
         //classic update function
         void update(int framerate, std::vector<Sprite*> sprite_list, int sprite_id);
-        //physic update
+        //player physic update
         void update_player_direction(void);
         void update_player_movement(void);
         void update_gravity(void);
-        void update_collision(void);
         //setter function
         void set_size(unsigned int w, unsigned int h);
 };
