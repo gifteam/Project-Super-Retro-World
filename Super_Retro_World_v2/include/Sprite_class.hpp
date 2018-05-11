@@ -27,11 +27,13 @@ class Sprite: public sf::Sprite
         bool collide_left_wall;
         bool collide_right_wall;
         bool collide_roof;
-        bool check_collision(void);
+        void check_collision(void);
         //sprite others variables
         sf::Color origin_color;
-        int previous_x;
-        int previous_y;
+        float center_x;
+        float center_y;
+        float previous_x;
+        float previous_y;
         //declaring acceleration and speed in both axes (X anb Y)
         //Y
         float vertical_acceleration;
@@ -51,5 +53,9 @@ class Sprite: public sf::Sprite
         void update_gravity(void);
         //setter function
         void set_size(unsigned int w, unsigned int h);
+        //getter function
+        void get_center_xy(void);
+        void get_collision_flag(int sprite_collided_id);
+        int get_previous_area_before_hit(int sprite_collided_id);
 };
 #endif // _SPRITE_CLASS_

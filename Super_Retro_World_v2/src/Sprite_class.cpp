@@ -17,12 +17,12 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     {
         collidable = true;
     }
-    vertical_acceleration = 200.0f;
+    vertical_acceleration = 400.0f;
     vertical_speed = 0.0f;
-    max_vertical_speed = 200.0f;
-    horizontal_acceleration = 500.0f;
+    max_vertical_speed = 400.0f;
+    horizontal_acceleration = 700.0f;
     horizontal_speed = 0.0f;
-    max_horizontal_speed = 100.0f;
+    max_horizontal_speed = 150.0f;
 }
 
 void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int new_sprite_id)
@@ -47,8 +47,13 @@ void Sprite::update_gravity(void)
 }
 
 //update the collision with others sprites
-bool Sprite::check_collision(void)
+void Sprite::check_collision(void)
 {
+    //initialize collision side flag
+    collide_floor = false;
+    collide_left_wall = false;
+    collide_right_wall = false;
+    collide_roof = false;
     //loop with others sprites
     for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
     {
@@ -58,13 +63,11 @@ bool Sprite::check_collision(void)
             //check collision
             if (this->sprite_list[i]->getGlobalBounds().intersects(this->getGlobalBounds()))
             {
-                //collide !
-                return true;
+                //collide yes, but which side ? Get the correct collision flag
+                this->get_collision_flag(i);
             }
         }
     }
-    //no collision found
-    return false;
 }
 
 //update player movement
@@ -76,17 +79,18 @@ void Sprite::update_player_movement(void)
     //try to move
     this->move(horizontal_speed/this->framerate, vertical_speed/this->framerate);
     //check collision
-    if (check_collision())
+    check_collision();
+    //if collide with floor / roof
+    if (collide_floor || collide_roof)
     {
-        //if there is a collision, get the bad position
-        int current_x = this->getPosition().x;
-        int current_y = this->getPosition().y;
-        float vector_x = current_x - previous_x;
-        float vector_y = current_y - previous_y;
-        //set to last good position
-        this->setPosition(sf::Vector2f(previous_x, previous_y));
-        //todo: detect collision side to perform speed adjustment
-        vertical_speed = 0;
+        vertical_speed /= 2;
+        this->setPosition(sf::Vector2f(this->getPosition().x, previous_y));
+    }
+    //if collision with a wall
+    if (collide_left_wall || collide_right_wall)
+    {
+        horizontal_speed /= 2;
+        this->setPosition(sf::Vector2f(previous_x, this->getPosition().y));
     }
 }
 
@@ -95,9 +99,8 @@ void Sprite::update_player_direction(void)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
-        vertical_speed = -200;
+        vertical_speed = -250;
     }
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         horizontal_speed -= horizontal_acceleration/this->framerate;
@@ -123,3 +126,62 @@ void Sprite::set_size(unsigned int w, unsigned int h)
     width = w;
     height = h;
 }
+
+//calculation of the collision flag (up, down, left or right)
+void Sprite::get_collision_flag(int sprite_collided_id)
+{
+    //get previous area where the sprite was
+    int previous_area = get_previous_area_before_hit(sprite_collided_id);
+    std::cout << previous_area;
+    //check if the sprite hit the floor
+    if (previous_area == 1 || previous_area == 2 ||previous_area == 3){collide_floor = true;}
+    //check if the sprite hit the floor
+    if (previous_area == 4){collide_left_wall = true;}
+    //check if the sprite hit the right wall
+    if (previous_area == 5 || previous_area == 6 ||previous_area == 7){collide_roof = true;}
+    //check if the sprite hit the left wall
+    if (previous_area == 8){collide_right_wall = true;}
+}
+
+/* get the area (int) where the sprite moving was before the hit with the sprite "#" (moving or not)
++---+---+---+
+| 1 | 2 | 3 |
++---+---+---+
+| 8 | # | 4 |
++---+---+---+
+| 7 | 6 | 5 |
++---+---+---+*/
+int Sprite::get_previous_area_before_hit(int sprite_collided_id)
+{
+    float x = previous_x;
+    float y = previous_y;
+    float w = this->width;
+    float h = this->height;
+    float s_hit_x = this->sprite_list[sprite_collided_id]->getPosition().x;
+    float s_hit_y = this->sprite_list[sprite_collided_id]->getPosition().y;
+    float s_hit_w = this->sprite_list[sprite_collided_id]->width;
+    float s_hit_h = this->sprite_list[sprite_collided_id]->height;
+
+    if (x + w < s_hit_x && y + h <= s_hit_y) {return 1;}
+    if (x + w >= s_hit_x && x <= s_hit_x + s_hit_w && y + h <= s_hit_y) {return 2;}
+    if (x > s_hit_x + s_hit_w && y + h <= s_hit_y) {return 3;}
+    if (x > s_hit_x + s_hit_w && y + h > s_hit_y && y < s_hit_y + s_hit_h) {return 4;}
+    if (x > s_hit_x + s_hit_w && y >= s_hit_y + s_hit_h) {return 5;}
+    if (x + w >= s_hit_x && x <= s_hit_x + s_hit_w && y >= s_hit_y + s_hit_h) {return 6;}
+    if (x + w < s_hit_x && y >= s_hit_y + s_hit_h)  {return 7;}
+    if (x + w < s_hit_x && y + h > s_hit_y && y < s_hit_y + s_hit_h) {return 8;}
+}
+
+//calculation of center of the Sprite
+void Sprite::get_center_xy(void)
+{
+    float x = this->getPosition().x;
+    float y = this->getPosition().x;
+    float w = this->width;
+    float h = this->height;
+
+    center_x = x + w/2;
+    center_y = y + h/2;
+
+}
+
