@@ -23,13 +23,13 @@ class Sprite: public sf::Sprite
         unsigned int current_sprite_id;
         //declaring collision variables and collision check function
         bool collidable;
-        bool collide_floor;
-        bool collide_left_wall;
-        bool collide_right_wall;
-        bool collide_roof;
-        void check_collision(void);
+        bool collide_a_sprite(void);
+        bool touch_roof;
+        bool touch_floor;
+        bool touch_left;
+        bool touch_right;
+        bool touch_one_direction;
         //sprite others variables
-        sf::Color origin_color;
         float center_x;
         float center_y;
         float previous_x;
@@ -55,7 +55,11 @@ class Sprite: public sf::Sprite
         void set_size(unsigned int w, unsigned int h);
         //getter function
         void get_center_xy(void);
-        void get_collision_flag(int sprite_collided_id);
-        int get_previous_area_before_hit(int sprite_collided_id);
+        std::string get_previous_area_before_hit(int sprite_collided_id);
+        //checker function
+        bool there_is_a_sprite_below(void);
+        bool there_is_a_sprite_upside(void);
+        bool there_is_a_sprite_left(void);
+        bool there_is_a_sprite_right(void);
 };
 #endif // _SPRITE_CLASS_

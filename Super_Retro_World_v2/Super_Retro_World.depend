@@ -522,7 +522,7 @@
 	"../include/Sprite_class.hpp"
 	"../include/Constants.hpp"
 
-1526037297 c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\include\sprite_class.hpp
+1526057788 c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\include\sprite_class.hpp
 	<SFML/Graphics.hpp>
 	<vector>
 
@@ -530,10 +530,13 @@
 	<map>
 	<string>
 
-1526038862 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\sprite_class.cpp
+1526052248 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\sprite_class.cpp
 	<iostream>
 	<SFML/Graphics.hpp>
 	"../include/Sprite_class.hpp"
+	<iostream>
+	<string>
+	<sstream>
 
 1525866357 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\theater_class.cpp
 	<iostream>
@@ -549,7 +552,7 @@
 	"../include/Theater_scene_class.hpp"
 	"../include/Constants.hpp"
 
-1526033053 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\theater_scene_class.cpp
+1526039070 source:c:\users\gif\dropbox\cpp_project\project-super-retro-world\super_retro_world_v2\src\theater_scene_class.cpp
 	<iostream>
 	"../include/Theater_scene_class.hpp"
 	"../include/Sprite_class.hpp"

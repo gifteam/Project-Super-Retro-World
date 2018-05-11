@@ -4,6 +4,10 @@
 #include <SFML/Graphics.hpp>
 //include custom Sprite class header
 #include "../include/Sprite_class.hpp"
+//include classic librairy
+#include <iostream>
+#include <string>
+#include <sstream>
 
 //constructor
 Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
@@ -12,7 +16,6 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     //define the sprite type
     type = new_type;
     collidable = false;
-    origin_color = getColor();
     if (this->type.compare("SOLID")==0 || this->type.compare("PLAYER")==0)
     {
         collidable = true;
@@ -43,70 +46,54 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
 //update the gravity
 void Sprite::update_gravity(void)
 {
-    if (vertical_speed + vertical_acceleration/this->framerate <= max_vertical_speed) { vertical_speed += vertical_acceleration/this->framerate; }
-}
-
-//update the collision with others sprites
-void Sprite::check_collision(void)
-{
-    //initialize collision side flag
-    collide_floor = false;
-    collide_left_wall = false;
-    collide_right_wall = false;
-    collide_roof = false;
-    //loop with others sprites
-    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
-    {
-        //avoid himself
-        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
-        {
-            //check collision
-            if (this->sprite_list[i]->getGlobalBounds().intersects(this->getGlobalBounds()))
-            {
-                //collide yes, but which side ? Get the correct collision flag
-                this->get_collision_flag(i);
-            }
-        }
-    }
+    if (!touch_floor && vertical_speed + vertical_acceleration/this->framerate <= max_vertical_speed) { vertical_speed += vertical_acceleration/this->framerate; }
 }
 
 //update player movement
 void Sprite::update_player_movement(void)
 {
-    //get last good position
+    //get last good position collision-free
     previous_x = this->getPosition().x;
     previous_y = this->getPosition().y;
     //try to move
     this->move(horizontal_speed/this->framerate, vertical_speed/this->framerate);
-    //check collision
-    check_collision();
-    //if collide with floor / roof
-    if (collide_floor || collide_roof)
+    //declare local x + y to determine best location if collide
+    float delta_x = (-1) * (this->getPosition().x - previous_x)/10;
+    float delta_y = (-1) * (this->getPosition().y - previous_y)/10;
+    std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]";
+    while (collide_a_sprite() && !touch_one_direction) //test if there is a collision with a solid sprite
     {
-        vertical_speed /= 2;
-        this->setPosition(sf::Vector2f(this->getPosition().x, previous_y));
+        //move back to the first correct position
+        this->move(sf::Vector2f(delta_x, delta_y));
+        std::cout << delta_x << " - " << delta_y << std::endl;
     }
-    //if collision with a wall
-    if (collide_left_wall || collide_right_wall)
-    {
-        horizontal_speed /= 2;
-        this->setPosition(sf::Vector2f(previous_x, this->getPosition().y));
-    }
+
+    std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]" << std::endl;
+    touch_floor = false;
+    touch_roof = false;
+    touch_left = false;
+    touch_right = false;
+    touch_one_direction = false;
+    if (there_is_a_sprite_below()) {vertical_speed = 0; touch_floor = true;}
+    if (there_is_a_sprite_upside()) {vertical_speed = 0; touch_roof = true;}
+    if (there_is_a_sprite_left()) {horizontal_speed = 0; touch_left = true;}
+    if (there_is_a_sprite_right()) {horizontal_speed = 0; touch_right = true;}
+    if (touch_floor || touch_roof || touch_left || touch_right) {touch_one_direction = true;}
 }
 
 //update the player direction
 void Sprite::update_player_direction(void)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && touch_floor)
     {
         vertical_speed = -250;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !touch_left)
     {
         horizontal_speed -= horizontal_acceleration/this->framerate;
         if (horizontal_speed < (-1) * max_horizontal_speed) { horizontal_speed = (-1) * max_horizontal_speed; }
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !touch_right)
     {
         horizontal_speed += horizontal_acceleration/this->framerate;
         if (horizontal_speed > max_horizontal_speed) { horizontal_speed = max_horizontal_speed; }
@@ -127,49 +114,25 @@ void Sprite::set_size(unsigned int w, unsigned int h)
     height = h;
 }
 
-//calculation of the collision flag (up, down, left or right)
-void Sprite::get_collision_flag(int sprite_collided_id)
+//check the collision
+bool Sprite::collide_a_sprite(void)
 {
-    //get previous area where the sprite was
-    int previous_area = get_previous_area_before_hit(sprite_collided_id);
-    std::cout << previous_area;
-    //check if the sprite hit the floor
-    if (previous_area == 1 || previous_area == 2 ||previous_area == 3){collide_floor = true;}
-    //check if the sprite hit the floor
-    if (previous_area == 4){collide_left_wall = true;}
-    //check if the sprite hit the right wall
-    if (previous_area == 5 || previous_area == 6 ||previous_area == 7){collide_roof = true;}
-    //check if the sprite hit the left wall
-    if (previous_area == 8){collide_right_wall = true;}
-}
-
-/* get the area (int) where the sprite moving was before the hit with the sprite "#" (moving or not)
-+---+---+---+
-| 1 | 2 | 3 |
-+---+---+---+
-| 8 | # | 4 |
-+---+---+---+
-| 7 | 6 | 5 |
-+---+---+---+*/
-int Sprite::get_previous_area_before_hit(int sprite_collided_id)
-{
-    float x = previous_x;
-    float y = previous_y;
-    float w = this->width;
-    float h = this->height;
-    float s_hit_x = this->sprite_list[sprite_collided_id]->getPosition().x;
-    float s_hit_y = this->sprite_list[sprite_collided_id]->getPosition().y;
-    float s_hit_w = this->sprite_list[sprite_collided_id]->width;
-    float s_hit_h = this->sprite_list[sprite_collided_id]->height;
-
-    if (x + w < s_hit_x && y + h <= s_hit_y) {return 1;}
-    if (x + w >= s_hit_x && x <= s_hit_x + s_hit_w && y + h <= s_hit_y) {return 2;}
-    if (x > s_hit_x + s_hit_w && y + h <= s_hit_y) {return 3;}
-    if (x > s_hit_x + s_hit_w && y + h > s_hit_y && y < s_hit_y + s_hit_h) {return 4;}
-    if (x > s_hit_x + s_hit_w && y >= s_hit_y + s_hit_h) {return 5;}
-    if (x + w >= s_hit_x && x <= s_hit_x + s_hit_w && y >= s_hit_y + s_hit_h) {return 6;}
-    if (x + w < s_hit_x && y >= s_hit_y + s_hit_h)  {return 7;}
-    if (x + w < s_hit_x && y + h > s_hit_y && y < s_hit_y + s_hit_h) {return 8;}
+    //loop with others sprites
+    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+    {
+        //avoid himself
+        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
+        {
+            //check collision
+            if (this->sprite_list[i]->getGlobalBounds().intersects(this->getGlobalBounds()))
+            {
+                //collide
+                return true;
+            }
+        }
+    }
+    //dont collide
+    return false;
 }
 
 //calculation of center of the Sprite
@@ -185,3 +148,86 @@ void Sprite::get_center_xy(void)
 
 }
 
+//return true if there is a sprite below
+bool Sprite::there_is_a_sprite_below(void)
+{
+    //define local rect to determine if there is something below (check with y + 1 pixel)
+    sf::FloatRect rect(previous_x, previous_y + 1, this->width,this->height);
+    //loop with others sprites
+    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+    {
+        //avoid himself
+        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
+        {
+            //check collision
+            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+//return true if there is a sprite upside
+bool Sprite::there_is_a_sprite_upside(void)
+{
+    //define local rect to determine if there is something upside (check with y - 1 pixel)
+    sf::FloatRect rect(previous_x, previous_y - 1, this->width,this->height);
+    //loop with others sprites
+    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+    {
+        //avoid himself
+        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
+        {
+            //check collision
+            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+//return true if there is a sprite left
+bool Sprite::there_is_a_sprite_left(void)
+{
+    //define local rect to determine if there is something left (check with x - 1 pixel)
+    sf::FloatRect rect(previous_x - 1, previous_y, this->width,this->height);
+    //loop with others sprites
+    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+    {
+        //avoid himself
+        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
+        {
+            //check collision
+            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+//return true if there is a sprite right
+bool Sprite::there_is_a_sprite_right(void)
+{
+    //define local rect to determine if there is something right (check with x + 1 pixel)
+    sf::FloatRect rect(previous_x + 1, previous_y, this->width,this->height);
+    //loop with others sprites
+    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+    {
+        //avoid himself
+        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
+        {
+            //check collision
+            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
