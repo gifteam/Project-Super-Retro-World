@@ -11,7 +11,6 @@ class Sprite: public sf::Sprite
 {
     public:
         //declaring public sprite attributes
-        sf::CircleShape shape;
         sf::Texture* texture;
         std::string name;
         unsigned int width;
@@ -21,6 +20,7 @@ class Sprite: public sf::Sprite
         //declaring general sprites variables
         std::vector<Sprite*> sprite_list;
         unsigned int current_sprite_id;
+        unsigned int background_layer;
         //declaring collision variables and collision check function
         bool collidable;
         bool collide_a_sprite(void);
@@ -28,7 +28,7 @@ class Sprite: public sf::Sprite
         bool touch_floor;
         bool touch_left;
         bool touch_right;
-        bool touch_one_direction;
+        bool touch_one_direction; //old
         //sprite others variables
         float center_x;
         float center_y;

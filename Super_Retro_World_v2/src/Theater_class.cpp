@@ -23,15 +23,9 @@ Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480),
     this->height = 480;
     this->framerate = 0;
 
-    //set the size of the window
-    //window_size.x = width;
-    //window_size.y = height;
-    //setSize(window_size);
-
     //set fps and global graphics attributes
     setFramerateLimit(60);
     fps_show_timeout = 30;
-    //glEnable(GL_TEXTURE_2D); //pas compris ce que ca faisait
 
     //set font
     if (!font.loadFromFile("file/font/font_001.ttf"))
@@ -60,11 +54,13 @@ void Theater::update(void)
             if (event.type == sf::Event::Closed)
                 this->close();
         }
-
+        //general update
         this->My_theater_play.update(this->framerate);
-
+        //draw everything (sprite, labels and camera view)
         this->clear();
+        this->setView(My_theater_play.My_theater_scene.player_view);
         this->draw_Theater();
+        this->text.setPosition(sf::Vector2f(this->getView().getCenter().x - 640/2, 0));
         this->draw(this->text);
         this->display();
     }

@@ -18,6 +18,7 @@ class Theater_scene
         std::string previous_name;
         MAP* my_map;
         int framerate;
+        sf::View player_view;
         //declaring sprite list (vector)
         std::vector<Sprite*> My_sprite_list;
         //declaring constructor
@@ -33,6 +34,7 @@ class Theater_scene
         void load_player(void);
         //other update functions
         void update_current_scene(void);
+        void update_camera(float center_x, float center_y);
         //special functions
         sf::Image get_default_texture(unsigned int size_x, unsigned int size_y);
 };

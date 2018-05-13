@@ -13,6 +13,8 @@ Theater_scene::Theater_scene(void)
     std::cout << "theater scene constructor" << std::endl;
     name = "LEVEL_0_0";
     previous_name = "";
+    player_view.setCenter(sf::Vector2f(640/2, 480/2));
+    player_view.setSize(sf::Vector2f(640, 480));
 }
 
 //update (check if the scene has change)
@@ -82,7 +84,11 @@ void Theater_scene::load_background(void)
             My_sprite_list.back()->texture->loadFromImage(get_default_texture(640, 480));
         }
         //set the texture to the sprite
+        My_sprite_list.back()->texture->setRepeated(true);
         My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+        My_sprite_list.back()->setTextureRect({ 0, 0, 640*5, 480 });
+
+        My_sprite_list.back()->background_layer = back_size;
     }
 }
 
@@ -154,10 +160,37 @@ void Theater_scene::load_sprites(void)
 //update the current scene (every sprites)
 void Theater_scene::update_current_scene(void)
 {
+    //initialize camera center
+    float camera_center_x = 0;
+    float camera_center_y = 0;
+    //update every sprite position, state and animation cycle
     for (unsigned int i = 0 ; i < this->My_sprite_list.size() ; i++)
     {
        this->My_sprite_list[i]->update(this->framerate, this->My_sprite_list, i);
+       //get new camera center
+       if (this->My_sprite_list[i]->type.compare("PLAYER")==0)
+       {
+           this->My_sprite_list[i]->get_center_xy();
+           camera_center_x = this->My_sprite_list[i]->center_x;
+           camera_center_y = 480/2;
+       }
     }
+    //correction of the background x position
+    for (unsigned int i = 0 ; i < this->My_sprite_list.size() ; i++)
+    {
+       if (this->My_sprite_list[i]->type.compare("BACKGROUND")==0)
+       {
+           this->My_sprite_list[i]->setPosition(sf::Vector2f(camera_center_x - 640/2 - (camera_center_x*this->My_sprite_list[i]->background_layer)/10, 0));
+       }
+    }
+    //update the camera position (center)
+    update_camera(camera_center_x, camera_center_y);
+}
+
+//update the camera position (center)
+void Theater_scene::update_camera(float center_x, float center_y)
+{
+    player_view.setCenter(sf::Vector2f(center_x, center_y));
 }
 
 //return a default texture if can't be properly loaded

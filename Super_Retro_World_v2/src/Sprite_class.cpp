@@ -20,12 +20,15 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     {
         collidable = true;
     }
-    vertical_acceleration = 400.0f;
+    //physic initialization
+    vertical_acceleration = 500.0f;
     vertical_speed = 0.0f;
     max_vertical_speed = 400.0f;
     horizontal_acceleration = 700.0f;
     horizontal_speed = 0.0f;
     max_horizontal_speed = 150.0f;
+    //general initialization
+    background_layer = 0;
 }
 
 void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int new_sprite_id)
@@ -60,25 +63,23 @@ void Sprite::update_player_movement(void)
     //declare local x + y to determine best location if collide
     float delta_x = (-1) * (this->getPosition().x - previous_x)/10;
     float delta_y = (-1) * (this->getPosition().y - previous_y)/10;
-    std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]";
-    while (collide_a_sprite() && !touch_one_direction) //test if there is a collision with a solid sprite
+    //std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]";
+    while (collide_a_sprite()) //test if there is a collision with a solid sprite (
     {
         //move back to the first correct position
         this->move(sf::Vector2f(delta_x, delta_y));
-        std::cout << delta_x << " - " << delta_y << std::endl;
+        //std::cout << "#";
     }
 
-    std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]" << std::endl;
+    //std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]" << std::endl;
     touch_floor = false;
     touch_roof = false;
     touch_left = false;
     touch_right = false;
-    touch_one_direction = false;
     if (there_is_a_sprite_below()) {vertical_speed = 0; touch_floor = true;}
     if (there_is_a_sprite_upside()) {vertical_speed = 0; touch_roof = true;}
     if (there_is_a_sprite_left()) {horizontal_speed = 0; touch_left = true;}
     if (there_is_a_sprite_right()) {horizontal_speed = 0; touch_right = true;}
-    if (touch_floor || touch_roof || touch_left || touch_right) {touch_one_direction = true;}
 }
 
 //update the player direction
@@ -86,7 +87,11 @@ void Sprite::update_player_direction(void)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && touch_floor)
     {
-        vertical_speed = -250;
+        vertical_speed = -350;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+        setPosition(sf::Vector2f(0, 0));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !touch_left)
     {
