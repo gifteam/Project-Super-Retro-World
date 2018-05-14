@@ -1,0 +1,21 @@
+<NotepadPlus>
+    <Project name="Super_Retro_World">
+        <File name="main.cpp" />
+        <Folder name="src">
+            <File name="src\Sprite_class.cpp" />
+            <File name="src\Theater_class.cpp" />
+            <File name="src\Theater_play_class.cpp" />
+            <File name="src\Theater_scene_class.cpp" />
+        </Folder>
+        <Folder name="header">
+            <File name="include\Constants.hpp" />
+            <File name="include\Sprite_class.hpp" />
+            <File name="include\Theater_class.hpp" />
+            <File name="include\Theater_play_class.hpp" />
+            <File name="include\Theater_scene_class.hpp" />
+        </Folder>
+        <Folder name="build">
+            <File name="build.bat" />
+        </Folder>
+    </Project>
+</NotepadPlus>
