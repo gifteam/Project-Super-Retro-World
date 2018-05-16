@@ -14,6 +14,7 @@ struct MAP{
     std::map <std::string, std::string> LIGHT_SOURCE;
     std::map <std::string, std::string> ELEMENT_STYLE;
     std::map <std::string, std::string> PLAYER_STYLE;
+	std::map <std::string, std::string> CAPPY_STYLE;
     std::map <std::string, std::string> ENEMYSET_STYLE;
     std::map <std::string, std::string> LOADING_STYLE;
     std::map <std::string, std::string> WAKE_UP_STYLE;

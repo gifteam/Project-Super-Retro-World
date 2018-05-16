@@ -109,6 +109,7 @@ void Theater::create_MAP(void){
     my_map.TILE_STYLE[style] = "003";
     my_map.ELEMENT_STYLE[style] = "001";
     my_map.PLAYER_STYLE[style] = "005";
+	my_map.CAPPY_STYLE[style] = "006";
     my_map.ENEMYSET_STYLE[style] = "002";
     my_map.LOADING_STYLE[style] = "002";
     my_map.WAKE_UP_STYLE[style] = "004";

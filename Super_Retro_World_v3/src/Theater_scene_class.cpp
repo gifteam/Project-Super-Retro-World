@@ -40,14 +40,13 @@ void Theater_scene::load_new_scene(void)
 
     load_background();
     load_map();
-    //load_sprites();
     load_player();
 }
 
 //load the player sprite
 void Theater_scene::load_player(void)
 {
-    //create a new sprite with it's texture
+    //create a new sprite with it's texture PLAYER
     std::string player_filename = my_map->PLAYER_STYLE[name];
     My_sprite_list.push_back(new Sprite("PLAYER"));
     My_sprite_list.back()->texture = new sf::Texture;
@@ -61,6 +60,22 @@ void Theater_scene::load_player(void)
     My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
     My_sprite_list.back()->setPosition(sf::Vector2f(0, 0));
     My_sprite_list.back()->set_size(18, 26);
+	
+    //create a new sprite with it's texture CAPPY
+    std::string cappy_filename = my_map->CAPPY_STYLE[name];
+    My_sprite_list.push_back(new Sprite("CAPPY"));
+    My_sprite_list.back()->texture = new sf::Texture;
+
+    //if can't load the texture
+    if (!My_sprite_list.back()->texture->loadFromFile("file/image/" + cappy_filename + ".png"))
+    {
+        My_sprite_list.back()->texture->loadFromImage(get_default_texture(24, 6));
+    }
+    //set the texture to the sprite
+    My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+    My_sprite_list.back()->setPosition(sf::Vector2f(0, 0));
+    My_sprite_list.back()->set_size(24, 6);
+	
 }
 
 //load background
@@ -88,7 +103,7 @@ void Theater_scene::load_background(void)
         My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
         My_sprite_list.back()->setTextureRect({ 0, 0, 640*5, 480 });
 
-        My_sprite_list.back()->background_layer = back_size;
+        My_sprite_list.back()->background_layer = back_size + 1;
     }
 }
 
@@ -139,22 +154,6 @@ void Theater_scene::load_map(void)
             }
         }
     }
-}
-
-//load sprites
-void Theater_scene::load_sprites(void)
-{
-    //create a new sprite with it's texture
-    My_sprite_list.push_back(new Sprite());
-    My_sprite_list.back()->texture = new sf::Texture;
-
-    //if can't load the texture
-    if (!My_sprite_list.back()->texture->loadFromFile("file/image/image_001.png"))
-    {
-        My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32));
-    }
-    //set the texture to the sprite
-    My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
 }
 
 //update the current scene (every sprites)

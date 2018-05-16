@@ -15,20 +15,29 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     std::cout << "Sprite constructor" << std::endl;
     //define the sprite type
     type = new_type;
-    collidable = false;
-    if (this->type.compare("SOLID")==0 || this->type.compare("PLAYER")==0)
+    if (this->type.compare("PLAYER")==0 || this->type.compare("CAPPY")==0)
     {
-        collidable = true;
+        collide_with.push_back("SOLID");
     }
     //physic initialization
     vertical_acceleration = 500.0f;
     vertical_speed = 0.0f;
     max_vertical_speed = 400.0f;
     horizontal_acceleration = 700.0f;
+    if (this->type.compare("CAPPY")==0)
+    {
+		horizontal_acceleration = 350.0f;
+		max_vertical_speed = 600.0f;
+	}
     horizontal_speed = 0.0f;
     max_horizontal_speed = 150.0f;
     //general initialization
+	//background sprite
     background_layer = 0;
+	//cappy sprite
+	cappy_bounce = false;
+	cappy_required = false;
+	old_cappy_required = false;
 }
 
 void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int new_sprite_id)
@@ -41,7 +50,11 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
     {
         update_player_direction(); //horizontal speed update
         update_gravity(); //vertical speed update
-        update_player_movement(); //move the player
+        update_movement(); //move the player
+    }
+    if (this->type.compare("CAPPY") == 0)
+    {
+		update_cappy(); //update cappy launch and movement
     }
 }
 
@@ -53,7 +66,7 @@ void Sprite::update_gravity(void)
 }
 
 //update player movement
-void Sprite::update_player_movement(void)
+void Sprite::update_movement(void)
 {
     //get last good position collision-free
     previous_x = this->getPosition().x;
@@ -63,36 +76,95 @@ void Sprite::update_player_movement(void)
     //declare local x + y to determine best location if collide
     float delta_x = (-1) * (this->getPosition().x - previous_x)/10;
     float delta_y = (-1) * (this->getPosition().y - previous_y)/10;
-    //std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]";
-    while (collide_a_sprite()) //test if there is a collision with a solid sprite (
+    while (collide_a_sprite("")) //test if there is a collision with a solid sprite
     {
         //move back to the first correct position
         this->move(sf::Vector2f(delta_x, delta_y));
-        //std::cout << "#";
     }
-
-    //std::cout << "[" << this->getPosition().x << ";" << this->getPosition().y << "]" << std::endl;
+	//check if touch a sprite
     touch_floor = false;
     touch_roof = false;
     touch_left = false;
     touch_right = false;
-    if (there_is_a_sprite_below()) {vertical_speed = 0; touch_floor = true;}
-    if (there_is_a_sprite_upside()) {vertical_speed = 0; touch_roof = true;}
-    if (there_is_a_sprite_left()) {horizontal_speed = 0; touch_left = true;}
-    if (there_is_a_sprite_right()) {horizontal_speed = 0; touch_right = true;}
+    if (collide_a_sprite("DOWN")) {vertical_speed = 0; touch_floor = true;}
+    if (collide_a_sprite("UP")) {vertical_speed = 0; touch_roof = true;}
+    if (collide_a_sprite("LEFT")) {horizontal_speed = 0; touch_left = true;}
+    if (collide_a_sprite("RIGHT")) {horizontal_speed = 0; touch_right = true;}
+}
+
+void Sprite::update_cappy(void)
+{
+	//launch cappy
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+		cappy_required = true;
+    }
+	//check if can be launch
+	if (cappy_required && !old_cappy_required)
+	{
+		setPosition(get_player_position());
+		move(get_player_width(), get_player_height()/2);
+		horizontal_speed = get_player_horizontal_speed() + 400;
+		vertical_speed = -100;
+		cappy_life = 3*60;
+		setColor(sf::Color(0, 0, 255, 255));
+	}
+	//update movement
+	if (cappy_required && old_cappy_required)
+	{
+		//reduce cappy life time
+		cappy_life -= 1;
+	
+		//reduce cappy horizontal speed
+        if (horizontal_speed < 0){ horizontal_speed += horizontal_acceleration/this->framerate; }
+        else if (horizontal_speed > 0){ horizontal_speed -= horizontal_acceleration/this->framerate; }
+
+        if (horizontal_speed > (-1) * horizontal_acceleration/this->framerate && horizontal_speed < horizontal_acceleration/this->framerate){ horizontal_speed = 0; }
+		
+		update_gravity();
+		update_movement();
+		
+		//bounce
+		if (touch_right)
+		{
+			cappy_bounce = true;
+			horizontal_speed = -300;
+			vertical_speed = -100;
+		}
+		
+		//attack
+		if (cappy_attack)
+		{
+				cappy_attack = false;
+				horizontal_speed = 0;
+				vertical_speed = max_vertical_speed;
+		}
+		
+		//delete
+		if ((cappy_life == 0) || (horizontal_speed == 0 && touch_floor))
+		{
+			cappy_required = false;
+			cappy_bounce = false;
+			setColor(sf::Color(0, 0, 255, 0));
+		}
+	}
+	
+	old_cappy_required = cappy_required;
 }
 
 //update the player direction
 void Sprite::update_player_direction(void)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && touch_floor)
+    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && touch_floor) || collide_bouncing_cappy())
     {
         vertical_speed = -350;
     }
+	// ask for reset position
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
         setPosition(sf::Vector2f(0, 0));
     }
+	//check keyboard <- and -> pressure
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !touch_left)
     {
         horizontal_speed -= horizontal_acceleration/this->framerate;
@@ -120,21 +192,63 @@ void Sprite::set_size(unsigned int w, unsigned int h)
 }
 
 //check the collision
-bool Sprite::collide_a_sprite(void)
+bool Sprite::collide_a_sprite(std::string direction)
 {
+	//create the collision rect of the current sprite
+	bool have_to_check_collision = false;
+	sf::FloatRect rect(this->getPosition().x, this->getPosition().y, this->width,this->height);
+	if (direction.compare("RIGHT") == 0) { rect.left = rect.left + 1; }
+	else if (direction.compare("LEFT") == 0) { rect.left = rect.left - 1; }
+	else if (direction.compare("DOWN") == 0) { rect.top = rect.top + 1; }
+	else if (direction.compare("UP") == 0) { rect.top = rect.top - 1; }
+
     //loop with others sprites
     for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
     {
-        //avoid himself
-        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
-        {
-            //check collision
-            if (this->sprite_list[i]->getGlobalBounds().intersects(this->getGlobalBounds()))
-            {
-                //collide
-                return true;
-            }
+		have_to_check_collision = false;
+		for (unsigned int j = 0 ; j < this->collide_with.size() ; j++)
+		 {
+			if (this->collide_with[j].compare(this->sprite_list[i]->type) == 0)
+			{
+				have_to_check_collision = true;
+			}
+            //check collision if the sprite must collide with the candidate
+			if (have_to_check_collision)
+			{
+				if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
+				{
+					//collide
+					return true;
+				}
+			}
         }
+    }
+    //dont collide
+    return false;
+}
+
+//check if collide cappy (mode bounce activé)
+
+bool Sprite::collide_bouncing_cappy(void)
+{
+	//create the collision rect of the current sprite
+	sf::FloatRect rect(this->getPosition().x, this->getPosition().y, this->width,this->height);
+
+    //loop with others sprites
+    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+    {
+		//check collision if the sprite must collide with the candidate
+		if (this->sprite_list[i]->type.compare("CAPPY") == 0 && this->sprite_list[i]->cappy_bounce)
+		{
+			if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
+			{
+				//collide with cappy
+				//prepare cappy attack
+				this->sprite_list[i]->cappy_attack = true;
+				this->sprite_list[i]->cappy_bounce = false;
+				return true;
+			}
+		}
     }
     //dont collide
     return false;
@@ -153,86 +267,48 @@ void Sprite::get_center_xy(void)
 
 }
 
-//return true if there is a sprite below
-bool Sprite::there_is_a_sprite_below(void)
+//get player height whoever ask for it
+float Sprite::get_player_height(void)
 {
-    //define local rect to determine if there is something below (check with y + 1 pixel)
-    sf::FloatRect rect(previous_x, previous_y + 1, this->width,this->height);
-    //loop with others sprites
-    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
-    {
-        //avoid himself
-        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
-        {
-            //check collision
-            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
+	for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+	{
+		if (this->sprite_list[i]->type.compare("PLAYER") == 0) { return this->sprite_list[i]->height; }
+	}
+	return 0;
 }
 
-//return true if there is a sprite upside
-bool Sprite::there_is_a_sprite_upside(void)
+//get player horizontal speed whoever ask for it
+float Sprite::get_player_width(void)
 {
-    //define local rect to determine if there is something upside (check with y - 1 pixel)
-    sf::FloatRect rect(previous_x, previous_y - 1, this->width,this->height);
-    //loop with others sprites
-    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
-    {
-        //avoid himself
-        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
-        {
-            //check collision
-            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
+	for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+	{
+		if (this->sprite_list[i]->type.compare("PLAYER") == 0) { return this->sprite_list[i]->width; }
+	}
+	return 0;
 }
 
-//return true if there is a sprite left
-bool Sprite::there_is_a_sprite_left(void)
+//get player horizontal speed whoever ask for it
+float Sprite::get_player_horizontal_speed(void)
 {
-    //define local rect to determine if there is something left (check with x - 1 pixel)
-    sf::FloatRect rect(previous_x - 1, previous_y, this->width,this->height);
-    //loop with others sprites
-    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
-    {
-        //avoid himself
-        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
-        {
-            //check collision
-            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
+	for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+	{
+		if (this->sprite_list[i]->type.compare("PLAYER") == 0) { return this->sprite_list[i]->horizontal_speed; }
+	}
+	return 0;
 }
 
-//return true if there is a sprite right
-bool Sprite::there_is_a_sprite_right(void)
+//get player position whoever ask for it
+sf::Vector2f Sprite::get_player_position(void)
 {
-    //define local rect to determine if there is something right (check with x + 1 pixel)
-    sf::FloatRect rect(previous_x + 1, previous_y, this->width,this->height);
-    //loop with others sprites
-    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
-    {
-        //avoid himself
-        if (i != this->current_sprite_id && this->collidable && this->sprite_list[i]->collidable)
-        {
-            //check collision
-            if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
+	for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+	{
+		if (this->sprite_list[i]->type.compare("PLAYER") == 0) { return this->sprite_list[i]->get_position(); }
+	}
+	return sf::Vector2f(0,0);
+}
+
+//get itself position
+sf::Vector2f Sprite::get_position(void)
+{
+	return sf::Vector2f(this->getPosition().x, this->getPosition().y);
 }

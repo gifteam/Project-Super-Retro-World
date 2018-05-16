@@ -30,7 +30,6 @@ class Theater_scene
         void load_new_scene(void);
         void load_background(void);
         void load_map(void);
-        void load_sprites(void);
         void load_player(void);
         //other update functions
         void update_current_scene(void);
