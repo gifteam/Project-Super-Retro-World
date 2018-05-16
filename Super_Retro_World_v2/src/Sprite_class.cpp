@@ -28,6 +28,7 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     horizontal_speed = 0.0f;
     max_horizontal_speed = 150.0f;
     //general initialization
+    //z of the background layer for parallaxe purpose
     background_layer = 0;
 }
 
