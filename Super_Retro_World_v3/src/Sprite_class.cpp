@@ -58,7 +58,8 @@ void Sprite::initialize_visual_sprite_attributes(void)
 		sprite_rect.width = 32;
 		sprite_rect.height = 32;
 		//row frame
-		sprite_row_frame = 3;
+		sprite_row_frame = 1;
+		sprite_previous_row_frame = sprite_row_frame;
 		//current frame id
 		sprite_frame = 0;
 		//sprite row
@@ -66,12 +67,24 @@ void Sprite::initialize_visual_sprite_attributes(void)
 		sprite_max_frame.push_back(0); //idle right
 		sprite_max_frame.push_back(11); //run left
 		sprite_max_frame.push_back(11); //run right
+		sprite_max_frame.push_back(1); //edge left
+		sprite_max_frame.push_back(1); //edge right
+		sprite_max_frame.push_back(0); //fall left
+		sprite_max_frame.push_back(0); //fall right
+		sprite_max_frame.push_back(0); //jump left
+		sprite_max_frame.push_back(0); //jump right
 		//sprite row speed
 		sprite_framerate_factor = 1;
-		sprite_framerate.push_back(1.0f); //idle left
-		sprite_framerate.push_back(1.0f); //idle right
+		sprite_framerate.push_back(0.1); //idle left
+		sprite_framerate.push_back(0.1); //idle right
 		sprite_framerate.push_back(0.1f); //run left
 		sprite_framerate.push_back(0.1f); //run right
+		sprite_framerate.push_back(0.25f); //edge left
+		sprite_framerate.push_back(0.25f); //edge right
+		sprite_framerate.push_back(0.25f); //fall left
+		sprite_framerate.push_back(0.25f); //fall right
+		sprite_framerate.push_back(0.25f); //jump left
+		sprite_framerate.push_back(0.25f); //jump right
 	}
 }
 
@@ -100,12 +113,18 @@ void Sprite::update_frame(void)
 	//simulate acceleration through frame update (usefull when running);
 	sprite_framerate_factor =  1 + std::abs(float(horizontal_speed / max_horizontal_speed));
 
+	//update global animation (select row)
+	update_row_frame();
+	
+	//reset frame if changing row
+	if (sprite_row_frame != sprite_previous_row_frame) { sprite_frame = 0; }
+	sprite_previous_row_frame = sprite_row_frame;
+	
 	//get the animation image set id
 	if (sprite_clock.getElapsedTime().asSeconds() >= float(sprite_framerate[sprite_row_frame] / sprite_framerate_factor)){
 		if (sprite_frame >= sprite_max_frame[sprite_row_frame])
 		{
 			sprite_frame = 0;
-			sprite_rect.left = 0;
 		}else{
 			sprite_frame += 1;
 		}
@@ -116,6 +135,26 @@ void Sprite::update_frame(void)
 		sprite_clock.restart();
 	}
 	//end of the procedure
+}
+
+void Sprite::update_row_frame(void)
+{
+    if (this->type.compare("PLAYER") == 0)
+    {
+		if (vertical_speed == 0){
+			if (horizontal_speed < 0) { sprite_row_frame = 2;} //running left
+			else if (horizontal_speed > 0) { sprite_row_frame = 3;} //running right
+			else { sprite_row_frame = 1;} //idle right
+		}
+		else if (vertical_speed < 0){
+			if (horizontal_speed < 0) { sprite_row_frame = 8;} //jumping left
+			else if (horizontal_speed >= 0) { sprite_row_frame = 9;} //jumping right
+		}
+		else if (vertical_speed > 0){
+			if (horizontal_speed < 0) { sprite_row_frame = 6;} //falling left
+			else if (horizontal_speed >= 0) { sprite_row_frame = 7;} //falling right
+		}
+	}
 }
 
 //update the physical part of the sprites
@@ -167,7 +206,7 @@ void Sprite::update_cappy(void)
 		horizontal_speed = get_player_horizontal_speed() + 400;
 		vertical_speed = -100;
 		cappy_life = 3*60;
-		setColor(sf::Color(0, 0, 255, 255));
+		setColor(sf::Color(255, 0, 255, 255));
 	}
 	//update movement
 	if (cappy_required && old_cappy_required)

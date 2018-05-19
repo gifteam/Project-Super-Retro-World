@@ -16,6 +16,7 @@ class Sprite: public sf::Sprite
 		sf::IntRect sprite_rect;
 		sf::Clock sprite_clock;
 		unsigned int sprite_row_frame;
+		unsigned int sprite_previous_row_frame;
 		unsigned int sprite_frame;
 		std::vector<unsigned int> sprite_max_frame;
 		std::vector<float> sprite_framerate;
@@ -75,6 +76,7 @@ class Sprite: public sf::Sprite
         void update_gravity(void);
 		void update_cappy(void);
 		void update_frame(void);
+		void update_row_frame(void);
         //setter function
 		void set_hitbox(int off_x, int off_y, unsigned int w, unsigned int h);
         void set_size(unsigned int w, unsigned int h);
