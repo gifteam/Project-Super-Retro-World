@@ -11,8 +11,19 @@ class Sprite: public sf::Sprite
 {
     public:
         //declaring public sprite attributes
+		//visual sprite attributes
         sf::Texture* texture;
+		sf::IntRect sprite_rect;
+		sf::Clock sprite_clock;
+		unsigned int sprite_row_frame;
+		unsigned int sprite_frame;
+		std::vector<unsigned int> sprite_max_frame;
+		std::vector<float> sprite_framerate;
+		float sprite_framerate_factor;
         std::string name;
+		//physical sprite
+		int offset_x;
+		int offset_y;
         unsigned int width;
         unsigned int height;
         std::string type;
@@ -53,14 +64,19 @@ class Sprite: public sf::Sprite
 		bool collide_bouncing_cappy(void);
         //declaring constructor
         Sprite(std::string s_type = "UNKNOWN");
-        //classic update function
+		
+		//initialization functions
+		void initialize_visual_sprite_attributes(void);
+		
+        //update functions
         void update(int framerate, std::vector<Sprite*> sprite_list, int sprite_id);
-        //player physic update
         void update_player_direction(void);
         void update_movement(void);
         void update_gravity(void);
 		void update_cappy(void);
+		void update_frame(void);
         //setter function
+		void set_hitbox(int off_x, int off_y, unsigned int w, unsigned int h);
         void set_size(unsigned int w, unsigned int h);
         //getter function
         void get_center_xy(void);

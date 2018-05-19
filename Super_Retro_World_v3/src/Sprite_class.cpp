@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cmath> 
 
 //constructor
 Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
@@ -38,8 +39,43 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
 	cappy_bounce = false;
 	cappy_required = false;
 	old_cappy_required = false;
+	//sprite rect (visual)
+	initialize_visual_sprite_attributes();
+	//init physical hitbox offset
+    offset_x = 0;
+	offset_y = 0;
 }
 
+//initialisation of all visual sprite attributes 
+void Sprite::initialize_visual_sprite_attributes(void)
+{
+	//player init
+	if (this->type.compare("PLAYER")==0)
+	{
+		//rect for spritesheet
+		sprite_rect.left = 0;
+		sprite_rect.top = 0;
+		sprite_rect.width = 32;
+		sprite_rect.height = 32;
+		//row frame
+		sprite_row_frame = 3;
+		//current frame id
+		sprite_frame = 0;
+		//sprite row
+		sprite_max_frame.push_back(0); //idle left
+		sprite_max_frame.push_back(0); //idle right
+		sprite_max_frame.push_back(11); //run left
+		sprite_max_frame.push_back(11); //run right
+		//sprite row speed
+		sprite_framerate_factor = 1;
+		sprite_framerate.push_back(1.0f); //idle left
+		sprite_framerate.push_back(1.0f); //idle right
+		sprite_framerate.push_back(0.1f); //run left
+		sprite_framerate.push_back(0.1f); //run right
+	}
+}
+
+//general update
 void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int new_sprite_id)
 {
     this->framerate = new_framerate;
@@ -48,7 +84,8 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
     //update player sprite
     if (this->type.compare("PLAYER") == 0)
     {
-        update_player_direction(); //horizontal speed update
+        update_frame(); //update the current frame of the animation
+		update_player_direction(); //horizontal speed update
         update_gravity(); //vertical speed update
         update_movement(); //move the player
     }
@@ -56,6 +93,29 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
     {
 		update_cappy(); //update cappy launch and movement
     }
+}
+
+void Sprite::update_frame(void)
+{
+	//simulate acceleration through frame update (usefull when running);
+	sprite_framerate_factor =  1 + std::abs(float(horizontal_speed / max_horizontal_speed));
+
+	//get the animation image set id
+	if (sprite_clock.getElapsedTime().asSeconds() >= float(sprite_framerate[sprite_row_frame] / sprite_framerate_factor)){
+		if (sprite_frame >= sprite_max_frame[sprite_row_frame])
+		{
+			sprite_frame = 0;
+			sprite_rect.left = 0;
+		}else{
+			sprite_frame += 1;
+		}
+		//update rect position and size
+		sprite_rect.left = sprite_frame * 32;
+		sprite_rect.top = sprite_row_frame * 32;
+		setTextureRect(sprite_rect);
+		sprite_clock.restart();
+	}
+	//end of the procedure
 }
 
 //update the physical part of the sprites
@@ -71,7 +131,7 @@ void Sprite::update_movement(void)
     //get last good position collision-free
     previous_x = this->getPosition().x;
     previous_y = this->getPosition().y;
-    //try to move
+	 //try to move
     this->move(horizontal_speed/this->framerate, vertical_speed/this->framerate);
     //declare local x + y to determine best location if collide
     float delta_x = (-1) * (this->getPosition().x - previous_x)/10;
@@ -191,12 +251,20 @@ void Sprite::set_size(unsigned int w, unsigned int h)
     height = h;
 }
 
+//set new size
+void Sprite::set_hitbox(int off_x, int off_y, unsigned int w, unsigned int h)
+{
+    offset_x = off_x;
+	offset_y = off_y;
+	set_size(w, h);
+}
+
 //check the collision
 bool Sprite::collide_a_sprite(std::string direction)
 {
 	//create the collision rect of the current sprite
 	bool have_to_check_collision = false;
-	sf::FloatRect rect(this->getPosition().x, this->getPosition().y, this->width,this->height);
+	sf::FloatRect rect(this->getPosition().x + offset_x, this->getPosition().y + offset_y, this->width,this->height);
 	if (direction.compare("RIGHT") == 0) { rect.left = rect.left + 1; }
 	else if (direction.compare("LEFT") == 0) { rect.left = rect.left - 1; }
 	else if (direction.compare("DOWN") == 0) { rect.top = rect.top + 1; }
@@ -232,7 +300,7 @@ bool Sprite::collide_a_sprite(std::string direction)
 bool Sprite::collide_bouncing_cappy(void)
 {
 	//create the collision rect of the current sprite
-	sf::FloatRect rect(this->getPosition().x, this->getPosition().y, this->width,this->height);
+	sf::FloatRect rect(this->getPosition().x + offset_x, this->getPosition().y + offset_y, this->width,this->height);
 
     //loop with others sprites
     for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)

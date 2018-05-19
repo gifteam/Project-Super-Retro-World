@@ -59,7 +59,8 @@ void Theater_scene::load_player(void)
     //set the texture to the sprite
     My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
     My_sprite_list.back()->setPosition(sf::Vector2f(0, 0));
-    My_sprite_list.back()->set_size(18, 26);
+    My_sprite_list.back()->set_hitbox(7, 6, 18, 26);
+	My_sprite_list.back()->setTextureRect(My_sprite_list.back()->sprite_rect);
 	
     //create a new sprite with it's texture CAPPY
     std::string cappy_filename = my_map->CAPPY_STYLE[name];
