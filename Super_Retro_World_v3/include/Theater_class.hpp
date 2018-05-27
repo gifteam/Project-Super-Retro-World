@@ -30,6 +30,8 @@ class Theater: public sf::RenderWindow
         sf::Clock clock;
         sf::Font font;
         sf::Text text;
+		std::string guide_text;
+		sf::Texture text_bc;
         sf::CircleShape shape;
         sf::Event event;
         int fps_show_timeout;
@@ -40,5 +42,6 @@ class Theater: public sf::RenderWindow
         void update_FPS();
         void draw_Theater();
         void create_MAP(void);
+		sf::Image get_default_texture(unsigned int size_x, unsigned int size_y);
 };
 #endif // _THEATER_CLASS_

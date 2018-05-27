@@ -13,6 +13,7 @@ class Sprite: public sf::Sprite
         //declaring public sprite attributes
 		//visual sprite attributes
         sf::Texture* texture;
+		sf::Texture* hitbox_texture;
 		sf::IntRect sprite_rect;
 		sf::Clock sprite_clock;
 		unsigned int sprite_row_frame;
@@ -30,6 +31,7 @@ class Sprite: public sf::Sprite
         std::string type;
         int framerate;
         //declaring general sprites variables
+		bool hitbox_mode;
         std::vector<Sprite*> sprite_list;
         unsigned int current_sprite_id;
         unsigned int background_layer;
@@ -56,13 +58,7 @@ class Sprite: public sf::Sprite
         float horizontal_speed;
         float max_horizontal_speed;
 		//declaring player oriented variables
-		//cappy variables
-		unsigned int cappy_life;
-		bool cappy_bounce;
-		bool cappy_attack;
-		bool cappy_required;
-		bool old_cappy_required;
-		bool collide_bouncing_cappy(void);
+
         //declaring constructor
         Sprite(std::string s_type = "UNKNOWN");
 		
@@ -70,13 +66,13 @@ class Sprite: public sf::Sprite
 		void initialize_visual_sprite_attributes(void);
 		
         //update functions
-        void update(int framerate, std::vector<Sprite*> sprite_list, int sprite_id);
+        void update(int framerate, std::vector<Sprite*> sprite_list, int sprite_id, bool hitbox_mode);
         void update_player_direction(void);
         void update_movement(void);
         void update_gravity(void);
-		void update_cappy(void);
 		void update_frame(void);
 		void update_row_frame(void);
+		void update_hitbox_mode(void);
         //setter function
 		void set_hitbox(int off_x, int off_y, unsigned int w, unsigned int h);
         void set_size(unsigned int w, unsigned int h);

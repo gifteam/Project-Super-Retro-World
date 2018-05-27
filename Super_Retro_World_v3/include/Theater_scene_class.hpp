@@ -19,6 +19,7 @@ class Theater_scene
         MAP* my_map;
         int framerate;
         sf::View player_view;
+		bool hitbox_mode;
         //declaring sprite list (vector)
         std::vector<Sprite*> My_sprite_list;
         //declaring constructor
@@ -31,11 +32,12 @@ class Theater_scene
         void load_background(void);
         void load_map(void);
         void load_player(void);
+		void load_HUD(void);
         //other update functions
         void update_current_scene(void);
         void update_camera(float center_x, float center_y);
         //special functions
-        sf::Image get_default_texture(unsigned int size_x, unsigned int size_y);
+        sf::Image get_default_texture(unsigned int size_x, unsigned int size_y, sf::Color color);
 };
 
 #endif // _THEATER_SCENE_CLASS_

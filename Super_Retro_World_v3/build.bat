@@ -8,4 +8,6 @@ mingw32-g++.exe -Wall -fexceptions -ISFML\include -Idll -c src\Theater_scene_cla
 
 mingw32-g++.exe -static-libgcc -static-libstdc++ -LSFML\lib -Ldll -o Super_Retro_World_executable.exe obj\main.o obj\src\*.o -s -lsfml-network -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
+rem call Super_Retro_World_executable.exe
+
 pause

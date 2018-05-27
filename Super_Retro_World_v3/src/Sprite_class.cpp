@@ -16,7 +16,7 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     std::cout << "Sprite constructor" << std::endl;
     //define the sprite type
     type = new_type;
-    if (this->type.compare("PLAYER")==0 || this->type.compare("CAPPY")==0)
+    if (this->type.compare("PLAYER")==0)
     {
         collide_with.push_back("SOLID");
     }
@@ -25,20 +25,11 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     vertical_speed = 0.0f;
     max_vertical_speed = 400.0f;
     horizontal_acceleration = 700.0f;
-    if (this->type.compare("CAPPY")==0)
-    {
-		horizontal_acceleration = 350.0f;
-		max_vertical_speed = 600.0f;
-	}
     horizontal_speed = 0.0f;
     max_horizontal_speed = 150.0f;
     //general initialization
 	//background sprite
     background_layer = 0;
-	//cappy sprite
-	cappy_bounce = false;
-	cappy_required = false;
-	old_cappy_required = false;
 	//sprite rect (visual)
 	initialize_visual_sprite_attributes();
 	//init physical hitbox offset
@@ -89,8 +80,9 @@ void Sprite::initialize_visual_sprite_attributes(void)
 }
 
 //general update
-void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int new_sprite_id)
+void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int new_sprite_id, bool hit_mode)
 {
+	hitbox_mode = hit_mode;
     this->framerate = new_framerate;
     this->sprite_list = new_sprite_list;
     this->current_sprite_id = new_sprite_id;
@@ -102,10 +94,21 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
         update_gravity(); //vertical speed update
         update_movement(); //move the player
     }
-    if (this->type.compare("CAPPY") == 0)
+	update_hitbox_mode();
+}
+
+void Sprite::update_hitbox_mode(void)
+{
+//change image if hitbox mode is one
+    if (hitbox_mode)
     {
-		update_cappy(); //update cappy launch and movement
+        setTexture(*hitbox_texture);
+	}
+    else
+    {
+        setTexture(*texture);
     }
+//end of procedure
 }
 
 void Sprite::update_frame(void)
@@ -191,70 +194,11 @@ void Sprite::update_movement(void)
     if (collide_a_sprite("RIGHT")) {horizontal_speed = 0; touch_right = true;}
 }
 
-void Sprite::update_cappy(void)
-{
-	//launch cappy
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-    {
-		cappy_required = true;
-    }
-	//check if can be launch
-	if (cappy_required && !old_cappy_required)
-	{
-		setPosition(get_player_position());
-		move(get_player_width(), get_player_height()/2);
-		horizontal_speed = get_player_horizontal_speed() + 400;
-		vertical_speed = -100;
-		cappy_life = 3*60;
-		setColor(sf::Color(255, 0, 255, 255));
-	}
-	//update movement
-	if (cappy_required && old_cappy_required)
-	{
-		//reduce cappy life time
-		cappy_life -= 1;
-	
-		//reduce cappy horizontal speed
-        if (horizontal_speed < 0){ horizontal_speed += horizontal_acceleration/this->framerate; }
-        else if (horizontal_speed > 0){ horizontal_speed -= horizontal_acceleration/this->framerate; }
-
-        if (horizontal_speed > (-1) * horizontal_acceleration/this->framerate && horizontal_speed < horizontal_acceleration/this->framerate){ horizontal_speed = 0; }
-		
-		update_gravity();
-		update_movement();
-		
-		//bounce
-		if (touch_right)
-		{
-			cappy_bounce = true;
-			horizontal_speed = -300;
-			vertical_speed = -100;
-		}
-		
-		//attack
-		if (cappy_attack)
-		{
-				cappy_attack = false;
-				horizontal_speed = 0;
-				vertical_speed = max_vertical_speed;
-		}
-		
-		//delete
-		if ((cappy_life == 0) || (horizontal_speed == 0 && touch_floor))
-		{
-			cappy_required = false;
-			cappy_bounce = false;
-			setColor(sf::Color(0, 0, 255, 0));
-		}
-	}
-	
-	old_cappy_required = cappy_required;
-}
 
 //update the player direction
 void Sprite::update_player_direction(void)
-{
-    if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && touch_floor) || collide_bouncing_cappy())
+{	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && touch_floor)
     {
         vertical_speed = -350;
     }
@@ -329,33 +273,6 @@ bool Sprite::collide_a_sprite(std::string direction)
 				}
 			}
         }
-    }
-    //dont collide
-    return false;
-}
-
-//check if collide cappy (mode bounce activé)
-
-bool Sprite::collide_bouncing_cappy(void)
-{
-	//create the collision rect of the current sprite
-	sf::FloatRect rect(this->getPosition().x + offset_x, this->getPosition().y + offset_y, this->width,this->height);
-
-    //loop with others sprites
-    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
-    {
-		//check collision if the sprite must collide with the candidate
-		if (this->sprite_list[i]->type.compare("CAPPY") == 0 && this->sprite_list[i]->cappy_bounce)
-		{
-			if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
-			{
-				//collide with cappy
-				//prepare cappy attack
-				this->sprite_list[i]->cappy_attack = true;
-				this->sprite_list[i]->cappy_bounce = false;
-				return true;
-			}
-		}
     }
     //dont collide
     return false;
