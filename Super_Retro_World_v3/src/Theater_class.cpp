@@ -36,7 +36,7 @@ Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480),
     this->text.setFont(font);
     this->text.setString(" FPS : N/A");
     this->text.setCharacterSize(14);
-    guide_text = "\n\n [LEFT] and [RIGHT] to move\n [UP] to jump\n [Num_1] to [Num_3] to swap colors.\n [CTRL] to switch sprite/hitbox modes\n [ESC] to reset position";
+    guide_text = "\n\n [A] and [D] to move\n [SPACE] to jump\n [Num_1] to [Num_3] to swap colors.\n [CTRL] to switch sprite/hitbox modes\n [ESC] to reset position";
 	
     //set levels characteristics
     create_MAP();
@@ -63,10 +63,10 @@ void Theater::update(void)
         this->setView(My_theater_play.My_theater_scene.player_view);
         this->draw_Theater();
         this->text.setPosition(sf::Vector2f(this->getView().getCenter().x - 640/2, 0));
-		sf::Sprite sprite(this->text_bc);
-		sprite.setPosition(sf::Vector2f(this->getView().getCenter().x - 640/2, 0));
-		sprite.setColor(sf::Color(0,0,0,125));
-		this->draw(sprite);
+        sf::Sprite sprite(this->text_bc);
+        sprite.setPosition(sf::Vector2f(this->getView().getCenter().x - 640/2, 0));
+        sprite.setColor(sf::Color(0,0,0,125));
+        this->draw(sprite);
         this->draw(this->text);
         this->display();
     }

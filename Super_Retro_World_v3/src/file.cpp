@@ -1,0 +1,1 @@
+std::cout << "Sprite constructor" << std::endl;

@@ -20,6 +20,7 @@ class Theater_scene
         int framerate;
         sf::View player_view;
 		bool hitbox_mode;
+    bool previous_hitbox_mode;
         //declaring sprite list (vector)
         std::vector<Sprite*> My_sprite_list;
         //declaring constructor
