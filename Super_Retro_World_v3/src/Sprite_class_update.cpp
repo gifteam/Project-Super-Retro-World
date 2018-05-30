@@ -6,18 +6,30 @@ void Sprite::update_hitbox_mode(void)
   {
     setTexture(*hitbox_texture);
     setTextureRect({0, 0, 32, 32 });
-    if (this->type.compare("PLAYER")==0) { setTextureRect({0, 0, 32, 32 }); }
-    else if (this->type.compare("BACKGROUND")==0) { setTextureRect({0, 0, 0, 0 }); }
-    else if (this->type.compare("SOLID")==0 ||this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32 }); }
-    else if (this->type.compare("TRANSPARENT_RED")==0) { setTextureRect({0, 0, 0, 0 });}
+    if (this->type.compare("PLAYER")==0) { setTextureRect({0, 0, 32, 32}); }
+    else if (this->type.compare("BACKGROUND")==0) { setTextureRect({0, 0, 0, 0}); }
+    else if (this->type.compare("SOLID")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
+    else if (this->type.compare("TRANSPARENT_RED")==0) { setTextureRect({0, 0, 0, 0});}
+	else if (this->type.compare("TRANSPARENT_GREEN")==0) { setTextureRect({0, 0, 0, 0});}
+	else if (this->type.compare("TRANSPARENT_BLUE")==0) { setTextureRect({0, 0, 0, 0});}
+	else if (this->type.compare("FILTER")==0) { setTextureRect({0, 0, 0, 0});}
   }
   else
   {
     setTexture(*texture);
     if (this->type.compare("PLAYER")==0) { setTextureRect(sprite_rect); }
-    else if (this->type.compare("BACKGROUND")==0) { setTextureRect({ 0, 0, 640*5, 480 }); }
-    else if (this->type.compare("SOLID")==0 ||this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32 }); }
-    else if (this->type.compare("TRANSPARENT_RED")==0) { setTextureRect({0, 0, 0, 0 });}
+    else if (this->type.compare("BACKGROUND")==0) { setTextureRect({ 0, 0, 640*5, 480}); }
+    else if (this->type.compare("SOLID")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
+    else if (this->type.compare("TRANSPARENT_RED")==0) { setTextureRect({0, 0, 0, 0});}
+	else if (this->type.compare("TRANSPARENT_GREEN")==0) { setTextureRect({0, 0, 0, 0});}
+	else if (this->type.compare("TRANSPARENT_BLUE")==0) { setTextureRect({0, 0, 0, 0});}
+	else if (this->type.compare("FILTER")==0) { setTextureRect({0, 0, 640, 480});}
   }
   //end of procedure
 }
@@ -108,19 +120,63 @@ void Sprite::update_movement(void)
 void Sprite::update_filter_activation(void)
 {
   //switch filters 
-  if ((current_filter == 0) && (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1) || sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad3)))
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0) && current_filter != 0)
   {
-      std::cout << "Activate filter" << std::endl;
+      std::cout << "Activate filter 0" << std::endl;
+      current_filter = 0;
+  } 
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1) && current_filter != 1)
+  {
+      std::cout << "Activate filter 1" << std::endl;
       current_filter = 1;
   } 
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2) && current_filter != 2)
+  {
+      std::cout << "Activate filter 2" << std::endl;
+      current_filter = 2;
+  } 
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad3) && current_filter != 3)
+  {
+      std::cout << "Activate filter 3" << std::endl;
+      current_filter = 3;
+  } 
+}
+//update filter color
+void Sprite::update_filter_color(void)
+{
+	if (type.compare("FILTER")==0)
+	{
+		if (current_filter==0){setColor(sf::Color(0	,0,0,0));}
+		else if (current_filter==1){setColor(sf::Color(223,106,88,50));}
+		else if (current_filter==2){setColor(sf::Color(88,223,106,50));}
+		else if (current_filter==3){setColor(sf::Color(106,88,223,50));}
+	}
+	//end of procedure
 }
 
 void Sprite::update_filter_type(void)
 {
-  if (has_two_types && current_filter==1)
-  {
-    type=second_type;
-  }
+	if (has_two_types)
+	{
+		type=first_type;
+		second_type_activated = false;
+	
+		if (current_filter==1 and type.substr(type.length()-4, 4).compare("_RED")==0)
+		{
+			type=second_type;
+			second_type_activated = true;
+		}
+		else if (current_filter==2 and type.substr(type.length()-6, 6).compare("_GREEN")==0)
+		{
+			type=second_type;
+			second_type_activated = true;
+		}
+		else if (current_filter==3 and type.substr(type.length()-5, 5).compare("_BLUE")==0)
+		{
+			type=second_type;
+			second_type_activated = true;
+		}
+	}
 }
 
 //update the player direction

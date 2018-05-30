@@ -34,6 +34,7 @@ class Theater_scene
         void load_map(void);
         void load_player(void);
 		void load_HUD(void);
+		void load_filter(void);
         //other update functions
         void update_current_scene(void);
         void update_camera(float center_x, float center_y);

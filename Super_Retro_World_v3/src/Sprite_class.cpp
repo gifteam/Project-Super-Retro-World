@@ -30,11 +30,27 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
     {
         collide_with.push_back("SOLID");
         collide_with.push_back("SOLID_RED");
+		collide_with.push_back("SOLID_GREEN");
+		collide_with.push_back("SOLID_BLUE");
     }
-    if (this->type.compare("SOLID_RED")==0)
+    if (this->type.compare("TRANSPARENT_RED")==0)
     {
         has_two_types = true;
-        second_type = "TRANSPARENT_RED";
+        second_type = "SOLID_RED";
+        first_type = type;
+        second_type_activated = false;
+    }
+    if (this->type.compare("TRANSPARENT_GREEN")==0)
+    {
+        has_two_types = true;
+        second_type = "SOLID_GREEN";
+        first_type = type;
+        second_type_activated = false;
+    }
+    if (this->type.compare("TRANSPARENT_BLUE")==0)
+    {
+        has_two_types = true;
+        second_type = "SOLID_BLUE";
         first_type = type;
         second_type_activated = false;
     }
@@ -64,6 +80,7 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
   this->current_sprite_id = new_sprite_id;
   //update filter types
   update_filter_type(); // change type according to current filter
+  update_filter_color(); //update filter color
   //update player sprite
   if (this->type.compare("PLAYER") == 0)
   {

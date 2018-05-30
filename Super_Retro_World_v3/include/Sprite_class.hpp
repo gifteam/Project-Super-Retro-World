@@ -100,6 +100,7 @@ class Sprite: public sf::Sprite
     void update_hitbox_mode(void); // change texture if hitbox mode is on/off
     void update_filter_activation(void); //update if the filter must be on / off
     void update_filter_type(void); // update the type of the sprite depending on the filter
+	void update_filter_color(void); // update filtre sprite color (main one)
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

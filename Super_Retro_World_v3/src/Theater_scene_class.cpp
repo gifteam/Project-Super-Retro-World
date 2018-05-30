@@ -44,6 +44,24 @@ void Theater_scene::load_new_scene(void)
     load_background();
     load_map();
     load_player();
+	load_filter();
+}
+
+//load the filter color
+void Theater_scene::load_filter(void)
+{
+    //create a new sprite with it's texture 
+    My_sprite_list.push_back(new Sprite("FILTER"));
+    My_sprite_list.back()->texture = new sf::Texture;
+    My_sprite_list.back()->hitbox_texture = new sf::Texture;
+	My_sprite_list.back()->texture->loadFromImage(get_default_texture(18, 26, sf::Color(255, 255, 255, 255)));
+	My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color(255, 255, 255, 0)));
+    //set the texture to the sprite
+    My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+    My_sprite_list.back()->setPosition(sf::Vector2f(0, 0));
+    My_sprite_list.back()->set_hitbox(0,0,0,0);
+	My_sprite_list.back()->setTextureRect({ 0, 0, 640, 480 });
+	//end of procedure
 }
 
 //load the player sprite
@@ -154,7 +172,7 @@ void Theater_scene::load_map(void)
             {
               spr_x = map_x * 32;
               spr_y = map_y * 32;
-              My_sprite_list.push_back(new Sprite("SOLID_RED"));
+              My_sprite_list.push_back(new Sprite("TRANSPARENT_RED"));
               My_sprite_list.back()->texture = new sf::Texture;
               My_sprite_list.back()->hitbox_texture = new sf::Texture;
               My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
@@ -162,6 +180,40 @@ void Theater_scene::load_map(void)
               //if can't load the sprite texture
               if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite_Red.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
               if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}  
+              //set the texture to the sprite
+              My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+              My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
+            }
+            //GREEN pixel => it's a filtered sprite !
+            if (r==0 && g==255 && b==0)
+            {
+              spr_x = map_x * 32;
+              spr_y = map_y * 32;
+              My_sprite_list.push_back(new Sprite("TRANSPARENT_GREEN"));
+              My_sprite_list.back()->texture = new sf::Texture;
+              My_sprite_list.back()->hitbox_texture = new sf::Texture;
+              My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
+              My_sprite_list.back()->set_size(32, 32);
+              //if can't load the sprite texture
+              if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite_Green.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Green));}
+              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Green));}  
+              //set the texture to the sprite
+              My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+              My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
+            }
+            //BLUE pixel => it's a filtered sprite !
+            if (r==0 && g==0 && b==255)
+            {
+              spr_x = map_x * 32;
+              spr_y = map_y * 32;
+              My_sprite_list.push_back(new Sprite("TRANSPARENT_BLUE"));
+              My_sprite_list.back()->texture = new sf::Texture;
+              My_sprite_list.back()->hitbox_texture = new sf::Texture;
+              My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
+              My_sprite_list.back()->set_size(32, 32);
+              //if can't load the sprite texture
+              if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite_Blue.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Blue));}
+              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Blue));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
               My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
@@ -198,12 +250,16 @@ void Theater_scene::update_current_scene(void)
            camera_center_y = 480/2;
        }
     }
-    //correction of the background x position
+    //correction of the background and filter x position
     for (unsigned int i = 0 ; i < this->My_sprite_list.size() ; i++)
     {
        if (this->My_sprite_list[i]->type.compare("BACKGROUND")==0)
        {
            this->My_sprite_list[i]->setPosition(sf::Vector2f(camera_center_x - 640/2 - (camera_center_x*this->My_sprite_list[i]->background_layer)/10, 0));
+       }
+	   if (this->My_sprite_list[i]->type.compare("FILTER")==0)
+       {
+           this->My_sprite_list[i]->setPosition(sf::Vector2f(camera_center_x - 640/2, 0));
        }
     }
     //update the camera position (center)
