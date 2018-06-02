@@ -1,11 +1,11 @@
 //include standard libraries
 #include <iostream>
 //include custom Theater play class header
-#include "../include/Theater_play_class.hpp"
+#include "../header/Theater_play_class.hpp"
 //include custom Theater scene class header
-#include "../include/Theater_scene_class.hpp"
+#include "../header/Theater_scene_class.hpp"
 //include constants struct
-#include "../include/Constants.hpp"
+#include "../header/Constants.hpp"
 
 //constructor
 Theater_play::Theater_play(void)

@@ -3,8 +3,8 @@
 //include graphic library
 #include <SFML/Graphics.hpp>
 //include custom Theater class header
-#include "include/Theater_class.hpp"
-#include "include/Constants.hpp"
+#include "../code/header/Theater_class.hpp"
+#include "../code/header/Constants.hpp"
 
 //main procedure
 int main(int argc, char* argv[])

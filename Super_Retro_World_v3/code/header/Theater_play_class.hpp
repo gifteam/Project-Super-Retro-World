@@ -4,9 +4,9 @@
 //include standard library
 #include <string>
 //include custom Theater scene class header
-#include "../include/Theater_scene_class.hpp"
+#include "../header/Theater_scene_class.hpp"
 //include constants struct
-#include "../include/Constants.hpp"
+#include "../header/Constants.hpp"
 
 //class declaration
 class Theater_play

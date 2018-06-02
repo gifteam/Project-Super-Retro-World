@@ -9,6 +9,7 @@ void Sprite::update_hitbox_mode(void)
     if (this->type.compare("PLAYER")==0) { setTextureRect({0, 0, 32, 32}); }
     else if (this->type.compare("BACKGROUND")==0) { setTextureRect({0, 0, 0, 0}); }
     else if (this->type.compare("SOLID")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_MOVING_HORIZONTAL")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
@@ -23,6 +24,7 @@ void Sprite::update_hitbox_mode(void)
     if (this->type.compare("PLAYER")==0) { setTextureRect(sprite_rect); }
     else if (this->type.compare("BACKGROUND")==0) { setTextureRect({ 0, 0, 640*5, 480}); }
     else if (this->type.compare("SOLID")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("SOLID_MOVING_HORIZONTAL")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
@@ -90,7 +92,33 @@ void Sprite::update_gravity(void)
     if (!touch_floor && vertical_speed + vertical_acceleration/this->framerate <= max_vertical_speed) { vertical_speed += vertical_acceleration/this->framerate; }
 }
 
-//update player movement
+//update moving sprite movement
+void Sprite::update_moving_sprite_direction_and_movement(void)
+{
+    //get last good position collision-free
+    previous_x = this->getPosition().x;
+    previous_y = this->getPosition().y;
+	 //try to move
+    this->move(horizontal_speed/this->framerate, vertical_speed/this->framerate);
+    //declare local x + y to determine best location if collide
+    /*float delta_x = (-1) * (this->getPosition().x - previous_x)/10;
+    float delta_y = (-1) * (this->getPosition().y - previous_y)/10;
+    while (collide_a_sprite("")) //test if there is a collision with a solid sprite
+    {
+        //move back to the first correct position
+        this->move(sf::Vector2f(delta_x, delta_y));
+    }*/
+	//check if touch a sprite
+    touch_floor = false;
+    touch_roof = false;
+    touch_left = false;
+    touch_right = false;	
+    if (collide_a_sprite("LEFT")) {horizontal_speed = moving_sprite_horizontal_speed; touch_left = true;}
+    if (collide_a_sprite("RIGHT")) {horizontal_speed = moving_sprite_horizontal_speed * -1; touch_right = true;}
+	//else if (collide_a_sprite("RIGHT") && collide_a_sprite("LEFT")) {horizontal_speed = 0; touch_right = true;}
+}
+
+//update movement
 void Sprite::update_movement(void)
 {
     //get last good position collision-free
@@ -110,7 +138,7 @@ void Sprite::update_movement(void)
     touch_floor = false;
     touch_roof = false;
     touch_left = false;
-    touch_right = false;
+    touch_right = false;	
     if (collide_a_sprite("DOWN")) {vertical_speed = 0; touch_floor = true;}
     if (collide_a_sprite("UP")) {vertical_speed = 0; touch_roof = true;}
     if (collide_a_sprite("LEFT")) {horizontal_speed = 0; touch_left = true;}
@@ -177,6 +205,22 @@ void Sprite::update_filter_type(void)
 			second_type_activated = true;
 		}
 	}
+}
+
+//update the moving sprite direction
+void Sprite::update_moving_sprite_direction(void)
+{	
+	vertical_speed = moving_sprite_vertical_speed;
+	horizontal_speed = moving_sprite_horizontal_speed;
+	
+    if (touch_floor) {moving_sprite_vertical_direction = false;}
+    if (touch_roof) {moving_sprite_vertical_direction = true;}
+    if (touch_left) {moving_sprite_horizontal_direction = false;}
+    if (touch_right) {moving_sprite_horizontal_direction = true;}
+	
+	
+	if (moving_sprite_vertical_direction) { vertical_speed = vertical_speed * (-1); }
+	if (moving_sprite_horizontal_direction) { horizontal_speed = horizontal_speed * (-1); }
 }
 
 //update the player direction

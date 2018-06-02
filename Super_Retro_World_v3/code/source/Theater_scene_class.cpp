@@ -1,11 +1,11 @@
 //include standard libraries
 #include <iostream>
 //include custom Theater scene class header
-#include "../include/Theater_scene_class.hpp"
+#include "../header/Theater_scene_class.hpp"
 //include Sprite.h to create the sprite list
-#include "../include/Sprite_class.hpp"
+#include "../header/Sprite_class.hpp"
 //include constants struct
-#include "../include/Constants.hpp"
+#include "../header/Constants.hpp"
 
 //constructor
 Theater_scene::Theater_scene(void)
@@ -214,6 +214,23 @@ void Theater_scene::load_map(void)
               //if can't load the sprite texture
               if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite_Blue.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Blue));}
               if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Blue));}  
+              //set the texture to the sprite
+              My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+              My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
+            }
+            //GRAY pixel => it's a moving sprite !
+            if (r==128 && g==128 && b==128)
+            {
+              spr_x = map_x * 32;
+              spr_y = map_y * 32;
+              My_sprite_list.push_back(new Sprite("SOLID_MOVING_HORIZONTAL"));
+              My_sprite_list.back()->texture = new sf::Texture;
+              My_sprite_list.back()->hitbox_texture = new sf::Texture;
+              My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
+              My_sprite_list.back()->set_size(32, 32);
+              //if can't load the sprite texture
+              if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::White));}
+              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::White));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
               My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });

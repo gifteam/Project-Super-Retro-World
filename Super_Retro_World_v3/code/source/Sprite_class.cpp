@@ -8,30 +8,45 @@
 #include <sstream>
 #include <cmath>
 //include custom Sprite class header
-#include "../include/Sprite_class.hpp"
+#include "../header/Sprite_class.hpp"
 
  int Sprite::current_filter = 0; // filter initialisation (0 -no filter-)
 
 //include Sprite functions
-#include "../src/Sprite_class_init.cpp"
-#include "../src/Sprite_class_get.cpp"
-#include "../src/Sprite_class_set.cpp" 
-#include "../src/Sprite_class_update.cpp" 
+#include "Sprite_class_init.cpp"
+#include "Sprite_class_get.cpp"
+#include "Sprite_class_set.cpp" 
+#include "Sprite_class_update.cpp" 
 
 //constructor
 Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
 {
   
     std::cout << "Sprite constructor" << std::endl;
+	
+    //physic initialization
+    vertical_acceleration = 500.0f;
+    vertical_speed = 0.0f;
+    max_vertical_speed = 400.0f;
+    horizontal_acceleration = 700.0f;
+    horizontal_speed = 0.0f;
+    max_horizontal_speed = 150.0f;
+    //general initialization
+    //background sprite
+    background_layer = 0;
+    //init physical hitbox offset
+    offset_x = 0;
+    offset_y = 0;
+	
     //define the sprite type
     type = new_type;
     has_two_types = false;
     if (this->type.compare("PLAYER")==0)
     {
-        collide_with.push_back("SOLID");
         collide_with.push_back("SOLID_RED");
 		collide_with.push_back("SOLID_GREEN");
 		collide_with.push_back("SOLID_BLUE");
+		collide_with.push_back("SOLID");
     }
     if (this->type.compare("TRANSPARENT_RED")==0)
     {
@@ -54,21 +69,21 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
         first_type = type;
         second_type_activated = false;
     }
-    //physic initialization
-    vertical_acceleration = 500.0f;
-    vertical_speed = 0.0f;
-    max_vertical_speed = 400.0f;
-    horizontal_acceleration = 700.0f;
-    horizontal_speed = 0.0f;
-    max_horizontal_speed = 150.0f;
-    //general initialization
-    //background sprite
-    background_layer = 0;
+    if (this->type.compare("SOLID_MOVING_HORIZONTAL")==0)
+    {
+		moving_sprite_horizontal_direction = false; // 0 for LEFT and 1 for RIGHT
+		moving_sprite_horizontal_speed = 40; // horizontal speed of the sprite
+		horizontal_speed = moving_sprite_horizontal_speed;
+		moving_sprite_vertical_direction = false; // 0 for UP and 1 for DOWN
+		moving_sprite_vertical_speed = 0; // vertical speed of the sprite
+		vertical_speed = moving_sprite_vertical_speed;
+        collide_with.push_back("SOLID");
+        collide_with.push_back("SOLID_RED");
+		collide_with.push_back("SOLID_GREEN");
+		collide_with.push_back("SOLID_BLUE");
+    }
     //sprite rect (visual)
     initialize_visual_sprite_attributes();
-    //init physical hitbox offset
-    offset_x = 0;
-    offset_y = 0;
 }
 
 //general update
@@ -90,5 +105,15 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
     update_gravity(); //vertical speed update
     update_movement(); //move the player
   }
+  if (this->type.compare("SOLID_MOVING_HORIZONTAL") == 0)
+  {
+    //update_filter_activation();
+    //update_frame(); //update the current frame of the animation
+    //update_moving_sprite_direction(); //horizontal speed update
+    update_moving_sprite_direction_and_movement(); //move the moving sprite
+  }
 	update_hitbox_mode(); //update the hitbox texture (on / off)
 }
+
+
+

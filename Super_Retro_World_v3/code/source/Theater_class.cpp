@@ -4,11 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 //include custom Theater class header
-#include "../include/Theater_class.hpp"
+#include "../header/Theater_class.hpp"
 //include custom Theater play class header
-#include "../include/Theater_play_class.hpp"
+#include "../header/Theater_play_class.hpp"
 //include constants struct
-#include "../include/Constants.hpp"
+#include "../header/Constants.hpp"
+
 
 //constructor
 Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480), "My window")

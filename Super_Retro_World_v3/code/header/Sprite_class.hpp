@@ -30,7 +30,16 @@ class Sprite: public sf::Sprite
     //"BACKGROUND" PARAMETERS
     unsigned int background_layer; // ID of the current background layer (for parallaxe animation)
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+	//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    //"MOVING SPRITE" PARAMETERS
+    bool moving_sprite_horizontal_direction; // 0 for LEFT and 1 for RIGHT
+	int moving_sprite_horizontal_speed; // horizontal speed of the sprite
+	bool moving_sprite_vertical_direction; // 0 for UP and 1 for DOWN
+	int moving_sprite_vertical_speed; // vertical speed of the sprite
+    //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     
+	
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     //TYPE PARAMETERS
     std::string type; // current type of the sprite (like "family" of the sprite, "PLAYER", "BACKGROUND", ...)
@@ -93,8 +102,10 @@ class Sprite: public sf::Sprite
     //UPDATE
     void update(int framerate, std::vector<Sprite*> sprite_list, int sprite_id, bool hitbox_mode); //global update (call others)
     void update_player_direction(void); //player update : check keyboard input 
+	void update_moving_sprite_direction(void); //moving sprite update : direction
     void update_movement(void); //update the movement of the current sprite (with colission) comes after gravity frame update
-    void update_gravity(void); //gravity update (vertical acceleration)
+    void update_moving_sprite_direction_and_movement(void); // update moving sprite movement and collision
+	void update_gravity(void); //gravity update (vertical acceleration)
     void update_frame(void); // animation update (frame id and framerate)
     void update_row_frame(void); //update row frame
     void update_hitbox_mode(void); // change texture if hitbox mode is on/off

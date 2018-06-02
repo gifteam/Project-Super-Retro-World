@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 //include custom Sprite class header
-#include "../include/Sprite_class.hpp"
+#include "../header/Sprite_class.hpp"
 //include constants struct
-#include "../include/Constants.hpp"
+#include "../header/Constants.hpp"
 
 //class declaration
 class Theater_scene

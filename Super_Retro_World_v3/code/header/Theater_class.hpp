@@ -7,9 +7,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 //include custom Theater play class header
-#include "../include/Theater_play_class.hpp"
+#include "../header/Theater_play_class.hpp"
 //include constants struct
-#include "../include/Constants.hpp"
+#include "../header/Constants.hpp"
 
 //class declaration
 class Theater: public sf::RenderWindow
