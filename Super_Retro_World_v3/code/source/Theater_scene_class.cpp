@@ -11,7 +11,7 @@
 Theater_scene::Theater_scene(void)
 {
     std::cout << "theater scene constructor" << std::endl;
-    name = "LEVEL_0_0";
+    name = "LEVEL_1_0";
     previous_name = "";
     player_view.setCenter(sf::Vector2f(640/2, 480/2));
     player_view.setSize(sf::Vector2f(640, 480));
@@ -118,8 +118,79 @@ void Theater_scene::load_background(void)
         My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
         My_sprite_list.back()->setTextureRect({ 0, 0, 640*5, 480 });
 
-        My_sprite_list.back()->background_layer = back_size + 1;
+        My_sprite_list.back()->background_layer = back_size;
     }
+}
+
+
+int Theater_scene::get_row_tileset_from_map(sf::Image map_image, unsigned int x, unsigned int y)
+{
+	sf::Color pix_color;
+	unsigned int r, g, b;
+	bool sprite_above = false;
+	bool sprite_below = false;
+	int row = 0;
+	
+	if (y-1 >= 0)
+	{
+		pix_color = map_image.getPixel(x, y-1);
+		r = pix_color.r;
+		g = pix_color.g;
+		b = pix_color.b;
+		if (r==0 && g==0 && b==0) {sprite_above = true;}
+	}
+	
+	if (y+1 < map_image.getSize().y)
+	{
+		pix_color = map_image.getPixel(x, y+1);
+		r = pix_color.r;
+		g = pix_color.g;
+		b = pix_color.b;
+		if (r==0 && g==0 && b==0) {sprite_below = true;}
+	}
+	
+	if (not sprite_above && sprite_below) {row = 1;}
+	else if (sprite_above && sprite_below) {row = 2;}
+	else if (sprite_above && not sprite_below) {row = 3;}
+	else if (not sprite_above && not sprite_below) {row = 5;}
+	
+	return row*32;
+	//end of function
+}
+
+int Theater_scene::get_col_tileset_from_map(sf::Image map_image, unsigned int x, unsigned int y)
+{
+	sf::Color pix_color;
+	unsigned int r, g, b;
+	bool sprite_right = false;
+	bool sprite_left = false;
+	int col = 0;
+	
+	if (x-1 >= 0)
+	{
+		pix_color = map_image.getPixel(x-1, y);
+		r = pix_color.r;
+		g = pix_color.g;
+		b = pix_color.b;
+		if (r==0 && g==0 && b==0) {sprite_left = true;}
+	}
+	
+	if (x+1 < map_image.getSize().x)
+	{
+		pix_color = map_image.getPixel(x+1, y);
+		r = pix_color.r;
+		g = pix_color.g;
+		b = pix_color.b;
+		if (r==0 && g==0 && b==0) {sprite_right = true;}
+	}
+	
+	if (not sprite_right && sprite_left) {col = 2;}
+	else if (sprite_right && sprite_left) {col = 1;}
+	else if (sprite_right && not sprite_left) {col = 0;}
+	else if (not sprite_right && not sprite_left) {col= 3;}
+	
+	return col*32;
+	//end of function
 }
 
 //load map
@@ -160,12 +231,35 @@ void Theater_scene::load_map(void)
               My_sprite_list.back()->hitbox_texture = new sf::Texture;
               My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
               My_sprite_list.back()->set_size(32, 32);
-              //if can't load the sprite texture
-              if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
+			   //if can't load the sprite texture
+			  int row_tileset_sprite = get_row_tileset_from_map(map_image, map_x, map_y);
+			  int col_tileset_sprite = get_col_tileset_from_map(map_image, map_x, map_y);
+			  sf::IntRect tileset_sprite_rect;
+			  tileset_sprite_rect.left = col_tileset_sprite;
+			  tileset_sprite_rect.top = row_tileset_sprite;
+			  tileset_sprite_rect.width = 32;
+			  tileset_sprite_rect.height = 32;
+              if (!My_sprite_list.back()->texture->loadFromFile("file/image/tileset_" + my_map->TILE_STYLE[name]  + ".png", tileset_sprite_rect)) {My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
               if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}    
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
               My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
+			  
+			  if (row_tileset_sprite==1*32 || row_tileset_sprite==5*32) //add grass ?
+			  {
+				  My_sprite_list.push_back(new Sprite("GRASS"));
+				  My_sprite_list.back()->texture = new sf::Texture;
+				  My_sprite_list.back()->hitbox_texture = new sf::Texture;
+				  My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y-32));
+				  My_sprite_list.back()->set_size(32, 32);
+				  tileset_sprite_rect.top -= 32;
+				  if (!My_sprite_list.back()->texture->loadFromFile("file/image/tileset_" + my_map->TILE_STYLE[name]  + ".png", tileset_sprite_rect)) {My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
+				  if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/invisible.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}    
+				  //set the texture to the sprite
+				  My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+				  My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
+			  }
+			  
             }
             //RED pixel => it's a filtered sprite !
             if (r==255 && g==0 && b==0)
@@ -174,11 +268,13 @@ void Theater_scene::load_map(void)
               spr_y = map_y * 32;
               My_sprite_list.push_back(new Sprite("TRANSPARENT_RED"));
               My_sprite_list.back()->texture = new sf::Texture;
+			  My_sprite_list.back()->second_texture = new sf::Texture;
               My_sprite_list.back()->hitbox_texture = new sf::Texture;
               My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
               My_sprite_list.back()->set_size(32, 32);
               //if can't load the sprite texture
               if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite_Red.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
+			  if (!My_sprite_list.back()->second_texture->loadFromFile("file/image/sprite_Red_Hidden.png")){My_sprite_list.back()->second_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
               if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
@@ -191,11 +287,13 @@ void Theater_scene::load_map(void)
               spr_y = map_y * 32;
               My_sprite_list.push_back(new Sprite("TRANSPARENT_GREEN"));
               My_sprite_list.back()->texture = new sf::Texture;
+			  My_sprite_list.back()->second_texture = new sf::Texture;
               My_sprite_list.back()->hitbox_texture = new sf::Texture;
               My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
               My_sprite_list.back()->set_size(32, 32);
               //if can't load the sprite texture
               if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite_Green.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Green));}
+			  if (!My_sprite_list.back()->second_texture->loadFromFile("file/image/sprite_Green_Hidden.png")){My_sprite_list.back()->second_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
               if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Green));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
@@ -208,11 +306,13 @@ void Theater_scene::load_map(void)
               spr_y = map_y * 32;
               My_sprite_list.push_back(new Sprite("TRANSPARENT_BLUE"));
               My_sprite_list.back()->texture = new sf::Texture;
+			  My_sprite_list.back()->second_texture = new sf::Texture;
               My_sprite_list.back()->hitbox_texture = new sf::Texture;
               My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
               My_sprite_list.back()->set_size(32, 32);
               //if can't load the sprite texture
               if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite_Blue.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Blue));}
+			  if (!My_sprite_list.back()->second_texture->loadFromFile("file/image/sprite_Blue_Hidden.png")){My_sprite_list.back()->second_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
               if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Blue));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
@@ -233,6 +333,24 @@ void Theater_scene::load_map(void)
               if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::White));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+              My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
+            }
+            //PINK pixel => it's a coin !
+            if (r==255 && g==0 && b==255)
+            {
+              spr_x = map_x * 32;
+              spr_y = map_y * 32;
+              My_sprite_list.push_back(new Sprite("COIN"));
+              My_sprite_list.back()->texture = new sf::Texture;
+              My_sprite_list.back()->hitbox_texture = new sf::Texture;
+              My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
+              My_sprite_list.back()->set_size(32, 32);
+              //if can't load the sprite texture
+              if (!My_sprite_list.back()->texture->loadFromFile("file/image/003.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
+              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/invisible.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}  
+              //set the texture to the sprite
+              My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+			  My_sprite_list.back()->set_hitbox(3, 3, 26, 26);
               My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
             }
         }

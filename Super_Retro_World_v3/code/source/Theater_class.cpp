@@ -36,8 +36,8 @@ Theater::Theater(void) : sf::RenderWindow::RenderWindow(sf::VideoMode(640, 480),
     }
     this->text.setFont(font);
     this->text.setString(" FPS : N/A");
-    this->text.setCharacterSize(14);
-    guide_text = "\n\n [A] and [D] to move\n [SPACE] to jump\n [Num_1] to [Num_3] to swap colors.\n [CTRL] to switch sprite/hitbox modes\n [ESC] to reset position";
+    this->text.setCharacterSize(16);
+    guide_text = "\n\n [A] and [D] to move\n [SPACE] to jump\n [Num_1] to [Num_3] to swap colors.\n [CTRL] to switch sprite to hitbox modes\n [ESC] to reset position";
 	
     //set levels characteristics
     create_MAP();
@@ -114,6 +114,25 @@ void Theater::create_MAP(void){
     my_map.BACK_STYLE[style].push_back("forest_014");
     my_map.FRONT_STYLE[style] = "001";
     my_map.TILE_STYLE[style] = "003";
+    my_map.ELEMENT_STYLE[style] = "001";
+    my_map.PLAYER_STYLE[style] = "005";
+	my_map.CAPPY_STYLE[style] = "006";
+    my_map.ENEMYSET_STYLE[style] = "002";
+    my_map.LOADING_STYLE[style] = "002";
+    my_map.WAKE_UP_STYLE[style] = "004";
+	
+    style = "LEVEL_1_0";
+
+    my_map.STYLE_NAME[style] = "LEVEL_1_0";
+    my_map.BACK_STYLE[style].push_back("sun_01");
+    my_map.BACK_STYLE[style].push_back("sun_02");
+    my_map.BACK_STYLE[style].push_back("sun_03");
+    my_map.BACK_STYLE[style].push_back("sun_04");
+	my_map.BACK_STYLE[style].push_back("sun_05");
+	my_map.BACK_STYLE[style].push_back("sun_06");
+	my_map.BACK_STYLE[style].push_back("sun_07");
+    my_map.FRONT_STYLE[style] = "001";
+    my_map.TILE_STYLE[style] = "001";
     my_map.ELEMENT_STYLE[style] = "001";
     my_map.PLAYER_STYLE[style] = "005";
 	my_map.CAPPY_STYLE[style] = "006";

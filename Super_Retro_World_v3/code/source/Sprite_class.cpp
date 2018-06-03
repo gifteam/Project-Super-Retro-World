@@ -5,6 +5,7 @@
 //include classic librairy
 #include <iostream>
 #include <string>
+#include  <cstdlib>
 #include <sstream>
 #include <cmath>
 //include custom Sprite class header
@@ -54,6 +55,8 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
         second_type = "SOLID_RED";
         first_type = type;
         second_type_activated = false;
+		collide_with.push_back("PLAYER");
+		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
     }
     if (this->type.compare("TRANSPARENT_GREEN")==0)
     {
@@ -61,6 +64,8 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
         second_type = "SOLID_GREEN";
         first_type = type;
         second_type_activated = false;
+		collide_with.push_back("PLAYER");
+		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
     }
     if (this->type.compare("TRANSPARENT_BLUE")==0)
     {
@@ -68,19 +73,26 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
         second_type = "SOLID_BLUE";
         first_type = type;
         second_type_activated = false;
+		collide_with.push_back("PLAYER");
+		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
     }
     if (this->type.compare("SOLID_MOVING_HORIZONTAL")==0)
     {
 		moving_sprite_horizontal_direction = false; // 0 for LEFT and 1 for RIGHT
-		moving_sprite_horizontal_speed = 40; // horizontal speed of the sprite
+		moving_sprite_horizontal_speed = 40 + rand() %10; // horizontal speed of the sprite
 		horizontal_speed = moving_sprite_horizontal_speed;
 		moving_sprite_vertical_direction = false; // 0 for UP and 1 for DOWN
 		moving_sprite_vertical_speed = 0; // vertical speed of the sprite
 		vertical_speed = moving_sprite_vertical_speed;
         collide_with.push_back("SOLID");
+		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
         collide_with.push_back("SOLID_RED");
 		collide_with.push_back("SOLID_GREEN");
 		collide_with.push_back("SOLID_BLUE");
+    }
+    if (this->type.compare("COIN")==0)
+    {
+		collected = false;
     }
     //sprite rect (visual)
     initialize_visual_sprite_attributes();
@@ -104,7 +116,9 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
     update_player_direction(); //horizontal speed update
     update_gravity(); //vertical speed update
     update_movement(); //move the player
+	update_collect(); // check if the current sprite collect a COIN sprite
   }
+  
   if (this->type.compare("SOLID_MOVING_HORIZONTAL") == 0)
   {
     //update_filter_activation();
@@ -112,6 +126,7 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
     //update_moving_sprite_direction(); //horizontal speed update
     update_moving_sprite_direction_and_movement(); //move the moving sprite
   }
+  
 	update_hitbox_mode(); //update the hitbox texture (on / off)
 }
 

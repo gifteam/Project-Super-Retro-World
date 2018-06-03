@@ -13,10 +13,13 @@ void Sprite::update_hitbox_mode(void)
 	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
-    else if (this->type.compare("TRANSPARENT_RED")==0) { setTextureRect({0, 0, 0, 0});}
-	else if (this->type.compare("TRANSPARENT_GREEN")==0) { setTextureRect({0, 0, 0, 0});}
-	else if (this->type.compare("TRANSPARENT_BLUE")==0) { setTextureRect({0, 0, 0, 0});}
+    else if (type.compare("TRANSPARENT_RED")==0 ||type.compare("TRANSPARENT_GREEN")==0 || type.compare("TRANSPARENT_BLUE")==0)
+	{ 
+		setTextureRect({0, 0, 0, 0});
+	}
+	else if (this->type.compare("GRASS")==0) { setTextureRect({0, 0, 0, 0});}
 	else if (this->type.compare("FILTER")==0) { setTextureRect({0, 0, 0, 0});}
+	else if (this->type.compare("COIN")==0) { setTextureRect({0, 0, 0, 0});}
   }
   else
   {
@@ -28,10 +31,18 @@ void Sprite::update_hitbox_mode(void)
 	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
-    else if (this->type.compare("TRANSPARENT_RED")==0) { setTextureRect({0, 0, 0, 0});}
-	else if (this->type.compare("TRANSPARENT_GREEN")==0) { setTextureRect({0, 0, 0, 0});}
-	else if (this->type.compare("TRANSPARENT_BLUE")==0) { setTextureRect({0, 0, 0, 0});}
+    else if (type.compare("TRANSPARENT_RED")==0 ||type.compare("TRANSPARENT_GREEN")==0 || type.compare("TRANSPARENT_BLUE")==0)
+	{ 
+		setTexture(*second_texture);
+		setTextureRect({0, 0, 32, 32});
+	}
 	else if (this->type.compare("FILTER")==0) { setTextureRect({0, 0, 640, 480});}
+	else if (this->type.compare("COIN")==0) {
+		if (not this->collected)
+		{
+			setTextureRect({0, 0, 32, 32});
+		}
+	}
   }
   //end of procedure
 }
@@ -96,8 +107,8 @@ void Sprite::update_gravity(void)
 void Sprite::update_moving_sprite_direction_and_movement(void)
 {
     //get last good position collision-free
-    previous_x = this->getPosition().x;
-    previous_y = this->getPosition().y;
+	previous_x = this->getPosition().x;
+	previous_y = this->getPosition().y;
 	 //try to move
     this->move(horizontal_speed/this->framerate, vertical_speed/this->framerate);
     //declare local x + y to determine best location if collide
@@ -122,8 +133,8 @@ void Sprite::update_moving_sprite_direction_and_movement(void)
 void Sprite::update_movement(void)
 {
     //get last good position collision-free
-    previous_x = this->getPosition().x;
-    previous_y = this->getPosition().y;
+	previous_x = this->getPosition().x;
+	previous_y = this->getPosition().y;
 	 //try to move
     this->move(horizontal_speed/this->framerate, vertical_speed/this->framerate);
     //declare local x + y to determine best location if collide
@@ -186,24 +197,71 @@ void Sprite::update_filter_type(void)
 {
 	if (has_two_types)
 	{
-		type=first_type;
-		second_type_activated = false;
+		//type=first_type;
+		//second_type_activated = false;
+		bool nothing_intersect_this_sprite = true;
+		std::string previous_type = type;
 	
-		if (current_filter==1 and type.substr(type.length()-4, 4).compare("_RED")==0)
+		if (current_filter==0)
 		{
-			type=second_type;
-			second_type_activated = true;
+			type=first_type;
+			second_type_activated = false;
 		}
-		else if (current_filter==2 and type.substr(type.length()-6, 6).compare("_GREEN")==0)
+		else if (current_filter==1)
 		{
-			type=second_type;
-			second_type_activated = true;
+			if (first_type.compare("TRANSPARENT_RED")==0)
+			{
+				type=second_type;
+				nothing_intersect_this_sprite = not collide_a_sprite("");
+				type=previous_type;
+				if (nothing_intersect_this_sprite)
+				{
+					type=second_type;
+					second_type_activated = true;
+				}
+			}
+			else
+			{
+				type=first_type;
+			}
 		}
-		else if (current_filter==3 and type.substr(type.length()-5, 5).compare("_BLUE")==0)
+		else if (current_filter==2)
 		{
-			type=second_type;
-			second_type_activated = true;
+			if (first_type.compare("TRANSPARENT_GREEN")==0)
+			{
+				type=second_type;
+				nothing_intersect_this_sprite = not collide_a_sprite("");
+				type=previous_type;
+				if (nothing_intersect_this_sprite)
+				{
+					type=second_type;
+					second_type_activated = true;
+				}
+			}
+			else
+			{
+				type=first_type;
+			}
 		}
+		else if (current_filter==3)
+		{
+			if (first_type.compare("TRANSPARENT_BLUE")==0)
+			{
+				type=second_type;
+				nothing_intersect_this_sprite = not collide_a_sprite("");
+				type=previous_type;
+				if (nothing_intersect_this_sprite)
+				{
+					type=second_type;
+					second_type_activated = true;
+				}
+			}
+			else
+			{
+				type=first_type;
+			}
+		}
+		
 	}
 }
 
@@ -253,4 +311,25 @@ void Sprite::update_player_direction(void)
 
         if (horizontal_speed > (-1) * horizontal_acceleration/this->framerate && horizontal_speed < horizontal_acceleration/this->framerate){ horizontal_speed = 0; }
     }
+}
+
+void Sprite::update_collect(void)
+{
+	//create the collision rect of the current sprite
+	sf::FloatRect rect(this->getPosition().x + offset_x, this->getPosition().y + offset_y, this->width,this->height);
+
+    //loop with others COIN sprites
+    for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
+    {
+		if (this->sprite_list[i]->type.compare("COIN")==0 && i != this->current_sprite_id && not this->sprite_list[i]->collected)
+		 {
+			sf::FloatRect rect_coin(this->sprite_list[i]->getPosition().x + this->sprite_list[i]->offset_x, this->sprite_list[i]->getPosition().y + this->sprite_list[i]->offset_y, this->sprite_list[i]->width,this->sprite_list[i]->height);
+			if (rect_coin.intersects(rect))
+			{
+				this->sprite_list[i]->collected = true;
+				this->sprite_list[i]->setTextureRect({0, 0, 0, 0});
+			}
+        }
+    }
+	//end of procedure
 }

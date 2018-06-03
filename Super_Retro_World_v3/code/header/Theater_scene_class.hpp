@@ -40,6 +40,8 @@ class Theater_scene
         void update_camera(float center_x, float center_y);
         //special functions
         sf::Image get_default_texture(unsigned int size_x, unsigned int size_y, sf::Color color);
+		int get_row_tileset_from_map(sf::Image map_image, unsigned int x, unsigned int y);
+		int get_col_tileset_from_map(sf::Image map_image, unsigned int x, unsigned int y);
 };
 
 #endif // _THEATER_SCENE_CLASS_

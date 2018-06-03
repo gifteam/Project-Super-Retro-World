@@ -2,7 +2,6 @@
 bool Sprite::collide_a_sprite(std::string direction)
 {
 	//create the collision rect of the current sprite
-	bool have_to_check_collision = false;
 	sf::FloatRect rect(this->getPosition().x + offset_x, this->getPosition().y + offset_y, this->width,this->height);
 	if (direction.compare("RIGHT") == 0) { rect.left = rect.left + 1; }
 	else if (direction.compare("LEFT") == 0) { rect.left = rect.left - 1; }
@@ -12,15 +11,9 @@ bool Sprite::collide_a_sprite(std::string direction)
     //loop with others sprites
     for (unsigned int i = 0 ; i < this->sprite_list.size() ; i++)
     {
-		have_to_check_collision = false;
 		for (unsigned int j = 0 ; j < this->collide_with.size() ; j++)
 		 {
-			if (this->collide_with[j].compare(this->sprite_list[i]->type) == 0)
-			{
-				have_to_check_collision = true;
-			}
-            //check collision if the sprite must collide with the candidate
-			if (have_to_check_collision)
+			if ((this->collide_with[j].compare(this->sprite_list[i]->type) == 0) && i != this->current_sprite_id)
 			{
 				if (this->sprite_list[i]->getGlobalBounds().intersects(rect))
 				{
