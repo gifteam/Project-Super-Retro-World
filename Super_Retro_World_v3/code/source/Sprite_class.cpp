@@ -12,6 +12,7 @@
 #include "../header/Sprite_class.hpp"
 
  int Sprite::current_filter = 0; // filter initialisation (0 -no filter-)
+ bool ask_for_player_reset = false;
 
 //include Sprite functions
 #include "Sprite_class_init.cpp"
@@ -48,6 +49,11 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
 		collide_with.push_back("SOLID_GREEN");
 		collide_with.push_back("SOLID_BLUE");
 		collide_with.push_back("SOLID");
+		//collide_with.push_back("ENEMY_MOVING_HORIZONTAL");
+		
+		top_bounce_with.push_back("ENEMY_MOVING_HORIZONTAL");
+		
+		gameover_with.push_back("ENEMY_MOVING_HORIZONTAL");
     }
     if (this->type.compare("TRANSPARENT_RED")==0)
     {
@@ -56,7 +62,7 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
         first_type = type;
         second_type_activated = false;
 		collide_with.push_back("PLAYER");
-		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
+		collide_with.push_back("ENEMY_MOVING_HORIZONTAL");
     }
     if (this->type.compare("TRANSPARENT_GREEN")==0)
     {
@@ -65,7 +71,7 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
         first_type = type;
         second_type_activated = false;
 		collide_with.push_back("PLAYER");
-		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
+		collide_with.push_back("ENEMY_MOVING_HORIZONTAL");
     }
     if (this->type.compare("TRANSPARENT_BLUE")==0)
     {
@@ -74,18 +80,18 @@ Sprite::Sprite(std::string new_type) : sf::Sprite::Sprite()
         first_type = type;
         second_type_activated = false;
 		collide_with.push_back("PLAYER");
-		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
+		collide_with.push_back("ENEMY_MOVING_HORIZONTAL");
     }
-    if (this->type.compare("SOLID_MOVING_HORIZONTAL")==0)
+    if (this->type.compare("ENEMY_MOVING_HORIZONTAL")==0)
     {
 		moving_sprite_horizontal_direction = false; // 0 for LEFT and 1 for RIGHT
-		moving_sprite_horizontal_speed = 40 + rand() %10; // horizontal speed of the sprite
+		moving_sprite_horizontal_speed = 30; // horizontal speed of the sprite
 		horizontal_speed = moving_sprite_horizontal_speed;
 		moving_sprite_vertical_direction = false; // 0 for UP and 1 for DOWN
 		moving_sprite_vertical_speed = 0; // vertical speed of the sprite
 		vertical_speed = moving_sprite_vertical_speed;
         collide_with.push_back("SOLID");
-		collide_with.push_back("SOLID_MOVING_HORIZONTAL");
+		collide_with.push_back("ENEMY_MOVING_HORIZONTAL");
         collide_with.push_back("SOLID_RED");
 		collide_with.push_back("SOLID_GREEN");
 		collide_with.push_back("SOLID_BLUE");
@@ -116,17 +122,15 @@ void Sprite::update(int new_framerate, std::vector<Sprite*> new_sprite_list, int
     update_player_direction(); //horizontal speed update
     update_gravity(); //vertical speed update
     update_movement(); //move the player
+	update_top_bounce(); // update vertical speed if touch a bouncing sprite from top side
 	update_collect(); // check if the current sprite collect a COIN sprite
   }
   
-  if (this->type.compare("SOLID_MOVING_HORIZONTAL") == 0)
+  if (this->type.compare("ENEMY_MOVING_HORIZONTAL") == 0)
   {
-    //update_filter_activation();
-    //update_frame(); //update the current frame of the animation
-    //update_moving_sprite_direction(); //horizontal speed update
-    update_moving_sprite_direction_and_movement(); //move the moving sprite
+	update_frame(); //update the current frame of the animation
+    update_moving_sprite_direction_and_movement(); //move the enemy sprite
   }
-  
 	update_hitbox_mode(); //update the hitbox texture (on / off)
 }
 

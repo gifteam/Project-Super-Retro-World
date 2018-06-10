@@ -38,4 +38,24 @@ void Sprite::initialize_visual_sprite_attributes(void)
 		sprite_framerate.push_back(0.25f); //jump left
 		sprite_framerate.push_back(0.25f); //jump right
 	}
+	//enemy red blob init
+	else if (this->type.compare("ENEMY_MOVING_HORIZONTAL")==0)
+	{
+		//rect for spritesheet
+		sprite_rect.left = 0;
+		sprite_rect.top = 0;
+		sprite_rect.width = 32;
+		sprite_rect.height = 32;
+		//row frame
+		sprite_row_frame = 0;
+		sprite_previous_row_frame = sprite_row_frame;
+		//current frame id
+		sprite_frame = 0;
+		//sprite row
+		sprite_max_frame.push_back(10); //animate
+		//sprite row speed
+		sprite_framerate_factor = 1;
+		sprite_framerate.push_back(0.1f); //animate
+
+	}
 }

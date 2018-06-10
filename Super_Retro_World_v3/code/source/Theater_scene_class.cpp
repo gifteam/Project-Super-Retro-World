@@ -245,7 +245,7 @@ void Theater_scene::load_map(void)
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
               My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
 			  
-			  if (row_tileset_sprite==1*32 || row_tileset_sprite==5*32) //add grass ?
+			  /*if (row_tileset_sprite==1*32 || row_tileset_sprite==5*32) //add grass ?
 			  {
 				  My_sprite_list.push_back(new Sprite("GRASS"));
 				  My_sprite_list.back()->texture = new sf::Texture;
@@ -258,7 +258,7 @@ void Theater_scene::load_map(void)
 				  //set the texture to the sprite
 				  My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
 				  My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
-			  }
+			  }*/
 			  
             }
             //RED pixel => it's a filtered sprite !
@@ -318,22 +318,24 @@ void Theater_scene::load_map(void)
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
               My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
             }
-            //GRAY pixel => it's a moving sprite !
+            //GRAY pixel => it's a moving enemy sprite !
             if (r==128 && g==128 && b==128)
             {
               spr_x = map_x * 32;
               spr_y = map_y * 32;
-              My_sprite_list.push_back(new Sprite("SOLID_MOVING_HORIZONTAL"));
+              My_sprite_list.push_back(new Sprite("ENEMY_MOVING_HORIZONTAL"));
               My_sprite_list.back()->texture = new sf::Texture;
               My_sprite_list.back()->hitbox_texture = new sf::Texture;
               My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
-              My_sprite_list.back()->set_size(32, 32);
+              My_sprite_list.back()->set_size(32, 20);
               //if can't load the sprite texture
-              if (!My_sprite_list.back()->texture->loadFromFile("file/image/sprite.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::White));}
-              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/sprite_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::White));}  
+              if (!My_sprite_list.back()->texture->loadFromFile("file/image/004.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::White));}
+              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/004_h.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 20, sf::Color::White));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
+			  My_sprite_list.back()->set_hitbox(0, 12, 32, 20);
               My_sprite_list.back()->setTextureRect({ 0, 0, 32, 32 });
+			  
             }
             //PINK pixel => it's a coin !
             if (r==255 && g==0 && b==255)
@@ -344,10 +346,10 @@ void Theater_scene::load_map(void)
               My_sprite_list.back()->texture = new sf::Texture;
               My_sprite_list.back()->hitbox_texture = new sf::Texture;
               My_sprite_list.back()->setPosition(sf::Vector2f(spr_x, spr_y));
-              My_sprite_list.back()->set_size(32, 32);
+              My_sprite_list.back()->set_size(26, 26);
               //if can't load the sprite texture
               if (!My_sprite_list.back()->texture->loadFromFile("file/image/003.png")){My_sprite_list.back()->texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}
-              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/invisible.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(32, 32, sf::Color::Red));}  
+              if (!My_sprite_list.back()->hitbox_texture->loadFromFile("file/image/invisible.png")){My_sprite_list.back()->hitbox_texture->loadFromImage(get_default_texture(26, 26, sf::Color::Red));}  
               //set the texture to the sprite
               My_sprite_list.back()->setTexture(*(My_sprite_list.back()->texture));
 			  My_sprite_list.back()->set_hitbox(3, 3, 26, 26);

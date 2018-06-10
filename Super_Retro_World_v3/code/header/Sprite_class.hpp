@@ -13,6 +13,7 @@ class Sprite: public sf::Sprite
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     //CLASS PARAMETERS
     static int current_filter; // give the current filter ID (0 -no filter- to 1 -filter- for the MVP)
+	bool ask_for_player_reset; // will reset player position on hit or on demad
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -87,6 +88,8 @@ class Sprite: public sf::Sprite
     unsigned int width; //width ofthe hitbox
     unsigned int height; // height of the hitbox
     std::vector<std::string> collide_with; // list of family the current sprite collide with
+	std::vector<std::string> top_bounce_with; // list of family the current sprite bounce with if touch from top
+	std::vector<std::string> gameover_with; // list of family the current sprite with gameover with (by hit)
     bool touch_roof; // flag if touch a row (up)
     bool touch_floor;// flag if touch a floor (below)
     bool touch_left; // flag if touch a wall (left)
@@ -125,6 +128,7 @@ class Sprite: public sf::Sprite
     void update_filter_type(void); // update the type of the sprite depending on the filter
 	void update_filter_color(void); // update filtre sprite color (main one)
 	void update_collect(void); // check if the current sprite collect a COIN sprite
+	void update_top_bounce(void); // update vertical speed if touch a bouncing sprite from top side
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -142,6 +146,7 @@ class Sprite: public sf::Sprite
     float get_player_height(void); // get player hitbox height
     float get_player_width(void); // get player hitbox width
     bool collide_a_sprite(std::string direction); // return true if there is a collision with a sprite (first one in the sprite list)
+	bool bounce_a_sprite(std::string direction); // return true if on top of a bouncing sprite
     //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 };

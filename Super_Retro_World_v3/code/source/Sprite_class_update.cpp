@@ -9,7 +9,7 @@ void Sprite::update_hitbox_mode(void)
     if (this->type.compare("PLAYER")==0) { setTextureRect({0, 0, 32, 32}); }
     else if (this->type.compare("BACKGROUND")==0) { setTextureRect({0, 0, 0, 0}); }
     else if (this->type.compare("SOLID")==0) { setTextureRect({0, 0, 32, 32}); }
-	else if (this->type.compare("SOLID_MOVING_HORIZONTAL")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("ENEMY_MOVING_HORIZONTAL")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
@@ -27,7 +27,7 @@ void Sprite::update_hitbox_mode(void)
     if (this->type.compare("PLAYER")==0) { setTextureRect(sprite_rect); }
     else if (this->type.compare("BACKGROUND")==0) { setTextureRect({ 0, 0, 640*5, 480}); }
     else if (this->type.compare("SOLID")==0) { setTextureRect({0, 0, 32, 32}); }
-	else if (this->type.compare("SOLID_MOVING_HORIZONTAL")==0) { setTextureRect({0, 0, 32, 32}); }
+	else if (this->type.compare("ENEMY_MOVING_HORIZONTAL")==0) { setTextureRect(sprite_rect); }
 	else if (this->type.compare("SOLID_RED")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_GREEN")==0) { setTextureRect({0, 0, 32, 32}); }
 	else if (this->type.compare("SOLID_BLUE")==0) { setTextureRect({0, 0, 32, 32}); }
@@ -45,6 +45,16 @@ void Sprite::update_hitbox_mode(void)
 	}
   }
   //end of procedure
+}
+
+// update vertical speed if touch a bouncing sprite from top side
+void Sprite::update_top_bounce(void)
+{ 
+	if (bounce_a_sprite(""))
+	{
+        vertical_speed = -350;
+	}
+	//end of procedure
 }
 
 void Sprite::update_frame(void)
@@ -67,6 +77,7 @@ void Sprite::update_frame(void)
 		}else{
 			sprite_frame += 1;
 		}
+		
 		//update rect position and size
 		sprite_rect.left = sprite_frame * 32;
 		sprite_rect.top = sprite_row_frame * 32;
@@ -93,6 +104,10 @@ void Sprite::update_row_frame(void)
 			if (horizontal_speed < 0) { sprite_row_frame = 6;} //falling left
 			else if (horizontal_speed >= 0) { sprite_row_frame = 7;} //falling right
 		}
+	}
+    if (this->type.compare("ENEMY_MOVING_HORIZONTAL") == 0)
+    {
+		sprite_row_frame = 0;
 	}
 }
 
@@ -289,8 +304,9 @@ void Sprite::update_player_direction(void)
         vertical_speed = -350;
     }
 	// ask for reset position
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) || ask_for_player_reset)
     {
+		ask_for_player_reset = false;
         setPosition(sf::Vector2f(0, 0));
     }
 	//check keyboard <- and -> pressure
