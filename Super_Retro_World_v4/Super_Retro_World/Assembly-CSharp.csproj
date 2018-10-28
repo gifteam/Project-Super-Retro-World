@@ -53,7 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scenes\player_code.cs" />
+     <Compile Include="Assets\Scenes\Behavior\CharBehavior.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Gif/Dropbox/cpp_project/Project-Super-Retro-World/Super_Retro_World_v4/Super_Retro_World/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
