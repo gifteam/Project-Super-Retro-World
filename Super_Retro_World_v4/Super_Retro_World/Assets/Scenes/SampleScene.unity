@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -137,6 +138,22 @@ AudioListener:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9498f1607cf46449f7bd263269682e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xMin: -100
+  xMax: 100
+  yMin: 0
+  yMax: 0
+  target: {fileID: 0}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -204,7 +221,7 @@ GameObject:
   - component: {fileID: 699903956}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -345,6 +362,7 @@ GameObject:
   - component: {fileID: 1403752030}
   - component: {fileID: 1403752029}
   - component: {fileID: 1403752031}
+  - component: {fileID: 1403752032}
   m_Layer: 8
   m_Name: Obstacle
   m_TagString: Untagged
@@ -405,8 +423,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1403752028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: -0.18, z: 0}
-  m_LocalScale: {x: 11.063224, y: 1.1234415, z: 1}
+  m_LocalPosition: {x: 0.297, y: -0.236, z: 0}
+  m_LocalScale: {x: 11.295552, y: 1.4357582, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -421,7 +439,7 @@ BoxCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
@@ -436,6 +454,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!251 &1403752032
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1403752028}
+  m_Enabled: 1
+  m_UseColliderMask: 0
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 0
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 360
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
 --- !u!1 &1752941060
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,8 +568,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1752941060}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.789, y: 2.374, z: 0}
-  m_LocalScale: {x: 4.0896316, y: 0.9335461, z: 1}
+  m_LocalPosition: {x: 1.75, y: 1.88, z: 0}
+  m_LocalScale: {x: 4.0896316, y: 0.4053737, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -551,7 +587,7 @@ PlatformEffector2D:
     m_Bits: 256
   m_RotationalOffset: 0
   m_UseOneWay: 1
-  m_UseOneWayGrouping: 1
+  m_UseOneWayGrouping: 0
   m_SurfaceArc: 360
   m_UseSideFriction: 0
   m_UseSideBounce: 0
@@ -566,6 +602,7 @@ GameObject:
   - component: {fileID: 2063108183}
   - component: {fileID: 2063108182}
   - component: {fileID: 2063108181}
+  - component: {fileID: 2063108184}
   m_Layer: 8
   m_Name: Obstacle (1)
   m_TagString: Untagged
@@ -583,7 +620,7 @@ BoxCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
@@ -651,9 +688,27 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2063108180}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.73, y: -2.72, z: 0}
-  m_LocalScale: {x: 4.04914, y: 1.4818193, z: 1}
+  m_LocalPosition: {x: -7.253, y: -2.948, z: 0}
+  m_LocalScale: {x: 4.28399, y: 4.937422, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!251 &2063108184
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2063108180}
+  m_Enabled: 1
+  m_UseColliderMask: 0
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 0
+  m_SurfaceArc: 360
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
