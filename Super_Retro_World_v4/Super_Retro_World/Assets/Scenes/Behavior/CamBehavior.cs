@@ -19,8 +19,8 @@ public class CamBehavior : MonoBehaviour {
 
         xMin = -100;
         xMax = 100;
-        yMin = 0;
-        yMax = 0;
+        yMin = 3;
+        yMax = 10;
 }
 	
 	// Update is called once per frame

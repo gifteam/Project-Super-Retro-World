@@ -61,10 +61,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scenes\Behavior\BluePlateformBehavior.cs" />
+    <Compile Include="Assets\Scenes\Behavior\BulletBehavior.cs" />
     <Compile Include="Assets\Scenes\Behavior\CamBehavior.cs" />
     <Compile Include="Assets\Scenes\Behavior\CharBehavior.cs" />
     <Compile Include="Assets\Scenes\Behavior\FilterBehavior.cs" />
-    <Compile Include="Assets\Scenes\Behavior\PlateformBehavior.cs" />
+    <Compile Include="Assets\Scenes\Behavior\GreenFilterBehavior.cs" />
+    <Compile Include="Assets\Scenes\Behavior\RedPlateformBehavior.cs" />
+    <Compile Include="Assets\Scenes\Behavior\ShooterBehavior.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/MKISSI/Documents/github_perso/Project-Super-Retro-World/Super_Retro_World_v4/Super_Retro_World/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
