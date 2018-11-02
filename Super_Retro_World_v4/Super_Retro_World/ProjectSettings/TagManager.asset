@@ -10,6 +10,7 @@ TagManager:
   - GreenFilter
   - Bullet
   - YellowFilter
+  - Coin
   layers:
   - Default
   - TransparentFX

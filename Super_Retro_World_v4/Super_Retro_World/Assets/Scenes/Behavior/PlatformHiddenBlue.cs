@@ -11,7 +11,7 @@ public class PlatformHiddenBlue : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Vector2 pos = GameObject.Find("myBluePlateform").transform.position;
+        Vector2 pos = transform.parent.transform.position;
         pos.x += 0.22f;
         gameObject.transform.position = pos;
     }

@@ -130,4 +130,17 @@ public class Player : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().flipX = false;
         }
     }
+
+    // =============================================================================
+    // Events
+    // =============================================================================
+    // -----------------------------------------------------------------------------
+    // coin collection
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            other.gameObject.SetActive(false);
+        }
+    }
 }
