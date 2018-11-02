@@ -2,50 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// ================================================================================
+// Main scene camera behavior
+// ================================================================================
+
 public class CamBehavior : MonoBehaviour {
 
-    public int xMin;
-    public int xMax;
-    public int yMin;
-    public int yMax;
+    // =============================================================================
+    // Define class variables
+    // =============================================================================
 
-    public GameObject target;
+    // -----------------------------------------------------------------------------
+    // Self GO (GameObject) to interact with
+    private GO go;
+    // -----------------------------------------------------------------------------
+    // Space boundaries for the camera center 
+    private int xMin;
+    private int xMax;
+    private int yMin;
+    private int yMax;
+    // -----------------------------------------------------------------------------
+    // Target the camera follow (can only follow one target)
+    private GO target;
 
-	// Use this for initialization
-	void Start () {
+    // =============================================================================
+    // Initialisation
+    // =============================================================================
+    void Start () {
 
-        //looking for one specific target to center the camera with
-        target = getNewTarget("Player");
+        //set self gameobject instance
+        go = new GO(gameObject);
 
-        xMin = -100;
+        // look for one specific target to center the camera with
+        target = new GO(GameObject.FindGameObjectWithTag("Player"));
+
+        // set the camera center boundaries
+        xMin = -10;
         xMax = 100;
         yMin = 3;
         yMax = 10;
 }
-	
-	// Update is called once per frame
-	void LateUpdate () {
+    // =============================================================================
+    // Update is called once per frame
+    // =============================================================================
+    void LateUpdate() {
 
-        float x = Mathf.Clamp(getTargetX(), xMin, xMax);
-        float y = Mathf.Clamp(getTargetY(), yMin, yMax);
-        float z = gameObject.transform.position.z;
-
-        gameObject.transform.position = new Vector3(x, y, z);
+        updatePos();
     }
+    // -----------------------------------------------------------------------------
+    // Update the position to mathc the target (within the camera bounds)
+    private void updatePos()
+    { 
+        Vector2 targetPos = target.posCen();
 
+        float camX = Mathf.Clamp(targetPos.x, xMin, xMax);
+        float camY = Mathf.Clamp(targetPos.y, yMin, yMax);
+        float camZ = gameObject.transform.position.z;
 
-    GameObject getNewTarget(string tag)
-    {
-        return GameObject.FindGameObjectWithTag(tag);
-    }
-
-    float getTargetX()
-    {
-        return target.transform.position.x;
-    }
-
-    float getTargetY()
-    {
-        return target.transform.position.y;
+        go.setPos(new Vector3(camX, camY, camZ));
     }
 }

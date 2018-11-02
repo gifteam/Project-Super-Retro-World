@@ -9,6 +9,7 @@ TagManager:
   - BlueFilter
   - GreenFilter
   - Bullet
+  - YellowFilter
   layers:
   - Default
   - TransparentFX
@@ -45,4 +46,25 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3869051061
+    locked: 0
+  - name: Platforms
+    uniqueID: 1776047029
+    locked: 0
+  - name: Enemies
+    uniqueID: 1752534655
+    locked: 0
+  - name: Items
+    uniqueID: 4048936353
+    locked: 0
+  - name: Player
+    uniqueID: 1297096055
+    locked: 0
+  - name: Filters
+    uniqueID: 3077762433
+    locked: 0
+  - name: HMI
+    uniqueID: 1268636397
     locked: 0
