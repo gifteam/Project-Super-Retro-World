@@ -30,9 +30,13 @@ public class GO {
     //     | GameObject  |   ==>   Cen Left [+]   -[+]-   [+] Cen Right
     //     |   (Rect)    |                   |      '      |
     //     |             |                   |             |
-    //     '-------------'         Bot Left [+]----[+]----[+] Bot Right
+    //     '-------------'         Bot Left [+]----[+]----[+] Bot Right          
     //                                           Cen Bot
     //
+    //    Y
+    //    ^
+    //    |
+    //    +---> X
     // =============================================================================
     // -----------------------------------------------------------------------------
     // Center position 
@@ -69,6 +73,34 @@ public class GO {
         return this.posCenX(ref offset);
     }
     // -----------------------------------------------------------------------------
+    // Top Left position
+    public Vector2 posTopLeft()
+    {
+        Vector2 offset = new Vector2(-0.5f, 0.5f);
+        return this.posCenX(ref offset);
+    }
+    // -----------------------------------------------------------------------------
+    // Top Right position
+    public Vector2 posTopRight()
+    {
+        Vector2 offset = new Vector2(0.5f, 0.5f);
+        return this.posCenX(ref offset);
+    }
+    // -----------------------------------------------------------------------------
+    // Bot Left position
+    public Vector2 posBotLeft()
+    {
+        Vector2 offset = new Vector2(-0.5f, -0.5f);
+        return this.posCenX(ref offset);
+    }
+    // -----------------------------------------------------------------------------
+    // Bot Right position
+    public Vector2 posBotRight()
+    {
+        Vector2 offset = new Vector2(0.5f, -0.5f);
+        return this.posCenX(ref offset);
+    }
+    // -----------------------------------------------------------------------------
     // Return a position with offset times the GO scale (see public "posCen..." functions for examples calls)
     private Vector2 posCenX(ref Vector2 offset)
     {
@@ -76,8 +108,13 @@ public class GO {
         Vector2 pos = this.posCen();
         Vector3 scl = this.scale();
         // Step 2 : get box Collider offset and size (%)
-        Vector2 boxOffset = this.getBoxCollider2D().offset;
-        Vector2 boxSize = this.getBoxCollider2D().size;
+        Vector2 boxOffset = new Vector2(0.0f, 0.0f);
+        Vector2 boxSize = new Vector2(1.0f, 1.0f);
+        if (this.hastBoxCollider2D())
+        {
+            boxOffset = this.getBoxCollider2D().offset;
+            boxSize = this.getBoxCollider2D().size;
+        }
         // Step 3 : edit current pos and scl according to hitbox parameters
         pos.x += boxOffset.x * scl.x;
         pos.y += boxOffset.y * scl.y;
@@ -115,6 +152,10 @@ public class GO {
     //     '-------------'                   V------V------V 
     //   ################### Ground        ################### Ground
     //
+    //    Y
+    //    ^
+    //    |
+    //    +---> X
     // =============================================================================
     public bool isGrounded(ref float distToGround, ref LayerMask groundLayer)
     {
@@ -143,6 +184,12 @@ public class GO {
     // =============================================================================
     // Return many GO component
     // =============================================================================
+    // -----------------------------------------------------------------------------
+    // Return TRUE if the GO has a BoxCollider2D, FALSE overwise
+    public bool hastBoxCollider2D()
+    {
+        return this.go.GetComponent<BoxCollider2D>();
+    }
     // -----------------------------------------------------------------------------
     // Return BoxCollider2D component of the GO
     public BoxCollider2D getBoxCollider2D()
