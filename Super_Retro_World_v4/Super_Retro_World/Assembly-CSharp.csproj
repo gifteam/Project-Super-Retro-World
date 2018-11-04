@@ -58,9 +58,9 @@
      <Compile Include="Assets\Scenes\Behavior\BulletBehavior.cs" />
      <Compile Include="Assets\Scenes\Behavior\BulletHidden.cs" />
      <Compile Include="Assets\Scenes\Behavior\CamBehavior.cs" />
-     <Compile Include="Assets\Scenes\Behavior\FilterBehavior.cs" />
+     <Compile Include="Assets\Scenes\Behavior\Filters\Filter.cs" />
+     <Compile Include="Assets\Scenes\Behavior\Filters\GreenFilterBehavior.cs" />
      <Compile Include="Assets\Scenes\Behavior\GOClass.cs" />
-     <Compile Include="Assets\Scenes\Behavior\GreenFilterBehavior.cs" />
      <Compile Include="Assets\Scenes\Behavior\LaserBehavior.cs" />
      <Compile Include="Assets\Scenes\Behavior\PlatformHiddenBlue.cs" />
      <Compile Include="Assets\Scenes\Behavior\Player.cs" />

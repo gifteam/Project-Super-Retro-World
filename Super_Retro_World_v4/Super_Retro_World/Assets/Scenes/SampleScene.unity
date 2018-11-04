@@ -135,7 +135,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1056712}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.04, y: 0.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 428586133}
@@ -369,7 +369,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 105179824}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.53, y: 1.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 519967975}
@@ -946,7 +946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 237324319}
   m_Layer: 0
-  m_Name: Filter
+  m_Name: Filter_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1700,7 +1700,7 @@ GameObject:
   - component: {fileID: 479221298}
   - component: {fileID: 479221300}
   m_Layer: 0
-  m_Name: myRedFilter
+  m_Name: Mask
   m_TagString: RedFilter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1781,9 +1781,8 @@ MonoBehaviour:
   stepX: 0
   stepMinX: -2
   stepMaxX: 5
+  tag: 
   body: {fileID: 0}
-  filterTag: 
-  parent: {fileID: 0}
   rays: {fileID: 0}
   sides: {fileID: 0}
   corners: {fileID: 0}
@@ -2868,7 +2867,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 719865814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.74, y: 1.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 832994290}
