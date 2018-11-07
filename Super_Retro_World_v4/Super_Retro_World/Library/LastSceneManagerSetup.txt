@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/SuperRetroWorld/WorldCollection/World_01/SceneCollection/Scene_01/Scene_01.unity
+- path: Assets/Scenes/Prototype/PrototypeScene.unity
   isLoaded: 1
   isActive: 1
