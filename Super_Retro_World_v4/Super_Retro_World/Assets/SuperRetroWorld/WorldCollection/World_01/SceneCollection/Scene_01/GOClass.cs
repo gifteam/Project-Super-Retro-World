@@ -16,9 +16,9 @@ public class GO {
     // =============================================================================
     // Constructor
     // =============================================================================
-    public GO(GameObject go_)
+    public GO(GameObject a_go)
     {
-        go = go_;
+        go = a_go;
     }
     // =============================================================================
     // Return many specifics GO positions from the "transform" component
@@ -38,6 +38,13 @@ public class GO {
     //    |
     //    +---> X
     // =============================================================================
+    // -----------------------------------------------------------------------------
+    // vector2 to vector3 position
+    public Vector3 posToV3(Vector2 a_pos)
+    {
+        Vector3 l_pos = a_pos;
+        return l_pos;
+    }
     // -----------------------------------------------------------------------------
     // Center position 
     public Vector2 posCen()
@@ -110,7 +117,7 @@ public class GO {
         // Step 2 : get box Collider offset and size (%)
         Vector2 boxOffset = new Vector2(0.0f, 0.0f);
         Vector2 boxSize = new Vector2(1.0f, 1.0f);
-        if (this.hastBoxCollider2D())
+        if (this.hasBoxCollider2D())
         {
             boxOffset = this.getBoxCollider2D().offset;
             boxSize = this.getBoxCollider2D().size;
@@ -136,6 +143,13 @@ public class GO {
     private Vector3 scale()
     {
         return this.go.transform.localScale;
+    }
+    // =============================================================================
+    // Position update
+    // =============================================================================
+    public void setPos(Vector2 pos)
+    {
+        this.go.transform.position = pos;
     }
 
     // =============================================================================
@@ -174,19 +188,17 @@ public class GO {
     }
 
     // =============================================================================
-    // Position update
-    // =============================================================================
-    public void setPos(Vector2 pos)
-    {
-        this.go.transform.position = pos;
-    }
-
-    // =============================================================================
     // Return many GO component
     // =============================================================================
     // -----------------------------------------------------------------------------
+    // Return GameObject itself
+    public GameObject getGO()
+    {
+        return go;
+    }
+    // -----------------------------------------------------------------------------
     // Return TRUE if the GO has a BoxCollider2D, FALSE overwise
-    public bool hastBoxCollider2D()
+    public bool hasBoxCollider2D()
     {
         return this.go.GetComponent<BoxCollider2D>();
     }
@@ -203,10 +215,29 @@ public class GO {
         return this.go.GetComponent<Rigidbody2D>();
     }
     // -----------------------------------------------------------------------------
-    // Return Rigidbody2D component of the GO
+    // Return Animator component of the GO
     public Animator getAnimator()
     {
         return this.go.GetComponent<Animator>();
+    }
+    // -----------------------------------------------------------------------------
+    // Return ParticleSystem component of the GO
+    public ParticleSystem getParticleSystem()
+    {
+        return this.go.GetComponent<ParticleSystem>();
+    }
+    // =============================================================================
+    // Return calculations
+    // =============================================================================
+    // -----------------------------------------------------------------------------
+    // Return squared dist between self and other position
+    public float getDistSquared(Vector2 a_targetPos)
+    {
+        Vector2 pos = posCen();
+        float dX = a_targetPos.x - pos.x;
+        float dY = a_targetPos.y - pos.y;
+        float distSq = (dX * dX) + (dY * dY);
+        return distSq;
     }
 }
 

@@ -5,12 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hitbox
-  - RedFilter
-  - BlueFilter
-  - GreenFilter
   - Bullet
-  - YellowFilter
   - Coin
+  - PowerUp
+  - FilterMask
   layers:
   - Default
   - TransparentFX
@@ -20,18 +18,18 @@ TagManager:
   - UI
   - 
   - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Filter
+  - 
+  - 
+  - 
+  - 
+  - 
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 

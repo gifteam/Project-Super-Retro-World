@@ -66,9 +66,11 @@
      <Compile Include="Assets\Scenes\Prototype\Behavior\PlatformHiddenBlue.cs" />
      <Compile Include="Assets\Scenes\Prototype\Behavior\RedPlateformBehavior.cs" />
      <Compile Include="Assets\Scenes\Prototype\Behavior\ShooterBehavior.cs" />
+     <Compile Include="Assets\SuperRetroWorld\WorldCollection\World_01\SceneCollection\Scene_01\CameraClass.cs" />
      <Compile Include="Assets\SuperRetroWorld\WorldCollection\World_01\SceneCollection\Scene_01\FilterClass.cs" />
      <Compile Include="Assets\SuperRetroWorld\WorldCollection\World_01\SceneCollection\Scene_01\GOClass.cs" />
      <Compile Include="Assets\SuperRetroWorld\WorldCollection\World_01\SceneCollection\Scene_01\Player.cs" />
+     <Compile Include="Assets\SuperRetroWorld\WorldCollection\World_01\SceneCollection\Scene_01\VHSClass.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Gif/Dropbox/cpp_project/Project-Super-Retro-World/Super_Retro_World_v4/Super_Retro_World/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
