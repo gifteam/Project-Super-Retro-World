@@ -41,7 +41,6 @@ public class Player : MonoBehaviour
         this.hitbox = this.go.getBoxCollider2D();
         this.animator = this.go.getAnimator();
         this.trail = new GO(GameObject.Find("FootTrail"));
-        Debug.Log(this.trail);
 
         // Speed variables
         this.XYspeed = new Vector2(0.0f, 0.0f);
@@ -125,7 +124,6 @@ public class Player : MonoBehaviour
             if (!this.trail.getParticleSystem().isPlaying)
             {
                 this.trail.getParticleSystem().Play();
-                Debug.Log("foot trail play");
             }
         }
         else
@@ -133,7 +131,6 @@ public class Player : MonoBehaviour
             if (this.trail.getParticleSystem().isPlaying)
             {
                 this.trail.getParticleSystem().Stop();
-                Debug.Log("foot trail stop");
             }
         }
     }
