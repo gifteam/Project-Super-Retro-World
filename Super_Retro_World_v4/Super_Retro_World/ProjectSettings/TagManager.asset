@@ -9,6 +9,8 @@ TagManager:
   - Coin
   - PowerUp
   - FilterMask
+  - Platform
+  - Tilemap
   layers:
   - Default
   - TransparentFX

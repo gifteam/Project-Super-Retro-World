@@ -152,6 +152,11 @@ public class GO {
         this.go.transform.position = pos;
     }
 
+    public void setLocalPos(Vector2 pos)
+    {
+        this.go.transform.localPosition = pos;
+    }
+
     // =============================================================================
     // Return true if the current GO is touching its "groundlayer"
     // Perfomr 3 raycast to make sure the ground is below feet
@@ -207,6 +212,13 @@ public class GO {
     public BoxCollider2D getBoxCollider2D()
     {
         return this.go.GetComponent<BoxCollider2D>();
+    }
+    // -----------------------------------------------------------------------------
+    // Return Rect of BoxCollider2D of the GO
+    public Rect getBoxCollider2DRect()
+    {
+
+        return new Rect(posTopLeft(), go.transform.localScale); 
     }
     // -----------------------------------------------------------------------------
     // Return Rigidbody2D component of the GO
