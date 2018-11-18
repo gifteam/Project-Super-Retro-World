@@ -15,8 +15,8 @@ public class BlocPop
     public BlocPop(GO a_target)
     {
         m_target = a_target;
-        m_nbBlocX = 4 + 8 * 2;
-        m_nbBloxY = 4 + 8 * 2;
+        m_nbBlocX = 4 + 1 * 2;
+        m_nbBloxY = 4 + 1 * 2;
         m_nbBloc = m_nbBlocX * m_nbBloxY;
         m_blocOriginal = new GO(GameObject.Find("InputBloc"));
 

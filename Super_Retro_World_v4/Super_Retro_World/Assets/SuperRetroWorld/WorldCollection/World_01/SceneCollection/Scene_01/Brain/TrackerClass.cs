@@ -6,9 +6,11 @@ public class TrackerClass : MonoBehaviour {
 
     public GO m_target;
     public GO m_go;
+    public float m_trackerSpeed;
 
     // Use this for initialization
     void Start () {
+        m_trackerSpeed = 0.02f;
         m_go = new GO(gameObject);
     }
 	
@@ -25,20 +27,20 @@ public class TrackerClass : MonoBehaviour {
 
             if (l_deltaX > 0)
             {
-                l_pos.x -= 0.01f;
+                l_pos.x -= m_trackerSpeed;
             }
             else
             {
-                l_pos.x += 0.01f;
+                l_pos.x += m_trackerSpeed;
             }
 
             if (l_deltaY > 0)
             {
-                l_pos.y -= 0.01f;
+                l_pos.y -= m_trackerSpeed;
             }
             else
             {
-                l_pos.y += 0.01f;
+                l_pos.y += m_trackerSpeed;
             }
 
             m_go.setPos(l_pos);

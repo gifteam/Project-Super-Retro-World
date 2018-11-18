@@ -6,29 +6,46 @@ public class NetworkPop
 {
     public int m_pop;
     public List<Network> m_Networklist;
+    public bool m_alive;
+    public List<double> m_fitness;
 
-    public NetworkPop()
+    public NetworkPop(int a_pop)
     {
+        m_fitness = new List<double>();
         m_Networklist = new List<Network>();
-        m_pop = 1;
+        m_pop = a_pop;
+        m_alive = true;
         for (uint i_popIndex = 0; i_popIndex < m_pop; i_popIndex++)
-      {
+        {
             m_Networklist.Add(new Network());
-        }  
+            m_fitness.Add(0.0);
+        }
+        foreach (Network n in m_Networklist)
+        {
+            n.ghostInputs();
+        }
     }
 
     public void update()
     {
+        m_alive = false;
+        int l_nIndex = 0;
         foreach (Network n in m_Networklist)
         {
             n.update();
+            m_fitness[l_nIndex] = n.m_fitness;
+            l_nIndex++;
+            if (n.m_alive)
+            {
+                m_alive = true;
+            }
         }
     }
 }
 
 public class Network
 {
-    public float m_fitness;
+    public double m_fitness;
     public List<Perceptron> m_PerceptronList;
     public BlocPop m_blocPop;
     public Control m_control;
@@ -43,9 +60,12 @@ public class Network
     public GO m_trackerParent;
     public GO m_trackerOriginal;
 
+    public bool m_alive;
+
     public Network()
     {
         m_control = new Control();
+        m_alive = true;
 
         m_targetParent = new GO(GameObject.Find("[GekoList]"));
         m_targetOriginal = new GO(GameObject.Find("Geko"));
@@ -69,31 +89,55 @@ public class Network
         }
     }
 
+    public void ghostInputs()
+    {
+        GameObject[] m_goTargetList = GameObject.FindGameObjectsWithTag("Geko");
+        BoxCollider2D l_collider1 = m_target.getBoxCollider2D();
+        BoxCollider2D l_collider2;
+        foreach (GameObject l_otherTarget in m_goTargetList)
+        {
+            l_collider2 = l_otherTarget.GetComponent<BoxCollider2D>();
+            Physics2D.IgnoreCollision(l_collider1, l_collider2, true);
+        }
+    }
+
     public void update()
     {
-        m_blocPop.update();
-        foreach (Perceptron p in m_PerceptronList)
+        if (m_target.getGO() ?? false)
         {
-            p.update();
+            m_alive = true;
+        }else
+        {
+            m_alive = false;
         }
-        m_control.setKeys();
 
-        m_targetXYspeed = m_targetBody.velocity;
+        if (m_alive)
+        {
+            m_fitness += 0.1;
+            m_blocPop.update();
+            foreach (Perceptron p in m_PerceptronList)
+            {
+                p.update();
+            }
+            m_control.setKeys();
 
-        if (m_control.m_left)
-        {
-            m_targetXYspeed.x = -5;
-            m_targetBody.velocity = m_targetXYspeed;
-        }
-        if (m_control.m_right)
-        {
-            m_targetXYspeed.x = 5;
-            m_targetBody.velocity = m_targetXYspeed;
-        }
-        if (m_control.m_up)
-        {
+            m_targetXYspeed = m_targetBody.velocity;
 
+            if (m_control.m_left)
+            {
+                m_targetXYspeed.x = -5;
+                m_targetBody.velocity = m_targetXYspeed;
+            }
+            if (m_control.m_right)
+            {
+                m_targetXYspeed.x = 5;
+                m_targetBody.velocity = m_targetXYspeed;
+            }
+            if (m_control.m_up)
+            {
+
+            }
+            m_control.resetKeys();
         }
-        m_control.resetKeys();
     }
 }

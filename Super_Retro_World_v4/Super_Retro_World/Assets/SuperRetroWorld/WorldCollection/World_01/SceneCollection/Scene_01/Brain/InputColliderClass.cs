@@ -14,10 +14,6 @@ public class InputColliderClass : MonoBehaviour {
         m_go = new GO(gameObject);
         m_goSpriteRenderer = m_go.getGO().GetComponent<SpriteRenderer>();
         m_goSpriteRenderer.color = Color.green;
-        /*foreach (GameObject l_go in GameObject.FindGameObjectsWithTag("Geko"))
-        {
-            Physics2D.IgnoreCollision(l_go.GetComponent<Collider2D>(), m_go.getGO().GetComponent<Collider2D>());
-        }*/
     }
 
     // Update is called once per frame
@@ -30,12 +26,18 @@ public class InputColliderClass : MonoBehaviour {
         if (other.gameObject.CompareTag("Platform"))
         {
             m_value = 1;
-            m_goSpriteRenderer.color = Color.blue;
+            if (m_goSpriteRenderer != null)
+            {
+                m_goSpriteRenderer.color = Color.blue;
+            }
         }
         else if (other.gameObject.CompareTag("Tracker"))
         {
             m_value = -1;
-            m_goSpriteRenderer.color = Color.red;
+            if (m_goSpriteRenderer != null)
+            {
+                m_goSpriteRenderer.color = Color.red;
+            }
         }
     }
 
@@ -44,12 +46,18 @@ public class InputColliderClass : MonoBehaviour {
         if (other.gameObject.CompareTag("Platform"))
         {
             m_value = 1;
-            m_goSpriteRenderer.color = Color.blue;
+            if (m_goSpriteRenderer != null)
+            {
+                m_goSpriteRenderer.color = Color.blue;
+            }
         }
         else if (other.gameObject.CompareTag("Tracker"))
         {
             m_value = -1;
-            m_goSpriteRenderer.color = Color.red;
+            if (m_goSpriteRenderer != null)
+            {
+                m_goSpriteRenderer.color = Color.red;
+            }
         }
     }
 
@@ -58,12 +66,18 @@ public class InputColliderClass : MonoBehaviour {
         if (other.gameObject.CompareTag("Platform"))
         {
             m_value = 0;
-            m_goSpriteRenderer.color = Color.green;
+            if (m_goSpriteRenderer != null)
+            {
+                m_goSpriteRenderer.color = Color.green;
+            }
         }
         else if (other.gameObject.CompareTag("Tracker"))
         {
             m_value = 0;
-            m_goSpriteRenderer.color = Color.green;
+            if (m_goSpriteRenderer != null)
+            {
+                m_goSpriteRenderer.color = Color.green;
+            }
         }
     }
 }
