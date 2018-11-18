@@ -15,8 +15,8 @@ public class BlocPop
     public BlocPop(GO a_target)
     {
         m_target = a_target;
-        m_nbBlocX = 4;
-        m_nbBloxY = 4;
+        m_nbBlocX = 4 + 8 * 2;
+        m_nbBloxY = 4 + 8 * 2;
         m_nbBloc = m_nbBlocX * m_nbBloxY;
         m_blocOriginal = new GO(GameObject.Find("InputBloc"));
 
@@ -27,8 +27,8 @@ public class BlocPop
         {
             float l_sclX = m_blocOriginal.getGO().transform.localScale.x;
             float l_sclY = m_blocOriginal.getGO().transform.localScale.y;
-            float l_deltaX = ( ( i_blocIndex % m_nbBlocX ) - ( m_nbBlocX / 2f ) ) * l_sclX;
-            float l_deltaY = ( ( i_blocIndex / m_nbBlocX ) - ( m_nbBlocX / 2f ) ) * l_sclY;
+            float l_deltaX = ( ( i_blocIndex % m_nbBlocX ) - ( m_nbBlocX / 2f ) ) * l_sclX + l_sclX / 2;
+            float l_deltaY = ( ( i_blocIndex / m_nbBlocX ) - ( m_nbBlocX / 2f ) ) * l_sclY + l_sclY / 2;
             m_BlocList.Add(new Bloc(m_target, l_deltaX, l_deltaY));
         }
     }
@@ -46,57 +46,29 @@ public class Bloc
 {
     public int m_value;
     public GO m_go;
+    public InputColliderClass m_goScript;
     public GO m_goOrigin;
     public GO m_parent;
+    public Vector2 m_blocPos;
 
     public Bloc(GO a_parent, float a_deltaX, float a_deltaY)
     {
         m_parent = a_parent;
         m_goOrigin = new GO(GameObject.Find("InputBloc"));
         m_go = new GO(GameObject.Instantiate(m_goOrigin.getGO().transform, m_parent.getGO().transform).gameObject);
-        Vector2 l_blocPos = new Vector2(a_deltaX, a_deltaY);
-        m_go.setLocalPos(l_blocPos);
+        m_goScript = m_go.getGO().GetComponent<InputColliderClass>();
+
+        m_blocPos = new Vector2(a_deltaX, a_deltaY);
+        m_go.setLocalPos(m_blocPos);
         m_value = 0;
     }
 
     public void update()
     {
-        Rect l_blocRect = m_go.getBoxCollider2DRect();
-        m_value = 0;
-        foreach(GameObject l_go in GameObject.FindGameObjectsWithTag("Platform"))
+        if (m_go.getGO() ?? false)
         {
-            if (l_blocRect.Overlaps(new GO(l_go).getBoxCollider2DRect()))
-            {
-                m_value = 1;
-                break;
-            }
+            m_go.setLocalPos(m_blocPos);
+            m_value = m_goScript.m_value;
         }
-
-        if (m_value == 0)
-        {
-            GameObject l_player = GameObject.FindGameObjectWithTag("Player");
-            if (l_blocRect.Overlaps(new GO(l_player).getBoxCollider2DRect()))
-            {
-                m_value = -1;
-            }
-        }
-
-        Color l_color;
-        switch (m_value)
-        {
-            case 1:
-                l_color = Color.blue;
-                break;
-            case -1:
-                l_color = Color.red;
-                break;
-            default:
-                l_color = Color.green;
-                break;
-        }
-        SpriteRenderer l_SpriteRenderer = m_go.getGO().GetComponent<SpriteRenderer>();
-        l_SpriteRenderer.color = l_color;
     }
-
-
 }

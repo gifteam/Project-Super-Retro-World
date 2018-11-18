@@ -56,8 +56,6 @@ public class Perceptron
         {
             o.update(m_value);
         }
-
-        m_control.setKeys();
     }
 }
 

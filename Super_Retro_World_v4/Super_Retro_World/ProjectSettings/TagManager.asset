@@ -11,6 +11,8 @@ TagManager:
   - FilterMask
   - Platform
   - Tilemap
+  - Geko
+  - Tracker
   layers:
   - Default
   - TransparentFX

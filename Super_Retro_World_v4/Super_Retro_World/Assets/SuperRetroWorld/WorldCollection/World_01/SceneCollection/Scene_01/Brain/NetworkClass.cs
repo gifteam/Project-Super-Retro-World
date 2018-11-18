@@ -10,7 +10,7 @@ public class NetworkPop
     public NetworkPop()
     {
         m_Networklist = new List<Network>();
-        m_pop = 3;
+        m_pop = 1;
         for (uint i_popIndex = 0; i_popIndex < m_pop; i_popIndex++)
       {
             m_Networklist.Add(new Network());
@@ -32,16 +32,33 @@ public class Network
     public List<Perceptron> m_PerceptronList;
     public BlocPop m_blocPop;
     public Control m_control;
+
     public GO m_target;
+    public Rigidbody2D m_targetBody;
     public GO m_targetParent;
     public GO m_targetOriginal;
+    private Vector2 m_targetXYspeed;
+
+    public GO m_tracker;
+    public GO m_trackerParent;
+    public GO m_trackerOriginal;
 
     public Network()
     {
         m_control = new Control();
-        m_targetParent = new GO(GameObject.Find("MachineLearning"));
-        m_targetOriginal =new GO(GameObject.Find("Geko"));
+
+        m_targetParent = new GO(GameObject.Find("[GekoList]"));
+        m_targetOriginal = new GO(GameObject.Find("Geko"));
         m_target = new GO(GameObject.Instantiate(m_targetOriginal.getGO().transform, m_targetParent.getGO().transform).gameObject);
+        m_target.getGO().transform.localPosition = new Vector3(0f, 0f, 0f);
+        m_targetBody = m_target.getRigidbody2D();
+
+        m_trackerParent = new GO(GameObject.Find("[TrackerList]"));
+        m_trackerOriginal = new GO(GameObject.Find("Tracker"));
+        m_tracker = new GO(GameObject.Instantiate(m_trackerOriginal.getGO().transform, m_trackerParent.getGO().transform).gameObject);
+        m_tracker.getGO().GetComponent<TrackerClass>().m_target = m_target;
+        m_tracker.getGO().transform.localPosition = new Vector3(0f, 0f, 0f);
+
         m_blocPop = new BlocPop(m_target);
         m_PerceptronList = new List<Perceptron>();
         m_fitness = 0;
@@ -59,5 +76,24 @@ public class Network
         {
             p.update();
         }
+        m_control.setKeys();
+
+        m_targetXYspeed = m_targetBody.velocity;
+
+        if (m_control.m_left)
+        {
+            m_targetXYspeed.x = -5;
+            m_targetBody.velocity = m_targetXYspeed;
+        }
+        if (m_control.m_right)
+        {
+            m_targetXYspeed.x = 5;
+            m_targetBody.velocity = m_targetXYspeed;
+        }
+        if (m_control.m_up)
+        {
+
+        }
+        m_control.resetKeys();
     }
 }
