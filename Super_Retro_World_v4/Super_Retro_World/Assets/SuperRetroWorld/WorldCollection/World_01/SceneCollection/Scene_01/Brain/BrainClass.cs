@@ -10,13 +10,13 @@ public class Brain
 
     public Brain()
     {
-        m_networkPop = new NetworkPop(5);
+        m_networkPop = new NetworkPop(1);
         m_alive = true;
     }
 
     public void update()
     {
-        Debug.Log("brain update");
+        //Debug.Log("brain update");
         m_networkPop.update();
         m_alive = m_networkPop.m_alive;
     }

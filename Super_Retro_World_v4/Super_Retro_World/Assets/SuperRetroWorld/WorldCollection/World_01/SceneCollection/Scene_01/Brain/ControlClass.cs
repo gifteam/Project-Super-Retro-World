@@ -33,10 +33,35 @@ public class Control
         }
     }
 
+    public void activationFunction()
+    {
+        for (int i_keyIndex = 0; i_keyIndex < m_keys.Count; i_keyIndex++)
+        {
+            if (m_keys[i_keyIndex] > 1f)
+            {
+                m_keys[i_keyIndex] = 1f;
+            }
+            else if (m_keys[i_keyIndex] < -1f)
+            {
+                m_keys[i_keyIndex]  = -1f;
+            }
+        }
+    }
+
     public void resetKeys()
     {
         m_left = false;
         m_right = false;
         m_up = false;
+    }
+
+    public void showKeys()
+    {
+        string l_listValues = "";
+        foreach (float k in m_keys)
+        {
+            l_listValues += k + ";";
+        }
+        Debug.Log(l_listValues);
     }
 }

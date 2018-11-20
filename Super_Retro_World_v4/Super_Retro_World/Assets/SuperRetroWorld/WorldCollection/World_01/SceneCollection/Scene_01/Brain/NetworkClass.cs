@@ -22,7 +22,7 @@ public class NetworkPop
         }
         foreach (Network n in m_Networklist)
         {
-            n.ghostInputs();
+            n.ghostGekos();
         }
     }
 
@@ -82,14 +82,14 @@ public class Network
         m_blocPop = new BlocPop(m_target);
         m_PerceptronList = new List<Perceptron>();
         m_fitness = 0;
-        uint l_pop = (uint)Mathf.RoundToInt(Random.Range(0.0f, 1.0f));
+        uint l_pop = 3; // (uint)Mathf.RoundToInt(Random.Range(0.0f, 1.0f));
         for (uint i_popIndex = 0; i_popIndex < l_pop; i_popIndex++)
         {
             m_PerceptronList.Add(new Perceptron(m_blocPop, m_control));
         }
     }
 
-    public void ghostInputs()
+    public void ghostGekos()
     {
         GameObject[] m_goTargetList = GameObject.FindGameObjectsWithTag("Geko");
         BoxCollider2D l_collider1 = m_target.getBoxCollider2D();
@@ -118,22 +118,25 @@ public class Network
             foreach (Perceptron p in m_PerceptronList)
             {
                 p.update();
+                //p.showInputWeight();
             }
+            m_control.activationFunction();
+            //m_control.showKeys();
             m_control.setKeys();
 
             m_targetXYspeed = m_targetBody.velocity;
 
-            if (m_control.m_left)
+            if (m_control.m_left == true)
             {
                 m_targetXYspeed.x = -5;
                 m_targetBody.velocity = m_targetXYspeed;
             }
-            if (m_control.m_right)
+            if (m_control.m_right == true)
             {
                 m_targetXYspeed.x = 5;
                 m_targetBody.velocity = m_targetXYspeed;
             }
-            if (m_control.m_up)
+            if (m_control.m_up == true)
             {
 
             }

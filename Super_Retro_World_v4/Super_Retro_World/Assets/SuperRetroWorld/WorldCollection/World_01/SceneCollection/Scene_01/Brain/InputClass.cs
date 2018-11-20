@@ -15,9 +15,7 @@ public class BlocPop
     public BlocPop(GO a_target)
     {
         m_target = a_target;
-        m_nbBlocX = 4 + 1 * 2;
-        m_nbBloxY = 4 + 1 * 2;
-        m_nbBloc = m_nbBlocX * m_nbBloxY;
+        m_nbBloc = 16;
         m_blocOriginal = new GO(GameObject.Find("InputBloc"));
 
 
@@ -25,10 +23,17 @@ public class BlocPop
 
         for (int i_blocIndex = 0; i_blocIndex < m_nbBloc; i_blocIndex++)
         {
-            float l_sclX = m_blocOriginal.getGO().transform.localScale.x;
+            /*float l_sclX = m_blocOriginal.getGO().transform.localScale.x;
             float l_sclY = m_blocOriginal.getGO().transform.localScale.y;
             float l_deltaX = ( ( i_blocIndex % m_nbBlocX ) - ( m_nbBlocX / 2f ) ) * l_sclX + l_sclX / 2;
-            float l_deltaY = ( ( i_blocIndex / m_nbBlocX ) - ( m_nbBlocX / 2f ) ) * l_sclY + l_sclY / 2;
+            float l_deltaY = ( ( i_blocIndex / m_nbBlocX ) - ( m_nbBlocX / 2f ) ) * l_sclY + l_sclY / 2;*/
+            float l_deltaX = Mathf.Cos((float) i_blocIndex * Mathf.PI / 4) * 2f;
+            float l_deltaY = Mathf.Sin((float) i_blocIndex * Mathf.PI / 4) * 2f;
+            if (i_blocIndex >= 8)
+            {
+                l_deltaX *= 1.5f;
+                l_deltaY *= 1.5f;
+            }
             m_BlocList.Add(new Bloc(m_target, l_deltaX, l_deltaY));
         }
     }

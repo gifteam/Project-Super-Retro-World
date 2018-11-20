@@ -24,9 +24,10 @@ public class LearnClass : MonoBehaviour {
         }
         else if (m_showResult == true)
         {
-            m_showResult = false;
+            //m_showResult = false;
             //show eahc network fitness
             m_brain.showFitness();
+            m_brain = new Brain();
         }
     }
 }
