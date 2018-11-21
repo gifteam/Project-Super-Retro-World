@@ -14,24 +14,14 @@ public class BlocPop
     public BlocPop(GO a_target)
     {
         m_target = a_target;
-        m_nbBloc = 8 + 16;
+        m_nbBloc = 16;
 
         m_BlocList = new List<Bloc>();
 
         for (int i_blocIndex = 0; i_blocIndex < m_nbBloc; i_blocIndex++)
         {
-            float l_deltaX;
-            float l_deltaY;
-            if (i_blocIndex < 8)
-            {
-                l_deltaX = Mathf.Cos((float)i_blocIndex * Mathf.PI / 4) * 1.5f;
-                l_deltaY = Mathf.Sin((float)i_blocIndex * Mathf.PI / 4) * 1.5f;
-            }
-            else
-            {
-                l_deltaX = Mathf.Cos((float)i_blocIndex * Mathf.PI / 8) * 3.0f;
-                l_deltaY = Mathf.Sin((float)i_blocIndex * Mathf.PI / 8) * 3.0f;
-            }
+            float l_deltaX = Mathf.Cos((float)i_blocIndex * Mathf.PI / 8) * 3.0f; ;
+            float l_deltaY = Mathf.Sin((float)i_blocIndex * Mathf.PI / 8) * 3.0f; ;
             m_BlocList.Add(new Bloc(m_target, l_deltaX, l_deltaY));
         }
     }

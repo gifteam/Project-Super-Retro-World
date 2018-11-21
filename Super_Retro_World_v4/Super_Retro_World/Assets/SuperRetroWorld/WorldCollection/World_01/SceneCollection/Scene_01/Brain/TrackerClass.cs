@@ -10,7 +10,7 @@ public class TrackerClass : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        m_trackerSpeed = 0.02f;
+        m_trackerSpeed = 0.04f;
         m_go = new GO(gameObject);
     }
 	

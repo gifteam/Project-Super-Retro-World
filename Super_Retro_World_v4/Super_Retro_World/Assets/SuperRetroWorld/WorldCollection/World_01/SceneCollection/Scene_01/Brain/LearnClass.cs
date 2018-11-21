@@ -12,7 +12,7 @@ public class LearnClass : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        m_generationMax = 20;
+        m_generationMax = 200;
         Debug.Log("Generation " + (m_generationIndex) + " (max = " + m_generationMax + ")");
         m_showResult = true;
         m_brain = new Brain();

@@ -176,7 +176,7 @@ public class Network
             }
             if (m_control.m_up == true && m_targetJmpTimer == 0)
             {
-                m_targetJmpTimer = 100;
+                m_targetJmpTimer = 50;
                 if (m_target.isGrounded(ref m_targetDistToGround, ref m_groundLayer))
                 {
                     m_targetBody.AddForce(Vector2.up * m_targetJmpForce);

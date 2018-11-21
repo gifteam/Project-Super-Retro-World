@@ -28,10 +28,10 @@ public class Brain
         //sort fitness
         double l_bestFitness = 1;
 
-        foreach (Network n in m_networkPopPreviousGen.m_Networklist)
+        /*foreach (Network n in m_networkPopPreviousGen.m_Networklist)
         {
-            n.m_fitness = n.m_fitness * n.m_fitness;
-        }
+            n.m_fitness = n.m_fitness * n.m_fitness * n.m_fitness;
+        }*/
 
         foreach (Network n in m_networkPopPreviousGen.m_Networklist)
         {

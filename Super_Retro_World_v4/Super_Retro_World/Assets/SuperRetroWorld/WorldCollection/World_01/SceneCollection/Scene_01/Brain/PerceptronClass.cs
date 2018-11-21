@@ -47,11 +47,11 @@ public class Perceptron
         bool l_mutateInputWeigth = false;
         bool l_mutateOutputWeigth = false;
         float l_random = Random.Range(0f, 100f);
-        if (l_random < 0.25f)
+        if (l_random < 5f)
         {
             l_mutateInputWeigth = true;
         }
-        else if (l_random < 0.5f)
+        else if (l_random < 10f)
         {
             l_mutateOutputWeigth = true;
         }
