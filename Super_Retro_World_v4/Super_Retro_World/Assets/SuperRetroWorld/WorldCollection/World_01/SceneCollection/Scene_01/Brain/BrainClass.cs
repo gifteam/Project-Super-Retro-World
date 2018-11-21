@@ -5,13 +5,66 @@ using UnityEngine;
 public class Brain
 {
     public NetworkPop m_networkPop;
+    public NetworkPop m_networkPopPreviousGen;
     public BlocPop m_blocPop;
     public bool m_alive;
 
     public Brain()
     {
-        m_networkPop = new NetworkPop(1);
+        m_networkPop = new NetworkPop(20);
         m_alive = true;
+    }
+
+    public Brain(NetworkPop a_networkPop)
+    {
+        m_networkPopPreviousGen = a_networkPop;
+        m_networkPop = new NetworkPop(20);
+        m_alive = true;
+        crossNetworks();
+    }
+
+    public void crossNetworks()
+    {
+        //sort fitness
+        double l_bestFitness = 1;
+
+        foreach (Network n in m_networkPopPreviousGen.m_Networklist)
+        {
+            n.m_fitness = n.m_fitness * n.m_fitness;
+        }
+
+        foreach (Network n in m_networkPopPreviousGen.m_Networklist)
+        {
+            if (n.m_fitness > l_bestFitness)
+            {
+                l_bestFitness = n.m_fitness;
+            }
+        }
+
+        List<int> l_NetworkIndexed = new List<int>();
+        foreach (Network n in m_networkPopPreviousGen.m_Networklist)
+        {
+            int l_fitnessRatio = (int) ((n.m_fitness / l_bestFitness) * 100);
+            for (int i_ratio = 0; i_ratio < l_fitnessRatio; i_ratio++)
+            {
+                l_NetworkIndexed.Add(n.m_index);
+            }
+        }
+
+        //get 2 parents
+        foreach (Network n in m_networkPop.m_Networklist)
+        {
+            int l_indexParentA = l_NetworkIndexed[Random.Range(0, l_NetworkIndexed.Count - 1)];
+            int l_indexParentB = l_NetworkIndexed[Random.Range(0, l_NetworkIndexed.Count - 1)];
+
+            Network l_parentA = m_networkPopPreviousGen.m_Networklist[l_indexParentA];
+            Network l_parentB = m_networkPopPreviousGen.m_Networklist[l_indexParentB];
+
+            n.setWeigth(0, l_parentA.m_PerceptronList[0]);
+            n.setWeigth(1, l_parentA.m_PerceptronList[0]);
+            n.setWeigth(2, l_parentB.m_PerceptronList[0]);
+            n.setWeigth(3, l_parentB.m_PerceptronList[0]);
+        }
     }
 
     public void update()

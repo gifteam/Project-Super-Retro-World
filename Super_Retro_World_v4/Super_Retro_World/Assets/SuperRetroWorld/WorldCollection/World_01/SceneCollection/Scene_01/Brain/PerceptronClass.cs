@@ -20,9 +20,7 @@ public class Perceptron
         m_inputList = new List<PerceptronInput>();
         m_outputList = new List<PerceptronOutput>();
 
-        //m_weigth = Random.Range(-1.0f, 1.0f);
-
-        int l_inputs = m_blocPop.m_nbBloc; // (uint)Mathf.RoundToInt(Random.Range(0.0f, 3.0f));
+        int l_inputs = m_blocPop.m_nbBloc;
         for (int i_inputIndex = 0; i_inputIndex < l_inputs; i_inputIndex++)
         {
             m_inputList.Add(new PerceptronInput(m_blocPop, i_inputIndex));
@@ -32,6 +30,41 @@ public class Perceptron
         for (int i_outputIndex = 0; i_outputIndex < l_outputs; i_outputIndex++)
         {
             m_outputList.Add(new PerceptronOutput(m_control, i_outputIndex));
+        }
+    }
+
+    public void setWeigth(Perceptron a_parentPerceptron)
+    {
+        for (int i_inputIndex = 0; i_inputIndex < m_inputList.Count; i_inputIndex ++)
+        {
+            m_inputList[i_inputIndex].m_weigth = a_parentPerceptron.m_inputList[i_inputIndex].m_weigth;
+        }
+        for (int i_outputIndex = 0; i_outputIndex < m_outputList.Count; i_outputIndex++)
+        {
+            m_outputList[i_outputIndex].m_weigth = a_parentPerceptron.m_outputList[i_outputIndex].m_weigth;
+        }
+
+        bool l_mutateInputWeigth = false;
+        bool l_mutateOutputWeigth = false;
+        float l_random = Random.Range(0f, 100f);
+        if (l_random < 0.25f)
+        {
+            l_mutateInputWeigth = true;
+        }
+        else if (l_random < 0.5f)
+        {
+            l_mutateOutputWeigth = true;
+        }
+
+        if (l_mutateInputWeigth)
+        {
+            int l_index = (int) Random.Range(0f, m_inputList.Count - 1);
+            m_inputList[l_index].m_weigth = Random.Range(-1.0f, 1.0f);
+        }
+        else if (l_mutateOutputWeigth)
+        {
+            int l_index = (int) Random.Range(0f, m_outputList.Count - 1);
+            m_outputList[l_index].m_weigth = Random.Range(-1.0f, 1.0f);
         }
     }
 

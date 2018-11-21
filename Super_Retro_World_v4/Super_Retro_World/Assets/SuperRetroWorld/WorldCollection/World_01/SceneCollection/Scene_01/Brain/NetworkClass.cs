@@ -17,9 +17,9 @@ public class NetworkPop
         m_Networklist = new List<Network>();
         m_pop = a_pop;
         m_alive = true;
-        for (uint i_popIndex = 0; i_popIndex < m_pop; i_popIndex++)
+        for (int i_popIndex = 0; i_popIndex < m_pop; i_popIndex++)
         {
-            m_Networklist.Add(new Network());
+            m_Networklist.Add(new Network(i_popIndex));
             m_fitness.Add(0.0);
         }
         foreach (Network n in m_Networklist)
@@ -57,6 +57,7 @@ public class NetworkPop
 
 public class Network
 {
+    public int m_index;
     public double m_fitness;
     public List<Perceptron> m_PerceptronList;
     public BlocPop m_blocPop;
@@ -80,8 +81,9 @@ public class Network
 
     public bool m_alive;
 
-    public Network()
+    public Network(int a_index)
     {
+        m_index = a_index;
         m_dna = new List<List<double>>();
         m_control = new Control();
         m_alive = true;
@@ -105,11 +107,16 @@ public class Network
         m_blocPop = new BlocPop(m_target);
         m_PerceptronList = new List<Perceptron>();
         m_fitness = 0;
-        uint l_pop = 3; 
+        uint l_pop = 4; 
         for (uint i_popIndex = 0; i_popIndex < l_pop; i_popIndex++)
         {
             m_PerceptronList.Add(new Perceptron(m_blocPop, m_control));
         }
+    }
+
+    public void setWeigth(int a_perceptronIndex, Perceptron a_parentPerceptron)
+    {
+        m_PerceptronList[a_perceptronIndex].setWeigth(a_parentPerceptron);
     }
 
     public void getDna()
