@@ -35,4 +35,21 @@ public class Brain
         }
         Debug.Log(l_fitnessConcat);
     }
+
+    public void showDna()
+    {
+        m_networkPop.getDna();
+        string l_DnaConcat = "";
+        foreach (List<List<double>> i_dnaPop in m_networkPop.m_dna)
+        {
+            foreach (List<double> i_dna in i_dnaPop)
+            {
+                foreach (double i_dnaPart in i_dna)
+                {
+                    l_DnaConcat += i_dnaPart + ";";
+                }
+            }
+        }
+        Debug.Log(l_DnaConcat);
+    }
 }

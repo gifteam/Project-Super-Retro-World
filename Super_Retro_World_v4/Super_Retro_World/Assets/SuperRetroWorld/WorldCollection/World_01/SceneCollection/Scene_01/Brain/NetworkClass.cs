@@ -8,9 +8,11 @@ public class NetworkPop
     public List<Network> m_Networklist;
     public bool m_alive;
     public List<double> m_fitness;
+    public List<List<List<double>>> m_dna;
 
     public NetworkPop(int a_pop)
     {
+        m_dna = new List<List<List<double>>>();
         m_fitness = new List<double>();
         m_Networklist = new List<Network>();
         m_pop = a_pop;
@@ -41,6 +43,16 @@ public class NetworkPop
             }
         }
     }
+
+    public void getDna()
+    {
+        m_dna.Clear();
+        foreach (Network n in m_Networklist)
+        {
+            n.getDna();
+            m_dna.Add(n.m_dna);
+        }
+    }
 }
 
 public class Network
@@ -49,12 +61,18 @@ public class Network
     public List<Perceptron> m_PerceptronList;
     public BlocPop m_blocPop;
     public Control m_control;
+    public List<List<double>> m_dna;
 
     public GO m_target;
     public Rigidbody2D m_targetBody;
     public GO m_targetParent;
     public GO m_targetOriginal;
     private Vector2 m_targetXYspeed;
+
+    private int m_targetJmpTimer = 0;
+    private int m_targetJmpForce = 350;
+    public float m_targetDistToGround;
+    private LayerMask m_groundLayer;
 
     public GO m_tracker;
     public GO m_trackerParent;
@@ -64,6 +82,7 @@ public class Network
 
     public Network()
     {
+        m_dna = new List<List<double>>();
         m_control = new Control();
         m_alive = true;
 
@@ -72,6 +91,10 @@ public class Network
         m_target = new GO(GameObject.Instantiate(m_targetOriginal.getGO().transform, m_targetParent.getGO().transform).gameObject);
         m_target.getGO().transform.localPosition = new Vector3(0f, 0f, 0f);
         m_targetBody = m_target.getRigidbody2D();
+
+        m_groundLayer = LayerMask.GetMask("Ground");
+        m_targetDistToGround = m_target.getBoxCollider2D().bounds.extents.y + 0.2f;
+
 
         m_trackerParent = new GO(GameObject.Find("[TrackerList]"));
         m_trackerOriginal = new GO(GameObject.Find("Tracker"));
@@ -82,10 +105,20 @@ public class Network
         m_blocPop = new BlocPop(m_target);
         m_PerceptronList = new List<Perceptron>();
         m_fitness = 0;
-        uint l_pop = 3; // (uint)Mathf.RoundToInt(Random.Range(0.0f, 1.0f));
+        uint l_pop = 3; 
         for (uint i_popIndex = 0; i_popIndex < l_pop; i_popIndex++)
         {
             m_PerceptronList.Add(new Perceptron(m_blocPop, m_control));
+        }
+    }
+
+    public void getDna()
+    {
+        m_dna.Clear();
+        foreach (Perceptron p in m_PerceptronList)
+        {
+            p.getDnaPart();
+            m_dna.Add(p.m_dnaPart);
         }
     }
 
@@ -118,10 +151,8 @@ public class Network
             foreach (Perceptron p in m_PerceptronList)
             {
                 p.update();
-                //p.showInputWeight();
             }
             m_control.activationFunction();
-            //m_control.showKeys();
             m_control.setKeys();
 
             m_targetXYspeed = m_targetBody.velocity;
@@ -136,9 +167,17 @@ public class Network
                 m_targetXYspeed.x = 5;
                 m_targetBody.velocity = m_targetXYspeed;
             }
-            if (m_control.m_up == true)
+            if (m_control.m_up == true && m_targetJmpTimer == 0)
             {
-
+                m_targetJmpTimer = 100;
+                if (m_target.isGrounded(ref m_targetDistToGround, ref m_groundLayer))
+                {
+                    m_targetBody.AddForce(Vector2.up * m_targetJmpForce);
+                }
+            }
+            if (m_targetJmpTimer > 0)
+            {
+                m_targetJmpTimer--;
             }
             m_control.resetKeys();
         }

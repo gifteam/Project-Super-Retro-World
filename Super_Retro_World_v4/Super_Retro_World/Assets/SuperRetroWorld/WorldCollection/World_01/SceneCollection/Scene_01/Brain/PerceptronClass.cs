@@ -10,9 +10,11 @@ public class Perceptron
     public List<PerceptronOutput> m_outputList;
     public BlocPop m_blocPop;
     public Control m_control;
+    public List<double> m_dnaPart;
 
     public Perceptron(BlocPop a_blocPop, Control a_control)
     {
+        m_dnaPart = new List<double>();
         m_control = a_control;
         m_blocPop = a_blocPop;
         m_inputList = new List<PerceptronInput>();
@@ -30,6 +32,19 @@ public class Perceptron
         for (int i_outputIndex = 0; i_outputIndex < l_outputs; i_outputIndex++)
         {
             m_outputList.Add(new PerceptronOutput(m_control, i_outputIndex));
+        }
+    }
+
+    public void getDnaPart()
+    {
+        m_dnaPart.Clear();
+        foreach (PerceptronInput i in m_inputList)
+        {
+            m_dnaPart.Add(i.m_weigth);
+        }
+        foreach (PerceptronOutput o in m_outputList)
+        {
+            m_dnaPart.Add(o.m_weigth);
         }
     }
 

@@ -8,6 +8,10 @@ public class LearnClass : MonoBehaviour {
     public bool m_showResult;
     public BlocPop m_blocs;
     public float m_mutationRate = 0.1f;
+    public int m_brainPop = 10;
+    public int m_brainIndex = 0;
+    public int m_generationIndex = 0;
+    public int m_generationMax = 10;
 
     // Use this for initialization
     void Start () {
@@ -17,17 +21,30 @@ public class LearnClass : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (m_brain.m_alive == true)
+        if (m_brainIndex < m_brainPop)
         {
-            //calculate each network fitness
-            m_brain.update();
+            if (m_brain.m_alive == true)
+            {
+                //calculate each network fitness
+                m_brain.update();
+            }
+            else if (m_showResult == true)
+            {
+                //m_brain.showFitness();
+                //m_brain.showDna();
+                Debug.Log("Generation " + m_generationIndex + " : from brain " + (m_brainIndex) + " to " + (m_brainIndex + 1) + " (popSize =  " + m_brainPop + ")");
+                m_brain = new Brain();
+                m_brainIndex++;
+            }
         }
-        else if (m_showResult == true)
+        else
         {
-            //m_showResult = false;
-            //show eahc network fitness
-            m_brain.showFitness();
-            m_brain = new Brain();
+            if (m_generationIndex < m_generationMax)
+            {
+                Debug.Log("From generation " + (m_generationIndex) + " to " + (m_generationIndex + 1) + "(max = " + m_generationMax + ")");
+                m_brainIndex = 0;
+                m_generationIndex++;
+            }
         }
     }
 }
