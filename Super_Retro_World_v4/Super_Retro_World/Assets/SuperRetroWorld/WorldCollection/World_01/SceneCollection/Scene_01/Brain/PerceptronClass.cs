@@ -8,23 +8,25 @@ public class Perceptron
     public float m_value;
     public List<PerceptronInput> m_inputList;
     public List<PerceptronOutput> m_outputList;
-    public BlocPop m_blocPop;
+    //public BlocPop m_blocPop;
     public Control m_control;
     public List<double> m_dnaPart;
+    public GO m_geko;
+    public GO m_tracker;
 
-    public Perceptron(BlocPop a_blocPop, Control a_control)
+    public Perceptron (Control a_control, GO a_geko, GO a_tracker)
     {
         m_dnaPart = new List<double>();
         m_control = a_control;
-        m_blocPop = a_blocPop;
+        m_geko = a_geko;
+        m_tracker = a_tracker;
         m_inputList = new List<PerceptronInput>();
         m_outputList = new List<PerceptronOutput>();
 
-        int l_inputs = m_blocPop.m_nbBloc;
-        for (int i_inputIndex = 0; i_inputIndex < l_inputs; i_inputIndex++)
-        {
-            m_inputList.Add(new PerceptronInput(m_blocPop, i_inputIndex));
-        }
+        m_inputList.Add(new PerceptronInput(m_geko, "X"));
+        m_inputList.Add(new PerceptronInput(m_geko, "Y"));
+        m_inputList.Add(new PerceptronInput(m_tracker, "X"));
+        m_inputList.Add(new PerceptronInput(m_tracker, "Y"));
 
         int l_outputs = m_control.m_keys.Count;
         for (int i_outputIndex = 0; i_outputIndex < l_outputs; i_outputIndex++)
@@ -119,22 +121,31 @@ public class Perceptron
 
 public class PerceptronInput
 {
-    public int m_blocIndex;
+    //public int m_blocIndex;
+    public GO m_spy;
+    public string m_spyComponent;
     public float m_weigth;
     public float m_value;
-    public BlocPop m_blocPop;
+    //public BlocPop m_blocPop;
 
-    public PerceptronInput(BlocPop a_blocPop, int a_blocIndex)
+    public PerceptronInput(GO a_spy, string a_spyComponent)
     {
-        m_blocPop = a_blocPop;
-        m_blocIndex = a_blocIndex; // Mathf.RoundToInt(Random.Range(0.0f, m_blocPop.m_nbBloc - 1f));
+        m_spy = a_spy;
+        m_spyComponent = a_spyComponent;
         m_weigth = Random.Range(-1.0f, 1.0f);
         m_value = 0;
     }
 
     public void update()
     {
-        m_value = m_blocPop.m_BlocList[m_blocIndex].m_value * m_weigth;
+        if (m_spyComponent.Equals("X"))
+        {
+            m_value = m_spy.posCen().x * m_weigth;
+        }
+        else if (m_spyComponent.Equals("Y"))
+        {
+            m_value = m_spy.posCen().y * m_weigth;
+        }
     }
 }
 

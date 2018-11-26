@@ -6,7 +6,7 @@ public class LearnClass : MonoBehaviour {
 
     public Brain m_brain;
     public bool m_showResult;
-    public BlocPop m_blocs;
+    //public BlocPop m_blocs;
     public int m_generationIndex = 0;
     public int m_generationMax;
 

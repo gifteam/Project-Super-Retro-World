@@ -59,8 +59,10 @@ public class Network
 {
     public int m_index;
     public double m_fitness;
+    public float m_distanceRun;
+    public Vector2 m_previousTargetPos;
+
     public List<Perceptron> m_PerceptronList;
-    public BlocPop m_blocPop;
     public Control m_control;
     public List<List<double>> m_dna;
 
@@ -84,6 +86,10 @@ public class Network
     public Network(int a_index)
     {
         m_index = a_index;
+        m_distanceRun = 0.0f;
+        m_fitness = 0.0f;
+        m_previousTargetPos = new Vector2(0f, 0f);
+
         m_dna = new List<List<double>>();
         m_control = new Control();
         m_alive = true;
@@ -104,13 +110,13 @@ public class Network
         m_tracker.getGO().GetComponent<TrackerClass>().m_target = m_target;
         m_tracker.getGO().transform.localPosition = new Vector3(0f, 0f, 0f);
 
-        m_blocPop = new BlocPop(m_target);
+        //m_blocPop = new BlocPop(m_target);
         m_PerceptronList = new List<Perceptron>();
         m_fitness = 0;
-        uint l_pop = 4; 
+        uint l_pop = 10; 
         for (uint i_popIndex = 0; i_popIndex < l_pop; i_popIndex++)
         {
-            m_PerceptronList.Add(new Perceptron(m_blocPop, m_control));
+            m_PerceptronList.Add(new Perceptron(m_control, m_target, m_tracker));
         }
     }
 
@@ -153,8 +159,12 @@ public class Network
 
         if (m_alive)
         {
-            m_fitness += 0.1;
-            m_blocPop.update();
+            m_fitness += 0.1f;
+
+            m_distanceRun += (m_previousTargetPos.x - m_target.posCen().x) * (m_previousTargetPos.x - m_target.posCen().x);
+            m_distanceRun += (m_previousTargetPos.y - m_target.posCen().y) * (m_previousTargetPos.y - m_target.posCen().y);
+            m_previousTargetPos = m_target.posCen();
+
             foreach (Perceptron p in m_PerceptronList)
             {
                 p.update();

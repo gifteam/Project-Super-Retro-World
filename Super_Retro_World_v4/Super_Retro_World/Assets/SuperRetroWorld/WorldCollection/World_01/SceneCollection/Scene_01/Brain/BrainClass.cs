@@ -6,19 +6,19 @@ public class Brain
 {
     public NetworkPop m_networkPop;
     public NetworkPop m_networkPopPreviousGen;
-    public BlocPop m_blocPop;
     public bool m_alive;
+    public int m_popSize = 100;
 
     public Brain()
     {
-        m_networkPop = new NetworkPop(20);
+        m_networkPop = new NetworkPop(m_popSize);
         m_alive = true;
     }
 
     public Brain(NetworkPop a_networkPop)
     {
         m_networkPopPreviousGen = a_networkPop;
-        m_networkPop = new NetworkPop(20);
+        m_networkPop = new NetworkPop(m_popSize);
         m_alive = true;
         crossNetworks();
     }
@@ -28,10 +28,10 @@ public class Brain
         //sort fitness
         double l_bestFitness = 1;
 
-        /*foreach (Network n in m_networkPopPreviousGen.m_Networklist)
+        foreach (Network n in m_networkPopPreviousGen.m_Networklist)
         {
-            n.m_fitness = n.m_fitness * n.m_fitness * n.m_fitness;
-        }*/
+            n.m_fitness = n.m_fitness * n.m_distanceRun;
+        }
 
         foreach (Network n in m_networkPopPreviousGen.m_Networklist)
         {
@@ -59,11 +59,23 @@ public class Brain
 
             Network l_parentA = m_networkPopPreviousGen.m_Networklist[l_indexParentA];
             Network l_parentB = m_networkPopPreviousGen.m_Networklist[l_indexParentB];
+            Network l_parent;
 
-            n.setWeigth(0, l_parentA.m_PerceptronList[0]);
-            n.setWeigth(1, l_parentA.m_PerceptronList[0]);
-            n.setWeigth(2, l_parentB.m_PerceptronList[0]);
-            n.setWeigth(3, l_parentB.m_PerceptronList[0]);
+            int l_perceptronPop = l_parentA.m_PerceptronList.Count;
+            int l_midPoint = (int) Random.Range(0, l_perceptronPop - 1);
+
+            for (int i_perceptronIndex = 0; i_perceptronIndex < l_perceptronPop; i_perceptronIndex++)
+            {
+                if (i_perceptronIndex < l_midPoint)
+                {
+                    l_parent = l_parentA;
+                }
+                else
+                {
+                    l_parent = l_parentB;
+                }
+                n.setWeigth(i_perceptronIndex, l_parent.m_PerceptronList[i_perceptronIndex]);
+            }
         }
     }
 
