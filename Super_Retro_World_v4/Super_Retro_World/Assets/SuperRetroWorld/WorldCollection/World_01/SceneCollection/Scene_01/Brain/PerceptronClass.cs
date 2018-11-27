@@ -6,6 +6,7 @@ public class Perceptron
 {
     //public float m_weigth;
     public float m_value;
+    public int m_index;
     public List<PerceptronInput> m_inputList;
     public List<PerceptronOutput> m_outputList;
     //public BlocPop m_blocPop;
@@ -14,8 +15,9 @@ public class Perceptron
     public GO m_geko;
     public GO m_tracker;
 
-    public Perceptron (Control a_control, GO a_geko, GO a_tracker)
+    public Perceptron (Control a_control, GO a_geko, GO a_tracker, int a_index)
     {
+        m_index = a_index;
         m_dnaPart = new List<double>();
         m_control = a_control;
         m_geko = a_geko;

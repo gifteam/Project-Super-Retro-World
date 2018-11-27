@@ -12,7 +12,7 @@ public class LearnClass : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        m_generationMax = 200;
+        m_generationMax = 9999;
         Debug.Log("Generation " + (m_generationIndex) + " (max = " + m_generationMax + ")");
         m_showResult = true;
         m_brain = new Brain();
@@ -30,8 +30,8 @@ public class LearnClass : MonoBehaviour {
             else
             {
                 // update generation
-                Debug.Log("From generation " + (m_generationIndex) + " to " + (m_generationIndex + 1) + " (max = " + m_generationMax + ")");
                 m_brain = new Brain(m_brain.m_networkPop);
+                Debug.Log("From generation " + (m_generationIndex) + " to " + (m_generationIndex + 1) + " (max = " + m_generationMax + ")");
                 m_generationIndex++;
             }
         }

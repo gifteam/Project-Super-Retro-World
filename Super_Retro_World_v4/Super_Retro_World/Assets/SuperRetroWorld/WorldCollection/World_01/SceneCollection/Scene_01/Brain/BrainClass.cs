@@ -7,7 +7,7 @@ public class Brain
     public NetworkPop m_networkPop;
     public NetworkPop m_networkPopPreviousGen;
     public bool m_alive;
-    public int m_popSize = 100;
+    public int m_popSize = 150;
 
     public Brain()
     {
@@ -26,6 +26,7 @@ public class Brain
     public void crossNetworks()
     {
         //sort fitness
+        int l_bestNetworkIndex = 0;
         double l_bestFitness = 1;
 
         foreach (Network n in m_networkPopPreviousGen.m_Networklist)
@@ -37,9 +38,30 @@ public class Brain
         {
             if (n.m_fitness > l_bestFitness)
             {
+                l_bestNetworkIndex = n.m_index;
                 l_bestFitness = n.m_fitness;
             }
         }
+
+        //show dna best NN
+        Debug.Log("========== Best NN =================================");
+        Debug.Log("ID = " + l_bestNetworkIndex);
+        Debug.Log("Fitness = " + m_networkPopPreviousGen.m_Networklist[l_bestNetworkIndex].m_fitness);
+        foreach(Perceptron p in m_networkPopPreviousGen.m_Networklist[l_bestNetworkIndex].m_PerceptronList)
+        {
+            Debug.Log("Percepttion ID = " + p.m_index);
+            Debug.Log("Input weigth = ");
+            foreach(PerceptronInput i in p.m_inputList)
+            {
+                Debug.Log(i.m_weigth);
+            }
+            Debug.Log("Output weigth = ");
+            foreach (PerceptronOutput o in p.m_outputList)
+            {
+                Debug.Log(o.m_weigth);
+            }
+        }
+        Debug.Log("====================================================");
 
         List<int> l_NetworkIndexed = new List<int>();
         foreach (Network n in m_networkPopPreviousGen.m_Networklist)
@@ -81,14 +103,8 @@ public class Brain
 
     public void update()
     {
-        //Debug.Log("brain update");
         m_networkPop.update();
         m_alive = m_networkPop.m_alive;
-    }
-
-    public void evolve(float a_mRate)
-    {
-       // Debug.Log("brain evolve");
     }
 
     public void showFitness()

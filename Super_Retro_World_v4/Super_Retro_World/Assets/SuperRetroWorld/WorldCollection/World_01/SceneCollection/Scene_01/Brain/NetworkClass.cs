@@ -67,6 +67,7 @@ public class Network
     public List<List<double>> m_dna;
 
     public GO m_target;
+    public int m_lives;
     public Rigidbody2D m_targetBody;
     public GO m_targetParent;
     public GO m_targetOriginal;
@@ -85,6 +86,7 @@ public class Network
 
     public Network(int a_index)
     {
+        m_lives = 3;
         m_index = a_index;
         m_distanceRun = 0.0f;
         m_fitness = 0.0f;
@@ -113,10 +115,10 @@ public class Network
         //m_blocPop = new BlocPop(m_target);
         m_PerceptronList = new List<Perceptron>();
         m_fitness = 0;
-        uint l_pop = 10; 
-        for (uint i_popIndex = 0; i_popIndex < l_pop; i_popIndex++)
+        int l_pop = 10; 
+        for (int i_popIndex = 0; i_popIndex < l_pop; i_popIndex++)
         {
-            m_PerceptronList.Add(new Perceptron(m_control, m_target, m_tracker));
+            m_PerceptronList.Add(new Perceptron(m_control, m_target, m_tracker, i_popIndex));
         }
     }
 

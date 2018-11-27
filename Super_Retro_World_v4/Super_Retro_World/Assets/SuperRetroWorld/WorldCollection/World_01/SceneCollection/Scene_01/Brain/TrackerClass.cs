@@ -7,10 +7,14 @@ public class TrackerClass : MonoBehaviour {
     public GO m_target;
     public GO m_go;
     public float m_trackerSpeed;
+    public int m_hitCount;
+    public int m_recovery;
 
     // Use this for initialization
     void Start () {
         m_trackerSpeed = 0.04f;
+        m_recovery = 120;
+        m_hitCount = 3;
         m_go = new GO(gameObject);
     }
 	
@@ -19,6 +23,11 @@ public class TrackerClass : MonoBehaviour {
 
         if (m_target != null)
         {
+            if (m_recovery > 0)
+            {
+                m_recovery--;
+            }
+
             Vector2 l_pos = m_go.posCen();
             Vector2 l_targetPos = m_target.posCen();
 
@@ -51,10 +60,38 @@ public class TrackerClass : MonoBehaviour {
     {
         if (m_target != null)
         {
-            if (other.gameObject.GetInstanceID() == m_target.getGO().GetInstanceID())
+            if (other.gameObject.GetInstanceID() == m_target.getGO().GetInstanceID() && m_recovery == 0)
             {
-                Destroy(other.gameObject);
-                Destroy(m_go.getGO());
+                if (m_hitCount > 0)
+                {
+                    m_hitCount--;
+                    m_recovery = 100;
+                }
+                else
+                {
+                    Destroy(other.gameObject);
+                    Destroy(m_go.getGO());
+                }
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (m_target != null)
+        {
+            if (other.gameObject.GetInstanceID() == m_target.getGO().GetInstanceID() && m_recovery == 0)
+            {
+                if (m_hitCount > 0)
+                {
+                    m_hitCount--;
+                    m_recovery = 100;
+                }
+                else
+                {
+                    Destroy(other.gameObject);
+                    Destroy(m_go.getGO());
+                }
             }
         }
     }
