@@ -42,10 +42,10 @@ MonoBehaviour:
     y: 30
     width: 1366
     height: 636
-  m_MinSize: {x: 683, y: 342}
-  m_MaxSize: {x: 12008, y: 8042}
+  m_MinSize: {x: 683, y: 321}
+  m_MaxSize: {x: 12008, y: 8021}
   vertical: 0
-  controlID: 82
+  controlID: 105
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -207,10 +207,10 @@ MonoBehaviour:
     y: 0
     width: 974
     height: 636
-  m_MinSize: {x: 406, y: 342}
-  m_MaxSize: {x: 8006, y: 8042}
+  m_MinSize: {x: 406, y: 321}
+  m_MaxSize: {x: 8006, y: 8021}
   vertical: 1
-  controlID: 83
+  controlID: 106
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -234,7 +234,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 221}
   m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 84
+  controlID: 107
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -427,7 +427,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 11}
     m_SelectedIDs: 4a0a0000
     m_LastClickedID: 2634
-    m_ExpandedIDs: 000000007e09000090090000b4090000f4090000240a0000260a0000500a0000820a0000980a0000e20a00003c0b0000520b0000040c00004a0c0000700c0000860c00009c0c00005e0d0000d42f000000ca9a3b
+    m_ExpandedIDs: 000000007e09000090090000b4090000f4090000240a0000260a0000500a0000820a0000980a0000e20a00003c0b0000520b0000040c00004a0c0000700c0000860c00009c0c00005e0d0000d42f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -486,18 +486,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c623000020340000860900008a0900004c510000ec050000f27f0000ae09000000000000103e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: LearnClass
-      m_OriginalName: LearnClass
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 2016
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 5}
     m_CreateAssetUtility:
@@ -571,9 +571,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 2e0e0000
-    m_LastClickedID: 3630
-    m_ExpandedIDs: e4fbffff00000000e00d0000e80d00003c0e0000
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: e4fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
